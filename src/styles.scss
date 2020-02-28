@@ -1,0 +1,203 @@
+/* You can add global styles to this file, and also import other style files */
+$fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+:root {
+  --input-color: #bbb;
+}
+
+.col-md-2-5 {
+  width: 15rem;
+  max-width: 15rem;
+}
+
+.col-md-7-5 {
+  width: calc(100% - 15rem);
+  max-width: calc(100% - 15rem);
+}
+
+:root {
+  --bg-color: #f7f7f7;
+}
+
+input,
+select,
+textarea,
+button {
+  outline: none !important;
+  -webkit-box-shadow: none;
+  box-shadow: none !important;
+}
+
+.btn-s {
+  height: 34px !important;
+}
+
+.form-control {
+  font-size: 14px !important;
+}
+
+body {
+  color: #73879c !important;
+  font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.471 !important;
+  background-color: var(--bg-color) !important;
+}
+
+.x_panel {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 17px;
+  box-shadow: 0px 0px 20px -15px #444;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #e6e9ed;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  column-break-inside: avoid;
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+.x_title {
+  border-bottom: 2px solid #e6e9ed;
+  padding: 1px 5px 6px;
+  margin-bottom: 10px;
+}
+
+.x_title h2 {
+  margin: 5px 0 6px;
+  float: left;
+  display: block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 2px !important;
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.panel_toolbox {
+  float: right;
+  min-width: 70px;
+}
+
+.navbar-right {
+  margin-right: 0;
+}
+
+.x_title h2 small {
+  margin-left: 10px;
+}
+
+.panel_toolbox>li {
+  float: left;
+  cursor: pointer;
+}
+
+.panel_toolbox>li>a {
+  padding: 5px;
+  color: #c5c7cb;
+  font-size: 14px;
+}
+
+.nav>li>a {
+  position: relative;
+  display: block;
+  padding: 13px 15px 12px;
+}
+
+.col.ibox>input {
+  padding-left: 40px;
+}
+
+.col.ibox {
+  position: relative;
+
+  i {
+    position: absolute;
+    text-align: center;
+    border-right: 1px solid #eae7e7;
+    color: var(--input-color);
+    padding: 6px 10px;
+    margin-top: -30px;
+  }
+}
+
+.show {
+  right: 0px !important;
+  transition: all 500ms;
+}
+
+.show-linear {
+  animation: cssAnimation 0s ease-in .15s forwards;
+  // -webkit-animation-fill-mode: forwards;
+  // animation-fill-mode: forwards;
+}
+
+@keyframes cssAnimation {
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes cssAnimation {
+  to {
+    opacity: 1;
+  }
+}
+
+.chkbox {
+  zoom: 1.4;
+  position: relative;
+  top: 3px;
+}
+
+.icard {
+  margin-bottom: 1rem;
+}
+
+.error-filed {
+  border: 1px solid red !important;
+  border-right: 5px solid red !important;
+}
+
+.warning-filed {
+  border: 1px solid #CDDC39 !important;
+  border-right: 5px solid #CDDC39 !important;
+}
+
+.p-text {
+  padding-top: 11px !important;
+}
+
+.pagearrow {
+  border-radius: 50%;
+  width: 25px;
+  font-size: 30px;
+  display: inline-block;
+  color: #444;
+  transform: translate(0px, 2px);
+}
+
+.pagearrow a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.pagearrow:hover {
+  cursor: pointer !important;
+}
+
+.a-icon {
+  text-decoration: none !important;
+  color: #444 !important;
+}

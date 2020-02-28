@@ -1,0 +1,111 @@
+<div *ngIf="!LoginFlag">
+  <div class="col-md-12">
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <div class="login_wrapper" [formGroup]="LoginForm">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <div>
+            <h1>Login Form</h1>
+            <span style="color: red;display: none;margin-bottom: 10px;" id="errorMsg">Invalid username or
+              password</span>
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Email id or Modile no." id="userid"
+                formControlName="UserId" />
+              <input type="password" class="form-control mt-2" placeholder="Password" id="passwd"
+                formControlName="Password" />
+            </div>
+            <div class="mt-4">
+              <button class="btn btn-outline-dark mr-2" (click)="UserLogin()">Log in</button>
+              <a class="reset_pass" href="#">Lost your password?</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">
+                New to site?
+                <a href="#signup" class="to_register"> Create Account </a>
+              </p>
+              <div class="clearfix"></div>
+              <br />
+              <div>
+                <h1><i class="fa fa-paw"></i> {{schoolName}}</h1>
+                <p>©2016 All Rights Reserved. {{schoolName}} is a Bootstrap 3 template. Privacy and Terms</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div id="register" class="animate form registration_form">
+        <section class="login_content d-none">
+          <form>
+            <h1>Create Account</h1>
+            <div>
+              <input type="text" class="form-control" placeholder="Username" required="" />
+            </div>
+            <div>
+              <input type="email" class="form-control" placeholder="Email" required="" />
+            </div>
+            <div>
+              <input type="password" class="form-control" placeholder="Password" required="" />
+            </div>
+            <div>
+              <a class="btn btn-default submit" href="index.html">Submit</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="separator">
+              <p class="change_link">
+                Already a member ?
+                <a href="#signin" class="to_register"> Log in </a>
+              </p>
+              <div class="clearfix"></div>
+              <br />
+              <div>
+                <h1><i class="fa fa-paw"></i> {{schoolName}}</h1>
+                <p>©2016 All Rights Reserved. {{schoolName}} is a Bootstrap 3 template. Privacy and Terms</p>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-12 p-0" *ngIf="LoginFlag">
+
+  <!-- Dashboard -->
+  <div class="wrapper">
+    <!-- Sidebar Holder -->
+    <div class="col-md-12 p-0">
+      <div class="row m-0">
+        <div class="col-md-2-5 p-0">
+          <div class="d-none d-lg-block">
+            <app-side-menu></app-side-menu>
+          </div>
+        </div>
+        <div class="col-md-7-5 p-0 body-container">
+          <!-- Page Header -->
+          <app-header></app-header>
+          <div id="content-body" class="body-content">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Helper Tag -->
+<div class="fadeloadscreen d-none" id="fadeloadscreen">
+  <div class="loading">Loading&#8230;</div>
+</div>
+<div class="position-fixed bg-warning custom-toast" id="toast">
+  <i id="ok-flag" class="d-none text-danger far fa-times-circle"></i>
+  <i id="fail-flag" class="text-success far fa-check-circle"></i>
+  <i id="info-flag" class="d-none fas fa-info-circle"></i>
+  <span id="toastmessage"></span> <small class="float-right">Powered by: Bottomhalf</small>
+</div>
+<div class="d-none">
+  <!-- chatting -->
+</div>

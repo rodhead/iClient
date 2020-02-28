@@ -1,0 +1,178 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Student Registration</h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li>
+          <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i
+              class="fa fa-wrench"></i></a>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+              <a href="#">Settings 1</a>
+            </li>
+            <li>
+              <a href="#">Settings 2</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a class="close-link"><i class="fa fa-close"></i></a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <div class="col-12 row m-0 p-0">
+        <div class="col-md-2 col-sm-12 position-relative">
+          <div class="b-align">
+            <div class="profile_img full">
+              <div id="crop-avatar">
+                <!-- Current avatar -->
+                <img class="img-responsive avatar-view" id="profileImgUrl" style="display:none;"
+                  [src]="studForm.ImageUrl" alt="Avatar" title="Change the avatar" />
+                <img class="w-100" id="profileImgUrl-demo" src="assets/bh/picture.png" alt="Avatar"
+                  title="Change the avatar" />
+              </div>
+            </div>
+            <h5 style="font-size: 20px;" class="page-init full">Name:</h5>
+            <input type="file" class="full" value="" name="profileImage" id="profileImage" style="display: none;" />
+            <button class="btn btn-success btn-block" (click)="getImage()">
+              <i class="fa fa-edit"></i>
+              Browse image
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-10 col-sm-10">
+          <div class="x_title bg-muted">
+            <h2>Guardian detail</h2>
+            <ul id="parent-dv-ul" class="nav navbar-right panel_toolbox" style="margin-top: 10px;margin-right:-25px;">
+              <li class="dropdown" style="display: none;" id="parentInfoSelection" *ngIf="!IsUpdating">
+                <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button"
+                  aria-expanded="false">
+                  <i class="fa fa fa-clone" style="color: #444;"></i>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li>
+                    <a>Enter new entry</a>
+                  </li>
+                  <li>
+                    <a>Select existing name</a>
+                  </li>
+                </ul>
+              </li>
+              <li name="edit-enable" style="margin-right: 36px;" *ngIf="IsUpdating" disabled>
+                <a href="javascript:void(0)">
+                  <span style="color:#989898">Edit Parent Detail&nbsp;</span>
+                </a>
+              </li>
+            </ul>
+            <div class="clearfix"></div>
+          </div>
+          <div id="perient-existing-dv" *ngIf="IsExistingParent" class="col-md-9 col-sm-9 col-xs-12">
+            <label class="control-label" style="padding-top: 6px;">
+              Enter mobile no. <span class="required">*</span>
+            </label>
+            <div class="form-group">
+              <div class='input-group date' id='mob'>
+                <input class="date-picker form-control col-md-7 col-xs-12" id="existingNumber" name="existingNumber"
+                  (keyup)="findParent()" required type="text" placeholder="Enter mobile no.">
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-phone"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!IsExistingParent" id="parent-dv">
+            <div>
+              <div class="form-row">
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Fatherfullname" name="Fatherfullname"
+                    placeholder="Father full name" title="Father full name">
+                  <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group col ibox">
+                  <input type="email" class="form-control" id="Fatheremailid" name="Fatheremailid"
+                    placeholder="Father email id" title="Father email id">
+                  <i class="fa fa-envelope"></i>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Fathermobileno" name="Fathermobileno"
+                    placeholder="Father no." title="Father mobile no">
+                  <i class="fa fa-phone"></i>
+                </div>
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Fatheroccupation" name="Fatheroccupation"
+                    placeholder="Father occupation" title="Father occupation">
+                  <div class="selection-dd d-none" name="selection-dd">
+                  </div>
+                  <i class="fa fa-desktop"></i>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Fatherqualification" name="Fatherqualification"
+                    placeholder="Father qualification" title="Father qualification">
+                  <div class="selection-dd d-none" name="selection-dd">
+
+                  </div>
+                  <i class="fa fa-desktop"></i>
+                </div>
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Motherfullname" name="Motherfullname"
+                    placeholder="Mother full name" title="Mother full name">
+                  <i class="fa fa-user"></i>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Motheremailid" name="Motheremailid"
+                    placeholder="Mother email id" title="Mother email id">
+                  <i class="fa fa-envelope"></i>
+                </div>
+                <div class="form-group col ibox">
+                  <input type="text" class="form-control" id="Mothermobileno" name="Mothermobileno"
+                    placeholder="Mother no." title="Mother mobile no">
+                  <i class="fa fa-phone"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- end of user-activity-graph -->
+        </div>
+      </div>
+
+      <div class="col-12 mt-4">
+        <div class="x_title bg-muted">
+          <h5>Local guardian detail</h5>
+        </div>
+        <div class="form-row mt-4">
+          <div class="form-group col ibox">
+            <input type="text" class="form-control" id="Guradinfullname" name="Guradinfullname" placeholder="Full name"
+              title="Local Guardian full name">
+            <i class="fa fa-user"></i>
+          </div>
+          <div class="form-group col ibox">
+            <input type="text" class="form-control" id="Gurdainemailid" name="Gurdainemailid" placeholder="Email id"
+              title="Local Guardian email id">
+            <i class="fa fa-envelope"></i>
+          </div>
+          <div class="form-group col ibox">
+            <input type="text" class="form-control" id="Gurdainnumber" name="Gurdainnumber" placeholder="Mobile number"
+              title="Local Guardian mobil no">
+            <i class="fa fa-phone"></i>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

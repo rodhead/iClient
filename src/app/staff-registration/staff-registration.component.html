@@ -1,0 +1,382 @@
+<div class="col-md-12 col-sm-12 col-xs-12">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>New Registration <small>Faculty, Members and Staff's</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <form class="x_content" [formGroup]="StaffRegForm" (submit)="RegisterNow()"
+      (keydown.enter)="$event.preventDefault()">
+      <div class="modal fade">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal Alert</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="facultyModalMsg">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                ng-click="redirectOperation()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Wizard -->
+      <p>This is a basic form wizard example that inherits the colors from the selected scheme.</p>
+      <input type="hidden" id="steps-reminder" value="step-1" />
+
+      <div id="wizard" class="form_wizard">
+        <div id="step-1" name="form-steps">
+          <div class="form-horizontal form-label-left single-line-form">
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                First Name <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="FirstName" formControlName="FirstName" class="form-control">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                Last Name
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" name="LastName" required formControlName="LastName" class="form-control">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div id="gender" class="btn-group">
+                  <p class="para-gender">
+                    Male:
+                    <input type="radio" class="rdo icheckbox_flat-green" style="margin: 0px;" name="gender" id="genderM"
+                      value="male" checked="checked" />
+
+                    Female:
+                    <input type="radio" class="rdo icheckbox_flat-green" style="margin: 0px;" name="gender" id="genderF"
+                      value="female" />
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Date Of Birth <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="form-group d-md-flex">
+                  <div class='input-group date' id='myDatepicker'>
+                    <input id="Dob" name="Dob" class="date-picker form-control" formControlName="Dob" required
+                      type="text">
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <div class="col-md-10 col-sm-10 col-xs-12 d-md-flex">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" style="margin-left: 36px;">
+                  Class
+                </label>
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <select class="form-control" id="Class" name="Class">
+                    <option value="">Choose Class</option>
+                  </select>
+                </div>
+                <label class="control-label col-md-1 col-sm-1 col-xs-12" style="margin-left: 26px;">Section</label>
+                <div class="col-md-2 col-sm-2 col-xs-12">
+                  <select class="form-control" id="section" disabled name="section">
+                    <option value="">Section</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-group d-md-flex" style="margin: 0px;">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Admin</label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <div id="isadmin" class="btn-group">
+                  <p class="para-gender" style="display: inline-block;">
+                    Yes:
+                    <input type="radio" class="rdo icheckbox_flat-green" style="margin: 0px;" name="isadminY"
+                      id="isadminY" value="yes" />
+
+                    No:
+                    <input type="radio" class="rdo icheckbox_flat-green" style="margin: 0px;" name="isadminN"
+                      id="isadminN" value="no" checked="checked" />
+                  </p>
+                  <span id="spnadmin">This option grant user limited access only.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="step-2" name="form-steps">
+          <div class="form-horizontal form-label-left">
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="mobile">
+                Mobile no. <span class="required">*</span>
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" for="phone" class="form-control" id="MobileNumber" name="MobileNumber"
+                  formControlName="MobileNumber" required="required">
+                <i class="fa fa-user form-control-feedback right"></i>
+              </div>
+              <span style="color: red;margin-top:8px;">Only numbers are allowed</span>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="alternet">
+                Alternet no.
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="AlternetNumber" name="AlternetNumber" formControlName="AlternetNumber"
+                  class="form-control">
+              </div>
+              <span style="color: red;margin-top:8px;">Only numbers are allowed</span>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                Email Id
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input id="Email" class="form-control" formControlName="Email" required="required" type="text"
+                  name="Email">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">
+                Full address
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <textarea id="Address" rows="3" class="form-control" required="required" formControlName="Address"
+                  name="Address" type="text" style="resize: none;"></textarea>
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">
+                State
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <select id="State" class="form-control" type="select" formControlName="State" ng-change="EnableState()"
+                  name="State">
+                  <option selected="selected" value="">Select state</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="West Bangal">West Bangal</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="UP">UP</option>
+                  <option value="Odisha">Odisha</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="city" class="control-label col-md-3 col-sm-3 col-xs-12">
+                City
+              </label>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <select id="City" class="form-control" formControlName="City" type="select" name="City">
+                  <option selected="selected" value="">Select city</option>
+                  <option value="Bihar">Bihar</option>
+                  <option value="West Bangal">West Bangal</option>
+                  <option value="Jharkhand">Jharkhand</option>
+                  <option value="UP">UP</option>
+                  <option value="Odisha">Odisha</option>
+                </select>
+              </div>
+              <label for="middle-name" class="control-label col-md-1 col-sm-3 col-xs-12">Pincode</label>
+              <div class="col-md-2 col-sm-6 col-xs-12">
+                <input id="Pincode" class="form-control" type="number" formControlName="Pincode" maxlength="6"
+                  name="Pincode">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="step-3" name="form-steps">
+          <div class="x_title">
+            <h2>Contact information <small>Faculty personal and their contact information will be filled up
+                here.</small></h2>
+            <div class="clearfix"></div>
+          </div>
+          <div class="form-horizontal form-label-left">
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+                College / University
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="University" name="University" formControlName="University"
+                  class="form-control col-xs-12">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="degree">
+                Degree
+              </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" id="DegreeName" name="DegreeName" formControlName="DegreeName" class="form-control">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="Grade" class="control-label col-md-3 col-sm-3 col-xs-12">
+                Grade
+              </label>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <input id="Grade" class="form-control" formControlName="Grade" type="text" name="Grade">
+              </div>
+              <label for="Marks" class="control-label col-md-1 col-sm-3 col-xs-12">
+                Marks
+              </label>
+              <div class="col-md-2 col-sm-6 col-xs-12">
+                <input id="Marks" class="form-control" formControlName="Marks" type="number" name="Marks">
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="ExprienceInYear" class="control-label col-md-3 col-sm-3 col-xs-12">
+                Exprience in year
+              </label>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <select id="ExprienceInYear" class="form-control" type="select" formControlName="ExprienceInYear"
+                  name="ExprienceInYear">
+                  <option selected="selected" value="">Select Year</option>
+                  <option value="1">1 Year</option>
+                  <option value="2">2 Year</option>
+                  <option value="3">3 Year</option>
+                  <option value="4">4 Year</option>
+                  <option value="5">5 Year</option>
+                  <option value="6">6 Year</option>
+                  <option value="7">7 Year</option>
+                  <option value="8">8 Year</option>
+                  <option value="9">9 Year</option>
+                  <option value="10">10 Year</option>
+                </select>
+              </div>
+              <label for="ExperienceInMonth" class="control-label col-md-1 col-sm-3 col-xs-12">
+                Month
+              </label>
+              <div class="col-md-2 col-sm-6 col-xs-12">
+                <select id="ExperienceInMonth" class="form-control" type="select" formControlName="ExperienceInMonth"
+                  name="ExperienceInMonth">
+                  <option selected="selected" value="">Select Month</option>
+                  <option value="1">1 Month</option>
+                  <option value="2">2 Month</option>
+                  <option value="3">3 Month</option>
+                  <option value="4">4 Month</option>
+                  <option value="5">5 Month</option>
+                  <option value="6">6 Month</option>
+                  <option value="7">7 Month</option>
+                  <option value="8">8 Month</option>
+                  <option value="9">9 Month</option>
+                  <option value="10">10 Month</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group d-md-flex">
+              <label for="ExprienceInYear" class="control-label col-md-3 col-sm-3 col-xs-12">
+                Specialist in subject(s) <span class="required">*</span>
+              </label>
+              <div class="col-md-3 col-sm-6 col-xs-12">
+                <select id="subjects" name="subjects" class="form-control">
+                  <option value="">Select Subject</option>
+                </select>
+              </div>
+              <label for="ExperienceInMonth" class="control-label col-md-1 col-sm-3 col-xs-12">
+                Type
+              </label>
+              <div class="col-md-2 col-sm-6 col-xs-12">
+                <select id="type" class="form-control" type="select" formControlName="Type" name="type">
+                  <option selected="selected" value="">Select Type</option>
+                  <option value="PGT">PGT</option>
+                  <option value="TGT">TGT</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="modal fade" id="imageviewer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <input type="hidden" name="operationtype" id="operationtype" />
+                    <h5 class="modal-title inlineblock" id="exampleModalLabel">Registration Image Viewer</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="change-icon">
+                    <input type="file" id="singlefile" style="display: none;" />
+                    <a style="width: 75%;" name="update">
+                      <span>Click here to change this image</span>
+                    </a>
+                    <a href="javascript:void(0)" style="margin-right: 12px;">
+                      <span>Delete</span>
+                      <i class="fa fa-remove"></i>
+                    </a>
+                    <a href="javascript:void(0)" name="add">
+                      <span>Add new</span>
+                      <i class="fa fa-plus"></i>
+                    </a>
+                  </div>
+                  <div class="modal-body imageviewer-body" style="padding-top: 0px;" id="imageviewer-body">
+                    <div class="main-content-body">
+                      <img class="img-responsive avatar-view" alt="Avatar" id="viewdoc" title="Change the avatar"
+                        style="width: 100%;height: 400px;">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <div style="display:flex">
+                      <div style="width: 70%;text-align: left;">
+                        <ul class="pagination page-ul" id="imageview-pagination">
+                          <li class="paginate_button" ng-repeat="img in docimages">
+                            <a name="" ng-class="{'active-page':$first}"></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div style="width: 30%">
+                        <button type="button" id="btnregCancel" class="btn btn-secondary"
+                          data-dismiss="modal">Close</button>
+                        <button type="button" id="btnChangeImage" class="btn btn-primary" style="pointer-events: none;"
+                          disabled data-dismiss="modal">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group d-md-flex">
+              <label for="ExprienceInYear" class="control-label col-md-3 col-sm-3 col-xs-12">
+                Specialist in subject(s) <span class="required">*</span>
+              </label>
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <div class="view-item-dv">
+                  <input type="file" value="" name="documentUrl" multiple id="documentUrl"
+                    onchange="angular.element(this).scope().CheckFileType()" style="display: none;" />
+                  <div>
+                    <a href="javascript:void(0)" id="docfiles" class="dn point-active" ng-click="ShowDocumentPopup()"
+                      style="text-decoration: none;">
+                      <span class="display-files"></span>
+                    </a>
+                    <a href="javascript:void(0)" id="docfileDesc">
+                      <span></span>
+                    </a>
+                    <a href="javascript:void(0)" style="width: 36px">
+                      <i class="fa fa-paperclip" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-toolbar">
+        <button class="btn btn-success mr-1">Cancel</button>
+        <button class="btn btn-outline-info mr-1">Submit</button>
+      </div>
+    </form>
+  </div>
