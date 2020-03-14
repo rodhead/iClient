@@ -466,7 +466,7 @@ export class IautocompleteComponent implements OnInit {
           $(this.suggestionsContainer).scrollTop(
             b - this.options.maxHeight + 32
           ),
-      this.el.val(this.getValue(this.BindingData[a].value)));
+      this.el.val(this.getValue(this.BindingData[a].text)));
   }
 
   onValueSelect(a) {

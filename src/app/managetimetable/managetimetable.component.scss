@@ -1,0 +1,75 @@
+.setting {
+  label {
+    text-align: right;
+    position: relative;
+  }
+
+  .form-group {
+    border-bottom: 1px solid #d9d9d9;
+  }
+
+  .lbl {
+    position: absolute;
+    bottom: 35px;
+    right: 10px;
+  }
+
+  .desc {
+    border-bottom: 2px solid green;
+    position: relative;
+  }
+
+  .desc>span {
+    position: absolute;
+    bottom: 0px;
+  }
+
+  .dd-dv {
+    height: 4rem;
+  }
+}
+
+.action {
+  position: relative;
+
+  input {
+    padding-left: 35px;
+  }
+
+  .action i {
+    top: -1px;
+    position: relative;
+  }
+
+  .left {
+    position: absolute;
+    width: 22px;
+    font-size: 16px;
+    left: 5px;
+    zoom: 1.5;
+    text-align: center;
+    border-right: 1px solid #d9d9d9;
+  }
+
+  .right {
+    position: absolute;
+    width: 22px;
+    font-size: 16px;
+    right: 5px;
+    top: 8px;
+    zoom: 1.5;
+    text-align: center;
+    padding-right: 2px;
+    border-left: 1px solid #d9d9d9;
+  }
+}
+
+.sm-h {
+  height: 35px;
+}
+
+.colon {
+  font-weight: bold;
+  position: relative;
+  top: 8px;
+}

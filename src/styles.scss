@@ -27,10 +27,21 @@ button {
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none !important;
+  border-width: .5px !important;
 }
 
 .btn-s {
   height: 34px !important;
+}
+
+.btn {
+  margin-bottom: 0 !important;
+  font-size: 14px !important;
+}
+
+.fa,
+.fas {
+  font-size: 12px;
 }
 
 .form-control {
@@ -200,4 +211,78 @@ h2 {
 .a-icon {
   text-decoration: none !important;
   color: #444 !important;
+}
+
+::placeholder {
+  color: #ccc4c4 !important;
+  font-weight: 100;
+  opacity: 1;
+  /* Firefox */
+}
+
+.bg {
+  background: #f7f7f7;
+}
+
+/*-------------------------------  popup -----------------------------*/
+.ipopup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(31, 11, 11, 0.46);
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 9999999;
+  border: none !important;
+
+  &__content {
+    width: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 10px 12px;
+    background-color: white;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    animation: bubbleup-popup .2s ease-in-out;
+  }
+
+  &__header {
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: 400;
+    padding-left: 14px;
+  }
+
+  &__body {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    padding: 18px;
+    margin: 14px;
+  }
+
+  table {
+    border-top: 1px solid #d9d9d9;
+    width: 100%;
+  }
+
+  .tfoot {
+    border-top: 1px solid #d9d9d9;
+    text-align: right;
+    height: 25px;
+  }
+}
+
+@keyframes bubbleup-popup {
+  0% {
+    opacity: 0;
+    width: 50%;
+  }
+
+  100% {
+    opacity: 1;
+    width: 60%;
+  }
 }

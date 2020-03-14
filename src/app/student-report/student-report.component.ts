@@ -1,3 +1,5 @@
+import { StudentRegistration } from "./../../providers/constants";
+import { iNavigation } from "./../../providers/iNavigation";
 import { AjaxService } from "./../../providers/ajax.service";
 import { Component, OnInit } from "@angular/core";
 import { ITable } from "./../../providers/Generic/Interface/ITable";
@@ -23,13 +25,29 @@ export class StudentReportComponent implements OnInit {
   SearchQuery: SearchModal;
   constructor(
     private http: AjaxService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private nav: iNavigation
   ) {}
 
   ngOnInit() {
     this.InitQuery();
     this.LoadData();
   }
+
+  OnEdit(Data: string) {
+    let EditData = JSON.parse(Data);
+    if (IsValidType(EditData)) {
+      this.nav.navigate(StudentRegistration, Data);
+    } else {
+      this.commonService.ShowToast("Invalid user. Please contact to admin.");
+    }
+  }
+
+  OnDelete(Data: string) {}
+
+  NextPage(Data: string) {}
+
+  PreviousPage(Data: string) {}
 
   InitQuery() {
     this.SearchQuery = {

@@ -22,6 +22,12 @@ export const DefaultUserImage = "assets/defaultuser.jpg";
 export const StudentReports = "studentsreport";
 export const FacultyReports = "facultiesreport";
 export const StaffReports = "staffreport";
+export const ManageTimetable = "managetimetable";
+export const ManageUser = "manageuser";
+export const Roles = "roles";
+export const ZerothIndex = 0;
+export const ServerError = "Server error occured. Please contact to admin.";
+export const InvalidData = "Invalid data received. Please contact to admin.";
 
 export const PurchaseColumn: Array<IColumns> = [
   { column: "Name", header: "Product", width: 10 },

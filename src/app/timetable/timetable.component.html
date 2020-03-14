@@ -1,3 +1,128 @@
-<p>
-  timetable works!
-</p>
+<div class="col-md-12 col-sm-12 icard">
+
+  <div *ngIf="EnablePopup" class="ipopup">
+    <div class="ipopup__content pb-0">
+      <div class="ipopup__header">
+        <header>Assign Subject For Timetable</header>
+      </div>
+      <hr />
+      <form class="pt-2" (keydown.enter)="$event.preventDefault()">
+        <div class="mt-2">
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3">
+              <span>Class:</span>
+            </div>
+            <div class="col-md-9">
+              <select class="form-control" (change)="EnableSection()" id="Class" name="Class">
+                <option value="">Choose Class</option>
+                <option *ngFor="let item of Classes" [value]="item">{{item}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3">
+              <span>Section:</span>
+            </div>
+            <div class="col-md-9">
+              <select class="form-control" [disabled]="IsEnableSection" id="ClassDetailUid" name="ClassDetailUid">
+                <option value="">Section</option>
+                <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3">
+              <span>Subject:</span>
+            </div>
+            <div class="col-md-9">
+              <select class="form-control">
+                <option value="">Select Supervisor</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-12 form-group row">
+            <div class="col-md-3">
+              <span>Faculty:</span>
+            </div>
+            <div class="col-md-9">
+              <select class="form-control">
+                <option value="">Select Supervisor</option>
+              </select>
+            </div>
+          </div>
+          <div class="border-top">
+            <div class="form-group d-flex mt-3 col-md-4">
+              <button class="btn btn-outline-dark btn-sm form-control mr-2" (click)="Close()">Close</button>
+              <button class="btn btn-primary btn-sm form-control">Save</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Class Timetable <small>Classwise timetable.</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <div class="modal fade" id="facultyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal Alert</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="facultyModalMsg">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                ng-click="redirectOperation()">Ok</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Smart Wizard -->
+      <p>Use this page for only teaching & non-teaching staff registration. It will take all necessary information.
+      </p>
+      <div class="col-12 p-0" *ngIf="IsReady">
+        <div class="col-12 p-0 d-flex m-0 table">
+          <div class="w-100 cell">
+            Day's
+          </div>
+          <div class="w-100 cell" *ngFor="let time of TimingDetail" [ngClass]="{'small-line': time.TimingFor === 'R'}">
+            {{time.TimingFor}}
+          </div>
+        </div>
+        <div class="col-12 p-0 d-flex body" *ngFor="let table of WeekDaysName">
+          <div class="w-100 cell">
+            {{table.Name}}
+          </div>
+          <div class="w-100 cell" *ngFor="let time of TimingDetail;let index = index;"
+            [ngClass]="{'small-line': index === LunchAfterPeriod}">
+            <div *ngIf="index === LunchAfterPeriod">
+              L
+            </div>
+            <div *ngIf="index !== LunchAfterPeriod">
+              <a class="action" (click)="OpenSubjectSelection()">
+                <i class="far fa-edit"></i>
+              </a>
+              <div class="content">
+                No Sub
+                <div class="small">
+                  <blockquote>Not alloted.</blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

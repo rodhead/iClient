@@ -49,7 +49,7 @@
               <div class="sidebar-submenu" name="submenues">
                 <ul>
                   <li type="action" *ngFor="let record of subcatagory.SubCatagory; index as innerIndex;">
-                    <a name="/{{record.Link}}" type="link" [routerLink]="['/' + record.Link]">
+                    <a (click)="CleanUpCache()" name="/{{record.Link}}" type="link" [routerLink]="['/' + record.Link]">
                       <i class="{{record.Icon}}"></i>
                       <span>{{record.Catagory}}</span>
                     </a>

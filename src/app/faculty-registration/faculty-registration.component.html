@@ -1,5 +1,6 @@
 <div class="col-md-12 col-sm-12 icard">
-  <form [formGroup]="FacultyForm" method="post" (submit)="RegisterFaculty()" (keydown.enter)="$event.preventDefault()">
+  <form [formGroup]="FacultyForm" method="post" (submit)="RegisterFaculty()" *ngIf="IsReady"
+    (keydown.enter)="$event.preventDefault()">
     <div class="x_panel">
       <div class="x_title">
         <h2>{{Title}} <small>{{TitleDetail}}</small></h2>
@@ -82,7 +83,7 @@
 
                   <div class="input-group">
                     <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" formControlName="Dob"
-                      ngbDatepicker #d="ngbDatepicker">
+                      ngbDatepicker #d="ngbDatepicker" [(ngModel)]="dateModel">
                     <div class="input-group-append">
                       <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
                         <i class="far fa-calendar-alt"></i>
@@ -106,7 +107,8 @@
                     </div>
                     <label class="col-sm-3 col-form-label">Section</label>
                     <div class="col-md-5">
-                      <select class="form-control" disabled formControlName="Section" id="section" name="section">
+                      <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailId"
+                        id="section" name="ClassDetailId">
                         <option value="">Section</option>
                         <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
                       </select>
@@ -228,8 +230,8 @@
                 University
               </label>
               <div class="col-sm-8">
-                <input type="text" id="SchoolUniversityName" formControlName="University" name="University"
-                  id="University" placeholder="University/School Name" class="form-control">
+                <input type="text" formControlName="SchoolUniversityName" name="SchoolUniversityName"
+                  id="SchoolUniversityName" placeholder="University/School Name" class="form-control">
               </div>
             </div>
             <div class="form-group row">
@@ -255,7 +257,7 @@
                 Marks
               </label>
               <div class="col-sm-8">
-                <input id="MarksObtain" class="form-control" formControlName="Marks" name="MarksObtain"
+                <input id="MarksObtain" class="form-control" formControlName="MarksObtain" name="MarksObtain"
                   placeholder="Marks in % (if any)">
               </div>
             </div>
@@ -322,6 +324,76 @@
                 </select>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 
+    <div class="col-md-12 p-0 d-none upload-document" id="document-dv">
+      <div class="upload-document-dv">
+        <div class="card night-bg">
+          <div class="card-header">
+            Header
+          </div>
+          <div class="card-body upload-body row">
+            <ng-container *ngFor="let img of DocumentImages">
+              <div class="img-dv">
+                <div class="">
+                  <img [src]="img" alt="Document Image" class="doc-img">
+                </div>
+                <div class="col-12 mt-2 text-dark">
+                  <a class="del-anc">
+                    <i class="fas fa-trash-alt pr-1"></i>
+                    Delete
+                  </a>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="card-footer">
+            <div class="col-md-12">
+              <button class="btn btn-light mr-2" (click)="CloseUploadDoc()">
+                <i class="fas fa-times-circle"></i>
+                Close
+              </button>
+
+              <button class="btn btn-warning" (click)="OpenBrowseOptions()">
+                <i class="fas fa-upload"></i>
+                Browse
+              </button>
+              <input class="d-none" type="file" multiple (change)="GetDocumentFile($event)" id="document-btn">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    <div class="col-md-12 p-0">
+      <div class="x_panel pb-0">
+        <div class="x_title position-relative">
+          <h2 class="StepTitle">Document proof<small>Upload candidate proof of documents.</small></h2>
+          <a class="upload-btn" (click)="OpenBrowseOptions()">
+            <i class="fas fa-plus-circle"></i>
+            Upload Doc
+          </a>
+          <input class="d-none" type="file" multiple (change)="GetDocumentFile($event)" id="document-btn">
+          <div class="clearfix"></div>
+        </div>
+        <div class="section-card">
+          <div class="form-group row">
+            <ng-container *ngFor="let img of DocumentImageObjects">
+              <div class="img-dv">
+                <div class="">
+                  <img [src]="img.FilePath" alt="Document Image" class="doc-img">
+                </div>
+                <div class="col-12 mt-2 text-dark">
+                  <a class="del-anc" [attr.fileOn]="img.FileOn" [attr.uid]="img.FileUid">
+                    <i class="fas fa-trash-alt pr-1"></i>
+                    Delete
+                  </a>
+                </div>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

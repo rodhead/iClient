@@ -55,7 +55,7 @@ export class StaffRegistrationComponent implements OnInit {
   }
 }
 
-interface StaffRegModal {
+export interface StaffRegModal {
   FirstName: string;
   LastName: string;
   Gender: boolean;

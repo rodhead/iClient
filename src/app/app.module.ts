@@ -37,6 +37,9 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { IautocompleteComponent } from "./iautocomplete/iautocomplete.component";
 import { DynamicGridComponent } from './dynamic-grid/dynamic-grid.component';
 import { PageBreadCrumComponent } from './page-bread-crum/page-bread-crum.component';
+import { ManagetimetableComponent } from './managetimetable/managetimetable.component';
+import { ManageuserComponent } from './manageuser/manageuser.component';
+import { RolesComponent } from './roles/roles.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,10 @@ import { PageBreadCrumComponent } from './page-bread-crum/page-bread-crum.compon
     NumberDirective,
     IautocompleteComponent,
     DynamicGridComponent,
-    PageBreadCrumComponent
+    PageBreadCrumComponent,
+    ManagetimetableComponent,
+    ManageuserComponent,
+    RolesComponent
   ],
   imports: [
     BrowserModule,

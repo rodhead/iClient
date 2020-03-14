@@ -4,17 +4,20 @@ import { FormControl } from "@angular/forms";
 import {
   DefaultUserImage,
   FacultyRegistration,
-  StaffMemberRegistration
+  StaffMemberRegistration,
+  ZerothIndex
 } from "src/providers/constants";
 import * as $ from "jquery";
 import {
   CommonService,
-  IsValidType
+  IsValidType,
+  ActualOrDefault
 } from "src/providers/common-service/common.service";
 import { ApplicationStorage } from "./../../providers/ApplicationStorage";
 import { AjaxService } from "src/providers/ajax.service";
 import { ClassDetail } from "../app.component";
 import { NgbDateStruct, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
+import { iNavigation } from "src/providers/iNavigation";
 
 @Component({
   selector: "app-faculty-registration",
@@ -24,6 +27,9 @@ import { NgbDateStruct, NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
 export class FacultyRegistrationComponent implements OnInit {
   UserData: any = {};
   steps: any = {};
+  FacultyDocumentImages: Array<any> = [];
+  DocumentImages: Array<any> = [];
+  DocumentImageObjects: Array<any> = [];
   FacultyImageType: any;
   FacultyForm: FormGroup;
   FacultyImage: any;
@@ -38,21 +44,144 @@ export class FacultyRegistrationComponent implements OnInit {
   date: { year: number; month: number };
   ExprienceInYear: Array<any> = [];
   SubjectDetail: any;
+  IsReady: boolean = false;
+  IsEnableSection: boolean = true;
+  ImagePath: string = "";
   constructor(
     private fb: FormBuilder,
     private commonService: CommonService,
     private storage: ApplicationStorage,
     private http: AjaxService,
-    private calendar: NgbCalendar
+    private calendar: NgbCalendar,
+    private nav: iNavigation
   ) {
+    this.ImagePath = `${this.http.GetImageBasePath()}Faculties`;
     this.MangePageInformation();
     this.ClassDetail = this.storage.GetClassDetail();
     this.InitPage();
     this.FacultyImage = DefaultUserImage;
   }
 
-  selectToday() {
-    this.dateModel = this.calendar.getToday();
+  ngOnInit() {
+    let Data = this.nav.getValue();
+    let EditData = JSON.parse(Data);
+    if (IsValidType(EditData) && IsValidType(EditData["StaffMemberUid"])) {
+      this.http
+        .get(`Registration/GetStaffMemberByUid?Uid=${EditData.StaffMemberUid}`)
+        .then(result => {
+          if (IsValidType(result.ResponseBody)) {
+            let Tables = JSON.parse(result.ResponseBody);
+            if (IsValidType(Tables["Table"])) {
+              let ResponseStudentData = Tables["Table"];
+              if (IsValidType(ResponseStudentData)) {
+                this.BindData(ResponseStudentData[ZerothIndex]);
+              } else {
+                this.commonService.ShowToast(
+                  "Invalid response. Please contact to admin."
+                );
+              }
+            }
+
+            if (IsValidType(Tables["Table1"])) {
+              this.BuildImagesArray(Tables["Table1"]);
+            }
+          } else {
+            this.commonService.ShowToast(
+              "Invalid response. Please contact to admin."
+            );
+          }
+          this.IsReady = true;
+        })
+        .catch(err => {
+          this.commonService.ShowToast(
+            "Server error. Please contact to admin."
+          );
+          this.IsReady = true;
+        });
+    } else {
+      this.InitPage();
+      this.IsReady = true;
+    }
+  }
+
+  BuildImagesArray(DocImages: any) {
+    if (IsValidType(DocImages)) {
+      let index = 0;
+      while (index < DocImages.length) {
+        this.DocumentImageObjects.push({
+          FileUid: DocImages[index].FileUid,
+          FileOn: "local",
+          FilePath: `${this.http.GetImageBasePath()}${
+            DocImages[index].FilePath
+          }/${DocImages[index].FileName}`
+        });
+        index++;
+      }
+    }
+  }
+
+  BindData(FacultyData: any) {
+    let facultyModal = new FacultyModal();
+    FacultyData = ActualOrDefault(FacultyData, facultyModal);
+    this.FacultyImage =
+      this.ImagePath +
+      "/" +
+      FacultyData.MobileNumber +
+      "/" +
+      FacultyData.ImageUrl;
+    if (IsValidType(FacultyData)) {
+      this.selectDate(FacultyData.Dob);
+      this.FacultyForm = this.fb.group({
+        StaffMemberUid: new FormControl(FacultyData.StaffMemberUid),
+        SchooltenentId: new FormControl(FacultyData.StaffMemberUid),
+        ClassTeacherForClass: new FormControl(FacultyData.ClassTeacherForClass),
+        FirstName: new FormControl(FacultyData.FirstName),
+        LastName: new FormControl(FacultyData.LastName),
+        Gender: new FormControl(FacultyData.Gender),
+        Dob: new FormControl(FacultyData.Dob),
+        Doj: new FormControl(FacultyData.Doj),
+        MobileNumber: new FormControl(FacultyData.MobileNumber),
+        AlternetNumber: new FormControl(FacultyData.AlternetNumber),
+        Designation: new FormControl("Faculty"),
+        ImageUrl: new FormControl(FacultyData.ImageUrl),
+        Email: new FormControl(FacultyData.Email),
+        Address: new FormControl(FacultyData.Address),
+        City: new FormControl(FacultyData.City),
+        State: new FormControl(FacultyData.State),
+        Pincode: new FormControl(FacultyData.Pincode),
+        Subjects: new FormControl(FacultyData.Subjects),
+        Type: new FormControl(FacultyData.Type),
+        QualificationId: new FormControl(FacultyData.QualificationId),
+        DesignationId: new FormControl(FacultyData.DesignationId),
+        Class: new FormControl(FacultyData.Class),
+        Section: new FormControl(FacultyData.Section),
+        ClassDetailId: new FormControl(FacultyData.ClassDetailId),
+        DegreeName: new FormControl(FacultyData.DegreeName),
+        Grade: new FormControl(FacultyData.Grade),
+        Position: new FormControl(FacultyData.Position),
+        MarksObtain: new FormControl(FacultyData.MarksObtain),
+        SchoolUniversityName: new FormControl(FacultyData.SchoolUniversityName),
+        ProofOfDocumentationPath: new FormControl(
+          FacultyData.ProofOfDocumentationPath
+        ),
+        ExprienceInYear: new FormControl(FacultyData.ExprienceInYear),
+        ExperienceInMonth: new FormControl(FacultyData.ExperienceInMonth),
+        Title: new FormControl(FacultyData.Title)
+      });
+    }
+    this.BindSections(FacultyData.Class);
+  }
+
+  selectDate(passedDate: string) {
+    if (IsValidType(passedDate)) {
+      let date = new Date(passedDate);
+      let selectedDate: NgbDateStruct = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDay()
+      };
+      this.dateModel = selectedDate;
+    }
   }
 
   MangePageInformation() {
@@ -78,13 +207,17 @@ export class FacultyRegistrationComponent implements OnInit {
   }
 
   InitPage() {
-    this.SubjectDetail = [
-      {
-        value: "alsdghalsgh",
-        text: "English"
-      }
-    ];
-
+    this.SubjectDetail = [];
+    let Subjects = this.storage.get(null, "Subject");
+    if (IsValidType(Subjects)) {
+      Subjects.map(item => {
+        this.SubjectDetail.push({
+          value: item.SubjectId,
+          text: item.subjectName
+        });
+      });
+      this.SubjectDetail;
+    }
     this.Classes = this.storage.GetClasses();
     this.FacultyForm = this.fb.group({
       FacultyUid: new FormControl("", Validators.required),
@@ -115,7 +248,9 @@ export class FacultyRegistrationComponent implements OnInit {
       Marks: new FormControl(0, Validators.required),
       ExprienceInYear: new FormControl("0", Validators.required),
       ExperienceInMonth: new FormControl("0", Validators.required),
-      QualificationId: new FormControl("", Validators.required)
+      QualificationId: new FormControl("", Validators.required),
+      Title: new FormControl(""),
+      SchoolUniversityName: new FormControl("")
     });
 
     this.ScrollTop();
@@ -137,8 +272,8 @@ export class FacultyRegistrationComponent implements OnInit {
     let ErrorFields = [];
     try {
       if (this.IsFaculty) {
-        if (IsValidType(this.FacultyForm.get("Section").value)) {
-          let Uid = this.FacultyForm.get("Section").value;
+        if (IsValidType(this.FacultyForm.get("ClassDetailId").value)) {
+          let Uid = this.FacultyForm.get("ClassDetailId").value;
           let CutClassDetail: Array<ClassDetail> = this.ClassDetail.filter(
             x => x.ClassDetailId === Uid
           );
@@ -236,22 +371,34 @@ export class FacultyRegistrationComponent implements OnInit {
         });
       } else {
         let formData = new FormData();
-        formData.append("image", this.FacultyImageType);
+        formData.append("profile", this.FacultyImageType);
+        if (this.FacultyDocumentImages.length > 0) {
+          let index = 0;
+          while (index < this.FacultyDocumentImages.length) {
+            formData.append(
+              "image_" + index,
+              this.FacultyDocumentImages[index]
+            );
+            index++;
+          }
+        }
         let FacultyObject = this.FacultyForm.value;
         formData.append("facultObject", JSON.stringify(FacultyObject));
 
         this.http.upload("Registration/Faculty", formData).then(
           response => {
-            if (
-              this.commonService.IsValidResponse(response) &&
-              response.ResponseBody === "Registration done successfully"
-            ) {
-              this.commonService.ShowToast("Registration done successfully.");
-              this.InitPage();
-              let Data = response.content.data;
-              if (Data != null && Data != "") {
-                this.commonService.ShowToast("Data retrieve successfully.");
+            if (this.commonService.IsValidResponse(response)) {
+              if (response.ResponseBody === "Record updated successfully") {
+                this.commonService.ShowToast("Record updated successfully");
+                this.ScrollTop();
+              } else if (
+                response.ResponseBody === "Registration done successfully"
+              ) {
+                this.InitPage();
+                //let Data = response.content.data;
+                this.commonService.ShowToast("Registration done successfully");
               } else {
+                this.commonService.ShowToast("Unable to save data.");
               }
             } else {
               this.commonService.ShowToast("Unable to save data.");
@@ -277,6 +424,10 @@ export class FacultyRegistrationComponent implements OnInit {
     let Files = fileInput.target.files;
     if (Files.length > 0) {
       this.FacultyImageType = <File>Files[0];
+      let extension = this.FacultyImageType.name.substr(
+        this.FacultyImageType.name.lastIndexOf(".") + 1
+      );
+      this.FacultyForm.controls["ImageUrl"].setValue("profile." + extension);
       let mimeType = this.FacultyImageType.type;
       if (mimeType.match(/image\/*/) == null) {
         console.log("Only images are supported.");
@@ -298,19 +449,109 @@ export class FacultyRegistrationComponent implements OnInit {
     event.preventDefault();
   }
 
-  ngOnInit() {}
-
   EnableSection() {
     this.Sections = [];
     let Class = $(event.currentTarget).val();
     if (IsValidType(Class)) {
-      $("#section").removeAttr("disabled");
-      this.Sections = this.ClassDetail.filter(x => x.Class === Class);
-      if (this.Sections.length === 0) {
-        this.commonService.ShowToast("Unable to load class detail.");
-      }
+      this.BindSections(Class);
     } else {
       document.getElementById("section").setAttribute("disabled", "disabled");
     }
   }
+
+  BindSections(Class) {
+    this.IsEnableSection = false;
+    if (IsValidType(Class)) {
+      this.Sections = this.ClassDetail.filter(x => x.Class === Class);
+      if (this.Sections.length === 0) {
+        this.commonService.ShowToast("Unable to load class detail.");
+      }
+    }
+  }
+
+  GetDocumentFile(fileInput: any) {
+    this.DocumentImages = [];
+    this.FacultyDocumentImages = [];
+    let Files = fileInput.target.files;
+    if (Files.length > 0) {
+      let index = 0;
+      let file = null;
+      while (index < Files.length) {
+        file = <File>Files[index];
+        this.FacultyDocumentImages.push(file);
+        let mimeType = file.type;
+        if (mimeType.match(/image\/*/) == null) {
+          this.commonService.ShowToast(
+            "One or more file is not an image file."
+          );
+          index++;
+          continue;
+        }
+
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = fileEvent => {
+          this.DocumentImages.push(reader.result);
+          this.DocumentImageObjects.push({
+            FileUid: index,
+            FileOn: "server",
+            FilePath: reader.result
+          });
+        };
+        index++;
+      }
+    } else {
+      this.commonService.ShowToast("No file selected");
+    }
+  }
+
+  // UploadDocuments() {
+  //   $("#document-dv").removeClass("d-none");
+  // }
+
+  // CloseUploadDoc() {
+  //   event.preventDefault();
+  //   $("#document-dv").addClass("d-none");
+  // }
+
+  OpenBrowseOptions() {
+    event.preventDefault();
+    $("#document-btn").click();
+  }
+}
+
+export class FacultyModal {
+  StaffMemberUid: string = "";
+  SchoolTenentId: string = "";
+  ClassTeacherForClass: number = 0;
+  FirstName: string = "";
+  LastName: string = "";
+  Gender: boolean = true;
+  Dob: Date = new Date();
+  Doj: Date = new Date();
+  MobileNumber: string = "";
+  AlternetNumber: string = "";
+  ImageUrl: string = "";
+  Email: string = "";
+  Address: string = "";
+  City: string = "";
+  State: string = "";
+  Pincode: number = 0;
+  Subjects: string = "";
+  Type: string = "";
+  QualificationId: string = "";
+  DesignationId: string = "";
+  Designation: string = "";
+  Class: string = "";
+  Section: string = "";
+  ClassDetailId: string = "";
+  DegreeName: string = "";
+  Grade: string = "";
+  Position: string = "";
+  MarksObtain: number = 0;
+  SchoolUniversityName: string = "";
+  ProofOfDocumentationPath: string = "";
+  ExprienceInYear: number = 0;
+  ExperienceInMonth: number = 0;
+  Title: string = "";
 }

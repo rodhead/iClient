@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { ITable } from "src/providers/Generic/Interface/ITable";
 import { IColumns } from "src/providers/Generic/Interface/IColumns";
 import {
   IsValidType,
   CommonService
 } from "src/providers/common-service/common.service";
+import * as $ from "jquery";
 
 @Component({
   selector: "app-dynamic-grid",
@@ -20,6 +21,10 @@ export class DynamicGridComponent implements OnInit {
   IsStriped: boolean = true;
   pageIndex: number = 0;
   TotalPageCount: number = 0;
+  @Output() Edit = new EventEmitter();
+  @Output() Delete = new EventEmitter();
+  @Output() Next = new EventEmitter();
+  @Output() Previous = new EventEmitter();
   constructor(private commonService: CommonService) {}
 
   @Input()
@@ -69,6 +74,18 @@ export class DynamicGridComponent implements OnInit {
       this.IsStriped = false;
     }
   }
+
+  EditCurrent() {
+    let JsonData = $(event.currentTarget)
+      .closest("tr")
+      .find('input[name="currentObject"]')
+      .val();
+    if (IsValidType(JsonData)) {
+      this.Edit.emit(JsonData);
+    }
+  }
+
+  DeleteCurrent() {}
 
   ngOnInit(): void {}
 

@@ -1,3 +1,5 @@
+import { RolesComponent } from "./roles/roles.component";
+import { ManagetimetableComponent } from "./managetimetable/managetimetable.component";
 import { AppComponent } from "./app.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import {
@@ -18,7 +20,10 @@ import {
   ExamResult,
   FacultyRegistration,
   FacultyReports,
-  StaffReports
+  StaffReports,
+  Roles,
+  ManageUser,
+  ManageTimetable
 } from "./../providers/constants";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -38,6 +43,7 @@ import { ViewClassesComponent } from "./view-classes/view-classes.component";
 import { ViewResultsComponent } from "./view-results/view-results.component";
 import { FacultyReportComponent } from "./faculty-report/faculty-report.component";
 import { StaffReportComponent } from "./staff-report/staff-report.component";
+import { ManageuserComponent } from "./manageuser/manageuser.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
@@ -58,6 +64,9 @@ const routes: Routes = [
   { path: ViewClasses, component: ViewClassesComponent },
   { path: FacultyReports, component: FacultyReportComponent },
   { path: StaffReports, component: StaffReportComponent },
+  { path: ManageTimetable, component: ManagetimetableComponent },
+  { path: ManageUser, component: ManageuserComponent },
+  { path: Roles, component: RolesComponent },
   { path: ExamResult, component: ViewResultsComponent }
 ];
 

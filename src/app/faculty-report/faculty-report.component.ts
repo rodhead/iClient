@@ -1,3 +1,4 @@
+import { FacultyRegistration } from "./../../providers/constants";
 import { Component, OnInit } from "@angular/core";
 import { FacultyColumn } from "src/providers/constants";
 import {
@@ -7,6 +8,7 @@ import {
 import { AjaxService } from "src/providers/ajax.service";
 import { SearchModal } from "../student-report/student-report.component";
 import { ITable } from "src/providers/Generic/Interface/ITable";
+import { iNavigation } from "src/providers/iNavigation";
 
 @Component({
   selector: "app-faculty-report",
@@ -22,7 +24,8 @@ export class FacultyReportComponent implements OnInit {
   SearchQuery: SearchModal;
   constructor(
     private http: AjaxService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private nav: iNavigation
   ) {}
 
   ngOnInit() {
@@ -83,4 +86,13 @@ export class FacultyReportComponent implements OnInit {
   FilterLocaldata() {}
 
   GetAdvanceFilter() {}
+
+  OnEdit(Data: string) {
+    let EditData = JSON.parse(Data);
+    if (IsValidType(EditData)) {
+      this.nav.navigate(FacultyRegistration, Data);
+    } else {
+      this.commonService.ShowToast("Invalid user. Please contact to admin.");
+    }
+  }
 }

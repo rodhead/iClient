@@ -1,3 +1,4 @@
+import { iNavigation } from "./../../providers/iNavigation";
 import { Component, OnInit } from "@angular/core";
 import { AjaxService } from "src/providers/ajax.service";
 import * as $ from "jquery";
@@ -23,10 +24,16 @@ export class SideMenuComponent implements OnInit {
     private ajax: AjaxService,
     private cache: PageCache,
     private local: ApplicationStorage,
-    private router: Router
+    private router: Router,
+    private nav: iNavigation
   ) {
     this.UserImage = DefaultUserImage;
     //this.LoadMenu();
+  }
+
+  CleanUpCache() {
+    this.nav.resetValue();
+    return true;
   }
 
   BuildMenu(Catagory: string, MenuItems: Array<ISideMenu>): Array<ISideMenu> {

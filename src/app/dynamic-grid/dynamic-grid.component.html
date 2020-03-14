@@ -26,10 +26,10 @@
             <div class="last dyn-last">
               <input type="hidden" name="currentObject" [attr.value]="item | json" />
               <div name="editdelete">
-                <a href="javascript:void(0)" id="btnedit" class="a-icon">
+                <a href="javascript:void(0)" id="btnedit" class="a-icon" (click)="EditCurrent()">
                   <i class="far fa-edit"></i>&nbsp;
                 </a>
-                <a href="javascript:void(0)" id="btndelete" class="a-icon">
+                <a href="javascript:void(0)" id="btndelete" class="a-icon" (click)="DeleteCurrent()">
                   <i class="far fa-trash-alt"></i>
                 </a>
               </div>

@@ -559,6 +559,8 @@ export function IsValidType(Value): boolean {
         } else {
           if (Object.keys(Value).length > 0) Flag = true;
         }
+      } else if (ValueDataType === "number") {
+        return Value >= 0;
       }
     }
   }
@@ -574,6 +576,72 @@ export function IsValidResponse(res: any) {
     }
   }
   return flag;
+}
+
+export function IsValidBoolean(data: any): boolean {
+  let type = typeof data;
+  if (type === "boolean") return data;
+  return false;
+}
+
+export function IsValidTime(TimeOption: any): string {
+  if (TimeOption === undefined || TimeOption === null || TimeOption === "")
+    return null;
+  else {
+    let keys = Object.keys(TimeOption);
+    if (keys.indexOf("hour") !== -1 && keys.indexOf("minute") !== -1)
+      return `${TimeOption["hour"]}:${TimeOption["minute"]}`;
+    else return null;
+  }
+}
+
+export function ActualOrDefault(data: any, modal: any): any {
+  if (
+    data !== undefined &&
+    data !== null &&
+    modal !== undefined &&
+    modal !== null
+  ) {
+    let keys = Object.keys(modal);
+    let type = null;
+    let value = null;
+    let key = null;
+    let valueType = null;
+    let index = 0;
+    while (index < keys.length) {
+      key = keys[index];
+      type = typeof modal[key];
+      value = data[key];
+      valueType = typeof data[key];
+      switch (type) {
+        case "string":
+          if (valueType === "undefined" || value === null) data[key] = "";
+          break;
+        case "object":
+          if (data[key] instanceof Array) {
+            if (valueType === "undefined" || value === null) data[key] = [];
+          } else {
+            if (valueType === "undefined" || value === null) data[key] = {};
+          }
+          break;
+        case "number":
+          if (valueType === "undefined" || value === null) data[key] = 0;
+          break;
+        case "boolean":
+          if (valueType === "undefined" || value === null) {
+            if (valueType === "number") {
+              if (value === 1) data[key] = true;
+              else data[key] = false;
+            } else {
+              data[key] = false;
+            }
+          }
+          break;
+      }
+      index++;
+    }
+  }
+  return data;
 }
 
 export interface IResponse {

@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    //this.baseUrl = "http://localhost:23132/api/";
-    this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
+    this.baseUrl = "http://localhost:34946/api/";
+    //this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
   }
 
   public GetImageBasePath() {
@@ -108,13 +108,15 @@ export class AjaxService {
         })
         .subscribe(
           (res: any) => {
-            if (res.body !== null && res.body !== "") {
-              let Data = JSON.parse(res.body);
-              this.commonService.HideLoaderByAjax();
-              resolve(Data);
+            let Token = res.headers.get(TokenName);
+            if (IsValidType(Token)) {
+              if (IsValidResponse(res)) {
+                let response: IResponse = res.body;
+                this.commonService.HideLoaderByAjax();
+                resolve(response);
+              }
             } else {
               this.commonService.HideLoaderByAjax();
-              //this.commonService.ShowToast("Server return empty result");
               resolve([]);
             }
           },

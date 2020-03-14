@@ -19,7 +19,10 @@ import {
   VehicleLocation,
   ViewClasses,
   StaffMemberRegistration,
-  FacultyRegistration
+  FacultyRegistration,
+  ManageTimetable,
+  ManageUser,
+  Roles
 } from "./../providers/constants";
 import { iNavigation } from "./../providers/iNavigation";
 import { CommonService } from "./../providers/common-service/common.service";
@@ -121,6 +124,13 @@ export class AppComponent {
               case "/" + Calendar:
                 break;
               case "/" + Attendence:
+                break;
+
+              case "/" + ManageTimetable:
+                break;
+              case "/" + ManageUser:
+                break;
+              case "/" + Roles:
                 break;
 
               default:

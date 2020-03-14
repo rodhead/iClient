@@ -37,3 +37,75 @@
 .chk-dv {
   line-height: 2.46;
 }
+
+
+.upload-btn {
+  position: absolute;
+  right: 0px;
+  margin-top: 12px;
+  cursor: pointer !important;
+}
+
+.upload-btn:hover {
+  font-size: 15px;
+}
+
+.upload-document {
+  position: fixed;
+  background: rgba(237, 237, 237, 0.32);
+  bottom: 0px;
+  z-index: 99999;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  margin: auto;
+}
+
+.night-bg {
+  background: rgba(0, 0, 0, 0.82) !important;
+}
+
+.night-bg .card-header,
+.card-footer {
+  background: rgb(93, 93, 93) !important;
+}
+
+.upload-document-dv {
+  position: fixed;
+  bottom: 0px;
+  z-index: 9999999;
+  right: 0px;
+  left: 0px;
+  top: 10%;
+  color: #eee !important;
+  width: 70%;
+  margin: auto;
+  border-radius: 4px;
+}
+
+.upload-body {
+  min-height: 200px;
+  top: 10%;
+}
+
+img.doc-img {
+  width: 134px;
+}
+
+.img-dv {
+  min-width: 110px !important;
+  text-align: center;
+  margin-right: 4px;
+  padding: 5px;
+  height: 140px;
+  background: #eee;
+  padding-top: 10px;
+}
+
+.del-anc {
+  cursor: pointer;
+}
+
+.del-anc:hover {
+  font-size: 15px;
+}
