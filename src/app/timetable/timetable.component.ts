@@ -1,3 +1,9 @@
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  Validators
+} from "@angular/forms";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
 import { ZerothIndex, InvalidData } from "./../../providers/constants";
 import { Component, OnInit } from "@angular/core";
@@ -27,7 +33,12 @@ export class TimetableComponent implements OnInit {
   IsEnableSection: boolean = false;
   Classes: Array<string>;
   Sections: Array<ClassDetail>;
+  FacultyWithSubjects: Array<FacultyWithSubjectsModal> = [];
+  Faculties: Array<any> = [];
   SchoolTimetableDetail: SchoolTimetableDetailModal;
+  Subjects: Array<any> = [];
+  SubjectDetail: any;
+  AssignFaculty: FormGroup;
   WeekDaysName: Array<any> = [
     { Num: 1, Name: "Mon" },
     { Num: 2, Name: "Tue" },
@@ -40,12 +51,58 @@ export class TimetableComponent implements OnInit {
   constructor(
     private http: AjaxService,
     private commonService: CommonService,
-    private storage: ApplicationStorage
+    private storage: ApplicationStorage,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
+    this.AssignFaculty = this.fb.group({
+      FacultyUid: new FormControl("", Validators.required),
+      SubjectUid: new FormControl("", Validators.required),
+      ClassDetailUid: new FormControl("", Validators.required),
+      Class: new FormControl("", Validators.required)
+    });
+    this.ClassDetail = this.storage.GetClassDetail();
+    this.SubjectDetail = [];
+    let Subjects = this.storage.get(null, "Subject");
+    if (IsValidType(Subjects)) {
+      Subjects.map(item => {
+        this.SubjectDetail.push({
+          value: item.SubjectId,
+          text: item.subjectName
+        });
+      });
+      this.SubjectDetail;
+    }
     this.Classes = this.storage.GetClasses();
     this.LoadInitData();
+  }
+
+  AssignChanges() {
+    if (this.AssignFaculty.valid) {
+      let Error = [];
+      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
+        Error.push("FacultyUid");
+      }
+
+      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
+        Error.push("SubjectUid");
+      }
+
+      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
+        Error.push("ClassDetailUid");
+      }
+
+      if (Error.length > 0) {
+        this.commonService.ShowToast(
+          "All fields are required. Please fill all fields before submit."
+        );
+      }
+    } else {
+      this.commonService.ShowToast(
+        "All fields are required. Please fill all fields before submit."
+      );
+    }
   }
 
   LoadInitData() {
@@ -64,6 +121,10 @@ export class TimetableComponent implements OnInit {
               }
 
               if (typeof Data["TimetableInfo"] !== "undefined") {
+              }
+
+              if (typeof Data["FacultyWithSubjectDetail"] !== "undefined") {
+                this.FacultyWithSubjects = Data["FacultyWithSubjectDetail"];
               }
               this.IsReady = true;
             } else {
@@ -148,6 +209,41 @@ export class TimetableComponent implements OnInit {
       }
     }
   }
+
+  OnSubjectSelected(value: any) {
+    let SelectedValue = JSON.parse(value);
+    if (IsValidType(SelectedValue)) {
+      this.AssignFaculty.get("SubjectUid").setValue(SelectedValue.value);
+      this.GetFacultyBySubject(SelectedValue.value);
+    }
+  }
+
+  GetFacultyBySubject(SubjectUid: string) {
+    if (IsValidType(SubjectUid)) {
+      let FacultyData = this.FacultyWithSubjects.filter(
+        x => x.SubjectUid === SubjectUid
+      );
+      if (FacultyData.length > 0) {
+        FacultyData.map(x => {
+          this.Faculties.push({
+            value: x.SubjectUid,
+            text: `${x.FirstName} ${x.LastName}`
+          });
+        });
+      }
+
+      if (this.Faculties.length === 0) {
+        this.commonService.ShowToast("No faculty available for this subject.");
+      }
+    }
+  }
+
+  OnFacultySelected(value: any) {
+    let SelectedValue = JSON.parse(value);
+    if (IsValidType(SelectedValue)) {
+      this.AssignFaculty.get("FacultyUid").setValue(SelectedValue.value);
+    }
+  }
 }
 
 class TimetableModal {
@@ -179,4 +275,17 @@ interface SchoolTimetableDetailModal {
   Fri: number;
   Sat: number;
   Sun: number;
+}
+
+interface FacultyWithSubjectsModal {
+  StaffMemberUid: string;
+  ClassTeacherForClass: string;
+  FirstName: string;
+  LastName: string;
+  Gender: number;
+  Dob: string;
+  Doj: string;
+  MobileNumber: string;
+  AlternetNumber: string;
+  SubjectUid: string;
 }

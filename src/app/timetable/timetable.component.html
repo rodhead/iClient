@@ -6,14 +6,14 @@
         <header>Assign Subject For Timetable</header>
       </div>
       <hr />
-      <form class="pt-2" (keydown.enter)="$event.preventDefault()">
+      <form id="addsubject" class="pt-2" (keydown.enter)="$event.preventDefault()" [formGroup]="AssignFaculty">
         <div class="mt-2">
           <div class="col-md-12 form-group row">
             <div class="col-md-3">
               <span>Class:</span>
             </div>
             <div class="col-md-9">
-              <select class="form-control" (change)="EnableSection()" id="Class" name="Class">
+              <select class="form-control" (change)="EnableSection()" formControlName="Class" name="Class">
                 <option value="">Choose Class</option>
                 <option *ngFor="let item of Classes" [value]="item">{{item}}</option>
               </select>
@@ -24,7 +24,8 @@
               <span>Section:</span>
             </div>
             <div class="col-md-9">
-              <select class="form-control" [disabled]="IsEnableSection" id="ClassDetailUid" name="ClassDetailUid">
+              <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailUid"
+                name="ClassDetailUid">
                 <option value="">Section</option>
                 <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
               </select>
@@ -35,9 +36,9 @@
               <span>Subject:</span>
             </div>
             <div class="col-md-9">
-              <select class="form-control">
-                <option value="">Select Supervisor</option>
-              </select>
+              <app-iautocomplete id="Subject" [Data]="SubjectDetail" (OnSelect)="OnSubjectSelected($event)"
+                [Placeholder]="'Subject'">
+              </app-iautocomplete>
             </div>
           </div>
           <div class="col-md-12 form-group row">
@@ -45,15 +46,15 @@
               <span>Faculty:</span>
             </div>
             <div class="col-md-9">
-              <select class="form-control">
-                <option value="">Select Supervisor</option>
-              </select>
+              <app-iautocomplete id="faculty" [Data]="Faculties" (OnSelect)="OnFacultySelected($event)"
+                [Placeholder]="'Faculty'">
+              </app-iautocomplete>
             </div>
           </div>
           <div class="border-top">
             <div class="form-group d-flex mt-3 col-md-4">
               <button class="btn btn-outline-dark btn-sm form-control mr-2" (click)="Close()">Close</button>
-              <button class="btn btn-primary btn-sm form-control">Save</button>
+              <button class="btn btn-primary btn-sm form-control" (click)="AssignChanges()">Save</button>
             </div>
           </div>
         </div>

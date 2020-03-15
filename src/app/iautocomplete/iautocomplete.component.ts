@@ -2,6 +2,28 @@ import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import * as $ from "jquery";
 import { CommonService } from "./../../providers/common-service/common.service";
 
+/*
+
+
+
+  let value = [{
+                value: 'value used for the item (any type i.e string, array or any object)', 
+                text: 'text to be displayed (allow only string or number)' 
+              }];
+
+  let placehosderName = 'Placeholder name';
+
+  <app-iautocomplete id="FieldId" [Data]="value" (OnSelect)="FireEventOnSelection($event)"
+    [Placeholder]="placehosderName">
+  </app-iautocomplete>
+
+
+
+
+
+
+*/
+
 @Component({
   selector: "app-iautocomplete",
   templateUrl: "./iautocomplete.component.html",
@@ -230,7 +252,7 @@ export class IautocompleteComponent implements OnInit {
       case 9:
         if (-1 === this.selectedIndex) {
           let fulltext = $(event.currentTarget).val();
-          this.selectOption({ value: fulltext, data: "" });
+          this.selectOption({ value: fulltext, data: "" }, -1);
           this.hide();
           return;
         }
@@ -239,7 +261,7 @@ export class IautocompleteComponent implements OnInit {
       case 13:
         if (-1 === this.selectedIndex) {
           let fulltext = $(event.currentTarget).val();
-          this.selectOption({ value: fulltext, data: "" });
+          this.selectOption({ value: fulltext, data: "" }, -1);
           this.hide();
           return;
         }
@@ -354,10 +376,10 @@ export class IautocompleteComponent implements OnInit {
       (this.ignoreValueChange = b),
       this.hide(),
       this.onValueSelect(a));
-    this.selectOption(c);
+    this.selectOption(c, a);
   }
 
-  selectOption(c) {
+  selectOption(c, a) {
     this.$CurrentAutoComplete
       .find('input[name="iautofill-textfield"]')
       .val(c.text);
@@ -368,22 +390,11 @@ export class IautocompleteComponent implements OnInit {
       .find('div[name="suggestionBox-dv"]')
       .addClass("d-none");
 
-    let TableRowIndex = "";
-    let $event: any = event.currentTarget;
-    if ($event.closest("tr") !== null) {
-      TableRowIndex = $event.closest("tr").getAttribute("index");
-      if (
-        TableRowIndex === undefined ||
-        TableRowIndex === null ||
-        TableRowIndex === ""
-      )
-        TableRowIndex = "0";
-    }
     this.OnSelect.emit(
       JSON.stringify({
         value: c.value,
         data: c.data,
-        index: TableRowIndex
+        index: a
       })
     );
 
