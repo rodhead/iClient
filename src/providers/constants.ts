@@ -28,6 +28,8 @@ export const Roles = "roles";
 export const ZerothIndex = 0;
 export const ServerError = "Server error occured. Please contact to admin.";
 export const InvalidData = "Invalid data received. Please contact to admin.";
+export const OperationFail =
+  "Fail to perform operation. Please contact to admin.";
 
 export const PurchaseColumn: Array<IColumns> = [
   { column: "Name", header: "Product", width: 10 },

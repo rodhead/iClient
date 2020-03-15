@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    this.baseUrl = "http://localhost:34946/api/";
-    //this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
+    //this.baseUrl = "http://localhost:34946/api/";
+    this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
   }
 
   public GetImageBasePath() {

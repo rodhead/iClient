@@ -5,7 +5,11 @@ import {
   Validators
 } from "@angular/forms";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
-import { ZerothIndex, InvalidData } from "./../../providers/constants";
+import {
+  ZerothIndex,
+  InvalidData,
+  OperationFail
+} from "./../../providers/constants";
 import { Component, OnInit } from "@angular/core";
 import { AjaxService } from "src/providers/ajax.service";
 import {
@@ -30,15 +34,17 @@ export class TimetableComponent implements OnInit {
   LunchAfterPeriod: number = 4;
   EnablePopup: boolean = false;
   ClassDetail: Array<ClassDetail>;
-  IsEnableSection: boolean = false;
+  IsEnableSection: boolean;
   Classes: Array<string>;
   Sections: Array<ClassDetail>;
   FacultyWithSubjects: Array<FacultyWithSubjectsModal> = [];
+  RoutineTable: Array<any> = [];
   Faculties: Array<any> = [];
-  SchoolTimetableDetail: SchoolTimetableDetailModal;
   Subjects: Array<any> = [];
+  SchoolTimetableDetail: SchoolTimetableDetailModal;
   SubjectDetail: any;
   AssignFaculty: FormGroup;
+  CurrentClassDetailUid: string;
   WeekDaysName: Array<any> = [
     { Num: 1, Name: "Mon" },
     { Num: 2, Name: "Tue" },
@@ -56,11 +62,17 @@ export class TimetableComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.IsEnableSection = true;
+    this.CurrentClassDetailUid = "";
     this.AssignFaculty = this.fb.group({
       FacultyUid: new FormControl("", Validators.required),
       SubjectUid: new FormControl("", Validators.required),
       ClassDetailUid: new FormControl("", Validators.required),
-      Class: new FormControl("", Validators.required)
+      TimetableUid: new FormControl("", Validators.required),
+      RulebookUid: new FormControl("", Validators.required),
+      SubstitutedFacultiUid: new FormControl("", Validators.required),
+      Period: new FormControl("", Validators.required),
+      WeekDayNum: new FormControl("", Validators.required)
     });
     this.ClassDetail = this.storage.GetClassDetail();
     this.SubjectDetail = [];
@@ -75,69 +87,88 @@ export class TimetableComponent implements OnInit {
       this.SubjectDetail;
     }
     this.Classes = this.storage.GetClasses();
-    this.LoadInitData();
   }
 
   AssignChanges() {
-    if (this.AssignFaculty.valid) {
-      let Error = [];
-      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
-        Error.push("FacultyUid");
-      }
+    let Error = [];
+    if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
+      Error.push("FacultyUid");
+    }
 
-      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
-        Error.push("SubjectUid");
-      }
+    if (!IsValidType(this.AssignFaculty.get("SubjectUid").value)) {
+      Error.push("SubjectUid");
+    }
 
-      if (!IsValidType(this.AssignFaculty.get("FacultyUid").value)) {
-        Error.push("ClassDetailUid");
-      }
-
-      if (Error.length > 0) {
-        this.commonService.ShowToast(
-          "All fields are required. Please fill all fields before submit."
-        );
-      }
+    if (!IsValidType(this.CurrentClassDetailUid)) {
+      Error.push("ClassDetailUid");
     } else {
+      this.AssignFaculty.get("ClassDetailUid").setValue(
+        this.CurrentClassDetailUid
+      );
+    }
+
+    if (Error.length > 0) {
       this.commonService.ShowToast(
         "All fields are required. Please fill all fields before submit."
       );
+    } else {
+      this.Close();
+      this.http
+        .post("Events/AllocateSubject", this.AssignFaculty.value)
+        .then(result => {
+          if (result.ResponseBody !== "" && result.ResponseBody !== null) {
+            this.ManagePage(result);
+          } else {
+            this.commonService.ShowToast(OperationFail);
+          }
+        })
+        .catch(err => {
+          this.commonService.ShowToast(OperationFail);
+        });
     }
+  }
+
+  GetTimetableData() {
+    this.LoadInitData();
   }
 
   LoadInitData() {
     this.http
-      .get("Events/GetTimetable")
+      .get(`Events/GetTimetable?ClassDetailUid=${this.CurrentClassDetailUid}`)
       .then(result => {
         if (IsValidType(result)) {
-          let Data = JSON.parse(result.ResponseBody);
-          if (typeof Data["SchoolTimetableDetail"] !== "undefined") {
-            if (Data["SchoolTimetableDetail"].length > 0) {
-              this.SchoolTimetableDetail =
-                Data["SchoolTimetableDetail"][ZerothIndex];
-
-              if (typeof Data["TimingDetail"] !== "undefined") {
-                this.BuildTimeDetail(Data["TimingDetail"]);
-              }
-
-              if (typeof Data["TimetableInfo"] !== "undefined") {
-              }
-
-              if (typeof Data["FacultyWithSubjectDetail"] !== "undefined") {
-                this.FacultyWithSubjects = Data["FacultyWithSubjectDetail"];
-              }
-              this.IsReady = true;
-            } else {
-              this.commonService.ShowToast(InvalidData);
-            }
-          } else {
-            this.commonService.ShowToast(InvalidData);
-          }
+          this.ManagePage(result);
         }
       })
       .catch(err => {
         this.commonService.ShowToast(ServerError);
       });
+  }
+
+  ManagePage(result: any) {
+    let Data = JSON.parse(result.ResponseBody);
+    if (typeof Data["SchoolTimetableDetail"] !== "undefined") {
+      if (Data["SchoolTimetableDetail"].length > 0) {
+        this.SchoolTimetableDetail = Data["SchoolTimetableDetail"][ZerothIndex];
+
+        if (typeof Data["TimingDetail"] !== "undefined") {
+          this.BuildTimeDetail(Data["TimingDetail"]);
+        }
+
+        if (typeof Data["TimetableInfo"] !== "undefined") {
+          this.BuildTimetableInfo(Data["TimetableInfo"], Data["TimingDetail"]);
+        }
+
+        if (typeof Data["FacultyWithSubjectDetail"] !== "undefined") {
+          this.FacultyWithSubjects = Data["FacultyWithSubjectDetail"];
+        }
+        this.IsReady = true;
+      } else {
+        this.commonService.ShowToast(InvalidData);
+      }
+    } else {
+      this.commonService.ShowToast(InvalidData);
+    }
   }
 
   BuildTimeDetail(TimeDetailObject: any) {
@@ -167,10 +198,7 @@ export class TimetableComponent implements OnInit {
           TimingDetailUid: TimeDetailObject[index].TimingDetailUid,
           RulebookUid: TimeDetailObject[index].RulebookUid,
           RuleName: TimeDetailObject[index].RuleName,
-          TimingFor: TimeDetailObject[index].TimingFor.replace(
-            "period",
-            ""
-          ).trim(),
+          TimingFor: TimeDetailObject[index].TimingFor,
           RuleCode: TimeDetailObject[index].RuleCode,
           DurationInHrs: TimeDetailObject[index].DurationInHrs,
           DurationInMin: TimeDetailObject[index].DurationInMin
@@ -180,10 +208,95 @@ export class TimetableComponent implements OnInit {
     }
   }
 
-  BuildTimetableInfo(TimetableInfo: any) {}
+  BuildTimetableInfo(TimetableInfo: any, TimeDetailObject: any) {
+    let index = 0;
+    this.RoutineTable = [];
+    let InfoDetail = null;
+    let RoutineData: Array<any> = [];
+    let CurrentPeriod: number = 0;
+    let LuncTime: any;
+    while (index < this.WeekDaysName.length) {
+      RoutineData = [];
+      LuncTime = {};
+      let innerIndex = 0;
+      while (innerIndex < TimeDetailObject.length) {
+        if (innerIndex === 0) {
+          RoutineData.push({
+            FacultyUid: "",
+            Period: -1,
+            SubjectUid: "",
+            SubjectName: this.WeekDaysName[index].Name,
+            FacultyName: "",
+            TimetableUid: "",
+            RulebookUid: TimeDetailObject[innerIndex].RulebookUid
+          });
+        }
+        if (TimeDetailObject[innerIndex].TimingFor === "lunch") {
+          LuncTime = {
+            FacultyUid: "",
+            Period: 0,
+            SubjectUid: "",
+            SubjectName: "L",
+            FacultyName: "",
+            TimetableUid: "",
+            RulebookUid: TimeDetailObject[innerIndex].RulebookUid
+          };
+        } else {
+          CurrentPeriod = parseInt(
+            index + 1 + TimeDetailObject[innerIndex].TimingFor
+          );
+          InfoDetail = TimetableInfo.filter(
+            x =>
+              x.WeekDayNum.toString() + x.Period.toString() ===
+              CurrentPeriod.toString()
+          );
+          if (InfoDetail.length > 0) {
+            InfoDetail = InfoDetail[ZerothIndex];
+            RoutineData.push({
+              FacultyUid: InfoDetail.FacultyUid,
+              Period: CurrentPeriod,
+              SubjectUid: InfoDetail.SubjectUid,
+              SubjectName: InfoDetail.SubjectName,
+              TimetableUid: InfoDetail.TimetableUid,
+              FacultyName: `${InfoDetail.FirstName} ${InfoDetail.LastName}`,
+              RulebookUid: TimeDetailObject[innerIndex].RulebookUid
+            });
+          } else {
+            RoutineData.push({
+              FacultyUid: "",
+              Period: CurrentPeriod,
+              TimetableUid: "",
+              SubjectUid: null,
+              SubjectName: "No Sub",
+              FacultyName: "Not alloted",
+              RulebookUid: TimeDetailObject[innerIndex].RulebookUid
+            });
+          }
+        }
+        innerIndex++;
+      }
+      RoutineData.splice(
+        this.SchoolTimetableDetail.LunchAfterPeriod + 1,
+        0,
+        LuncTime
+      );
+      this.RoutineTable.push({ Data: RoutineData });
+      index++;
+    }
+  }
 
-  OpenSubjectSelection() {
-    this.EnablePopup = true;
+  OpenSubjectSelection(CurrentObject: any) {
+    if (IsValidType(CurrentObject)) {
+      let Period = CurrentObject.Period % 10;
+      let WeakNum = parseInt((CurrentObject.Period / 10).toString());
+      this.AssignFaculty.get("Period").setValue(Period);
+      this.AssignFaculty.get("WeekDayNum").setValue(WeakNum);
+      this.AssignFaculty.get("RulebookUid").setValue(CurrentObject.RulebookUid);
+      this.AssignFaculty.get("TimetableUid").setValue(
+        CurrentObject.TimetableUid
+      );
+      this.EnablePopup = true;
+    }
   }
 
   Close() {
@@ -220,13 +333,14 @@ export class TimetableComponent implements OnInit {
 
   GetFacultyBySubject(SubjectUid: string) {
     if (IsValidType(SubjectUid)) {
+      this.Faculties = [];
       let FacultyData = this.FacultyWithSubjects.filter(
         x => x.SubjectUid === SubjectUid
       );
       if (FacultyData.length > 0) {
         FacultyData.map(x => {
           this.Faculties.push({
-            value: x.SubjectUid,
+            value: x.StaffMemberUid,
             text: `${x.FirstName} ${x.LastName}`
           });
         });
@@ -288,4 +402,15 @@ interface FacultyWithSubjectsModal {
   MobileNumber: string;
   AlternetNumber: string;
   SubjectUid: string;
+}
+
+interface TimetableAllocationModal {
+  TimetableUid: string;
+  ClassDetailUid: string;
+  RulebookUid: string;
+  SubstitutedFacultiUid: string;
+  FacultyUid: string;
+  SubjectUid: string;
+  Period: number;
+  WeekDayNum: number;
 }

@@ -32,6 +32,7 @@ export class FacultyRegistrationComponent implements OnInit {
   DocumentImageObjects: Array<any> = [];
   FacultyImageType: any;
   FacultyForm: FormGroup;
+  DefaultSubject: string;
   FacultyImage: any;
   ClassDetail: Array<ClassDetail>;
   Classes: Array<string>;
@@ -63,6 +64,7 @@ export class FacultyRegistrationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DefaultSubject = "";
     let Data = this.nav.getValue();
     let EditData = JSON.parse(Data);
     if (IsValidType(EditData) && IsValidType(EditData["StaffMemberUid"])) {
@@ -168,6 +170,7 @@ export class FacultyRegistrationComponent implements OnInit {
         ExperienceInMonth: new FormControl(FacultyData.ExperienceInMonth),
         Title: new FormControl(FacultyData.Title)
       });
+      this.DefaultSubject = FacultyData.Subjects;
     }
     this.BindSections(FacultyData.Class);
   }

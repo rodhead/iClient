@@ -112,13 +112,11 @@ export class IautocompleteComponent implements OnInit {
   }
 
   BindDefaultValue() {
-    if (this.DefaultValue !== null) {
-      let elems = this.DropdownData.filter(
-        x => x.text === this.DefaultValue.value
-      );
+    if (this.DefaultValue !== null && this.DropdownData !== null) {
+      let elems = this.DropdownData.filter(x => x.value === this.DefaultValue);
       if (elems.length === 1) {
-        this.InitValue = elems[0].value;
-        this.InitData = JSON.stringify(elems[0].data);
+        this.InitValue = elems[0].text;
+        this.InitData = JSON.stringify(elems[0].value);
       } else if (elems.length > 1) {
       }
     }
