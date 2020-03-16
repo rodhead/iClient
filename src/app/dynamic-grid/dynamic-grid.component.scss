@@ -27,28 +27,33 @@
 
 //---------------------------- New default looking table ----------------------------------
 
-.table td {
-  padding: 0px !important;
+.table {
+  color: #6d7680 !important;
+
+  td {
+    padding: 0px !important;
+  }
+
+  span:not(.plain),
+  input {
+    padding: 0px 0px 0px 8px !important;
+    display: block;
+    width: 100% !important;
+  }
+
+  th {
+    padding: 6px 0px 6px 8px !important;
+  }
+
+  td,
+  th {
+    border: 1px solid #d9d9d9;
+  }
 }
 
-.table span:not(.plain),
-input {
-  padding: 0px 0px 0px 8px !important;
-  display: block;
-  width: 100% !important;
-}
 
 .w-10 {
   width: 10% !important;
-}
-
-.table th {
-  padding: 6px 0px 6px 8px !important;
-}
-
-.table td,
-th {
-  border: 1px solid #d9d9d9;
 }
 
 .empty-row {

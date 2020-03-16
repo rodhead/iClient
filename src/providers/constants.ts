@@ -52,6 +52,13 @@ export const StudentsColumn: Array<IColumns> = [
   { column: "registrationno", header: "Reg. No.#" }
 ];
 
+export const SubjectColumn: Array<IColumns> = [
+  { column: "SubjectId", type: "hidden" },
+  { column: "SubjectName", header: "Subject Name" },
+  { column: "SubjectCode", header: "Subject Code" },
+  { column: "SubjectCredit", header: "Credit" }
+];
+
 export const FacultyColumn: Array<IColumns> = [
   { column: "StaffMemberUid", type: "hidden" },
   { column: "FName", header: "Faculty Name" },
