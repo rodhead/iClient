@@ -1,6 +1,6 @@
 import { IColumns } from "./Generic/Interface/IColumns";
 
-export const ViewClasses = "viewclasses";
+export const ViewClasses = "manageclasses";
 export const VehicleLocation = "vehiclelocation";
 export const UploadData = "uploaddata";
 export const TrackOnMap = "trackonmap";
@@ -25,7 +25,10 @@ export const StaffReports = "staffreport";
 export const ManageTimetable = "managetimetable";
 export const ManageUser = "manageuser";
 export const Roles = "roles";
+export const AttendanceReport = "attendencereport";
+
 export const ZerothIndex = 0;
+export const SuccessMessage = "Done successfully.";
 export const ServerError = "Server error occured. Please contact to admin.";
 export const InvalidData = "Invalid data received. Please contact to admin.";
 export const OperationFail =
@@ -75,4 +78,13 @@ export const StaffMemberColumn: Array<IColumns> = [
   { column: "MobileNumber", header: "Mob. No.#" },
   { column: "Description", header: "Desc" },
   { column: "Email", header: "Email Id" }
+];
+
+export const ClassDetailColumn: Array<IColumns> = [
+  { column: "ClassDetailId", type: "hidden" },
+  { column: "Class", header: "Class" },
+  { column: "TotalSeats", header: "Total Seats" },
+  { column: "Section", header: "Section" },
+  { column: "GirlSeats", header: "Girl Seats" },
+  { column: "BoySeats", header: "Boy Seats" }
 ];

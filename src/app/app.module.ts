@@ -35,11 +35,13 @@ import { MobileNumber } from "src/providers/directives/MobileNumber";
 import { NumberDirective } from "src/providers/directives/Number";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { IautocompleteComponent } from "./iautocomplete/iautocomplete.component";
-import { DynamicGridComponent } from './dynamic-grid/dynamic-grid.component';
-import { PageBreadCrumComponent } from './page-bread-crum/page-bread-crum.component';
-import { ManagetimetableComponent } from './managetimetable/managetimetable.component';
-import { ManageuserComponent } from './manageuser/manageuser.component';
-import { RolesComponent } from './roles/roles.component';
+import { DynamicGridComponent } from "./dynamic-grid/dynamic-grid.component";
+import { PageBreadCrumComponent } from "./page-bread-crum/page-bread-crum.component";
+import { ManagetimetableComponent } from "./managetimetable/managetimetable.component";
+import { ManageuserComponent } from "./manageuser/manageuser.component";
+import { RolesComponent } from "./roles/roles.component";
+import { UpperAndLowerCaseDirective } from "src/providers/directives/Upper";
+import { AttendancereportComponent } from './attendancereport/attendancereport.component';
 
 @NgModule({
   declarations: [
@@ -68,12 +70,14 @@ import { RolesComponent } from './roles/roles.component';
     NumberOnlyDirective,
     MobileNumber,
     NumberDirective,
+    UpperAndLowerCaseDirective,
     IautocompleteComponent,
     DynamicGridComponent,
     PageBreadCrumComponent,
     ManagetimetableComponent,
     ManageuserComponent,
-    RolesComponent
+    RolesComponent,
+    AttendancereportComponent
   ],
   imports: [
     BrowserModule,

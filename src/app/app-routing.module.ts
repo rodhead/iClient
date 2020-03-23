@@ -23,7 +23,8 @@ import {
   StaffReports,
   Roles,
   ManageUser,
-  ManageTimetable
+  ManageTimetable,
+  AttendanceReport
 } from "./../providers/constants";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -44,6 +45,7 @@ import { ViewResultsComponent } from "./view-results/view-results.component";
 import { FacultyReportComponent } from "./faculty-report/faculty-report.component";
 import { StaffReportComponent } from "./staff-report/staff-report.component";
 import { ManageuserComponent } from "./manageuser/manageuser.component";
+import { AttendancereportComponent } from "./attendancereport/attendancereport.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
@@ -67,6 +69,7 @@ const routes: Routes = [
   { path: ManageTimetable, component: ManagetimetableComponent },
   { path: ManageUser, component: ManageuserComponent },
   { path: Roles, component: RolesComponent },
+  { path: AttendanceReport, component: AttendancereportComponent },
   { path: ExamResult, component: ViewResultsComponent }
 ];
 

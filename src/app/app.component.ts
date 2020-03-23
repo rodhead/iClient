@@ -22,7 +22,8 @@ import {
   FacultyRegistration,
   ManageTimetable,
   ManageUser,
-  Roles
+  Roles,
+  AttendanceReport
 } from "./../providers/constants";
 import { iNavigation } from "./../providers/iNavigation";
 import { CommonService } from "./../providers/common-service/common.service";
@@ -131,6 +132,8 @@ export class AppComponent {
               case "/" + ManageUser:
                 break;
               case "/" + Roles:
+                break;
+              case "/" + AttendanceReport:
                 break;
 
               default:
