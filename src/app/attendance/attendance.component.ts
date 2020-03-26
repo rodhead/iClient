@@ -1,3 +1,4 @@
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 import {
   CommonService,
   IsValidType
@@ -8,7 +9,11 @@ import { FormControl, Validators } from "@angular/forms";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Component, OnInit } from "@angular/core";
 import * as $ from "jquery";
-import { InvalidData, SuccessMessage } from "src/providers/constants";
+import {
+  InvalidData,
+  SuccessMessage,
+  ZerothIndex
+} from "src/providers/constants";
 import { ClassDetail } from "../app.component";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
 
@@ -24,8 +29,10 @@ export class AttendanceComponent implements OnInit {
   ClassDetail: Array<ClassDetail>;
   Sections: Array<ClassDetail>;
   Classes: Array<string>;
+  dateModel: NgbDateStruct;
   SelecteClass: string;
   AttendanceSheet: Array<AttendanceSheetModal>;
+  TodayDayNum: string;
   get AttendaceDetail(): FormArray {
     return this.attendanceData.get("AttendaceDetail") as FormArray;
   }
@@ -34,16 +41,59 @@ export class AttendanceComponent implements OnInit {
     private http: AjaxService,
     private commonService: CommonService,
     private storage: ApplicationStorage
-  ) {}
+  ) {
+    this.TodayDayNum = new Date().getDate().toString();
+  }
 
   ngOnInit() {
-    this.UpdateAttendance();
+    //this.UpdateAttendance();
     this.SelecteClass = "";
     this.ClassDetail = this.storage.GetClassDetail();
     this.Classes = this.storage.GetClasses();
     this.ClassDetailUid = "";
-    this.InitAttendance();
-    this.IsReady = true;
+    this.selectDate(new Date());
+    this.SelectDefault();
+  }
+
+  SelectDefault() {
+    if (IsValidType(this.ClassDetail)) {
+      let FirstItem = this.ClassDetail[ZerothIndex];
+      this.BindSections(FirstItem.Class);
+      this.SelecteClass = FirstItem.Class;
+      this.ClassDetailUid = FirstItem.ClassDetailUid;
+      this.LoadData();
+    } else {
+      this.InitAttendance();
+      this.IsReady = true;
+    }
+  }
+
+  selectDate(date: Date) {
+    if (date !== null) {
+      let selectedDate: NgbDateStruct = {
+        year: date.getFullYear(),
+        month: date.getMonth() + 1,
+        day: date.getDate()
+      };
+      this.dateModel = selectedDate;
+    }
+  }
+
+  SubmitAttendance() {
+    if (IsValidType(this.attendanceData.controls.AttendaceDetail)) {
+      let ServerData = this.attendanceData.controls.AttendaceDetail.value;
+      this.http
+        .post("AdminMaster/AddUpdateSingleClassAttendence", ServerData)
+        .then(result => {
+          if (IsValidType(result)) {
+            this.commonService.ShowToast(SuccessMessage);
+          } else {
+            this.commonService.ShowToast(InvalidData);
+          }
+        });
+    } else {
+      this.commonService.ShowToast(InvalidData);
+    }
   }
 
   UpdateAttendance() {
@@ -69,7 +119,12 @@ export class AttendanceComponent implements OnInit {
   LoadData() {
     this.http
       .post("AdminMaster/AttendenceByClassDetail", {
-        ClassDetailId: this.ClassDetailUid
+        ClassDetailUid: this.ClassDetailUid,
+        CreatedOn: new Date(
+          this.dateModel.year,
+          this.dateModel.month,
+          this.dateModel.day
+        )
       })
       .then(result => {
         if (IsValidType(result.ResponseBody)) {
@@ -77,6 +132,7 @@ export class AttendanceComponent implements OnInit {
           if (IsValidType(Data["Table"])) {
             this.AttendanceSheet = Data["Table"];
             this.InitAttendance();
+            this.IsReady = true;
           } else {
             this.commonService.ShowToast(InvalidData);
           }
@@ -119,16 +175,40 @@ export class AttendanceComponent implements OnInit {
       Class: new FormControl(AttendanceData.Class),
       Section: new FormControl(AttendanceData.Section),
       Date: new FormControl(new Date()),
-      IsPresent: new FormControl(AttendanceData["Day1"] === null ? false : true)
+      RollNo: new FormControl(AttendanceData.RollNo),
+      IsPresent: new FormControl(
+        AttendanceData[`Day${this.dateModel.day}`] === null ||
+        AttendanceData[`Day${this.dateModel.day}`] === 0
+          ? false
+          : true
+      )
     });
   }
 
-  ToggleItem() {
-    let $e = $(event.currentTarget).find('div[name="slider"]');
-    if ($e.hasClass("off")) {
-      $e.removeClass("off");
+  ToggleItem(studentUid: string) {
+    if (studentUid !== null && studentUid !== "") {
+      let $e = $(event.currentTarget).find('div[name="slider"]');
+      if ($e.hasClass("off")) {
+        $e.removeClass("off");
+      } else {
+        $e.addClass("off");
+      }
+
+      let Controls = this.attendanceData.get("AttendaceDetail")["controls"];
+      let index = 0;
+      let CurrentStudent: FormGroup = null;
+      while (index < Controls.length) {
+        if (Controls[index].controls.StudentUid.value === studentUid) {
+          CurrentStudent = Controls[index];
+          CurrentStudent.get("IsPresent").setValue(true);
+          break;
+        }
+        index++;
+      }
     } else {
-      $e.addClass("off");
+      this.commonService.ShowToast(
+        "Invalid student selected. Please contact to admin."
+      );
     }
   }
 
@@ -152,7 +232,11 @@ export class AttendanceComponent implements OnInit {
   ResetFilter() {}
 
   GetAdvanceFilter() {
-    this.LoadData();
+    if (this.ClassDetailUid !== null && this.ClassDetailUid !== "") {
+      this.LoadData();
+    } else {
+      this.commonService.ShowToast("Please select Class and Section.");
+    }
   }
 
   LoadDemoData() {

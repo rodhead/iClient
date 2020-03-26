@@ -107,10 +107,10 @@
                     </div>
                     <label class="col-sm-3 col-form-label">Section</label>
                     <div class="col-md-5">
-                      <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailId"
-                        id="section" name="ClassDetailId">
+                      <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailUid"
+                        id="section" name="ClassDetailUid">
                         <option value="">Section</option>
-                        <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
+                        <option *ngFor="let item of Sections" [value]="item.ClassDetailUid">{{item.Section}}</option>
                       </select>
                     </div>
                   </div>

@@ -45,6 +45,7 @@ export class TimetableComponent implements OnInit {
   SubjectDetail: any;
   AssignFaculty: FormGroup;
   CurrentClassDetailUid: string;
+  SelecteClass: string;
   WeekDaysName: Array<any> = [
     { Num: 1, Name: "Mon" },
     { Num: 2, Name: "Tue" },
@@ -87,6 +88,17 @@ export class TimetableComponent implements OnInit {
       this.SubjectDetail;
     }
     this.Classes = this.storage.GetClasses();
+    this.SelectDefault();
+  }
+
+  SelectDefault() {
+    if (IsValidType(this.ClassDetail)) {
+      let FirstItem = this.ClassDetail[ZerothIndex];
+      this.BindSections(FirstItem.Class);
+      this.SelecteClass = FirstItem.Class;
+      this.CurrentClassDetailUid = FirstItem.ClassDetailUid;
+      this.LoadInitData();
+    }
   }
 
   AssignChanges() {

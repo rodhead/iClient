@@ -57,7 +57,7 @@ export class ViewClassesComponent implements OnInit {
 
   LoadForm(ExistingClassDetail: ClassdetailModal) {
     this.Classdetail = this.fb.group({
-      ClassDetailId: new FormControl(ExistingClassDetail.ClassDetailId),
+      ClassDetailUid: new FormControl(ExistingClassDetail.ClassDetailUid),
       Class: new FormControl(ExistingClassDetail.Class, Validators.required),
       TotalSeats: new FormControl(
         ExistingClassDetail.TotalSeats,
@@ -204,7 +204,7 @@ export class ViewClassesComponent implements OnInit {
 }
 
 export class ClassdetailModal {
-  ClassDetailId: string = "";
+  ClassDetailUid: string = "";
   Class: string = "";
   TotalSeats?: number = null;
   Section: string = "";

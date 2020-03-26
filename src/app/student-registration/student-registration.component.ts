@@ -190,7 +190,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
       ParentRecordExist: new FormControl(
         IsValidBoolean(ResponseStudentData.ParentRecordExist)
       ),
-      ClassDetailId: new FormControl(ResponseStudentData.ClassDetailId),
+      ClassDetailUid: new FormControl(ResponseStudentData.ClassDetailUid),
       MobileNumbers: new FormControl(ResponseStudentData.MobileNumbers),
       EmailIds: new FormControl(ResponseStudentData.EmailIds),
       IsQuickRegistration: new FormControl(
@@ -262,7 +262,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
       ExistingNumber: new FormControl(""),
       CreatedBy: new FormControl(""),
       ParentRecordExist: new FormControl(false),
-      ClassDetailId: new FormControl(""),
+      ClassDetailUid: new FormControl(""),
       MobileNumbers: new FormControl(""),
       EmailIds: new FormControl(""),
       IsQuickRegistration: new FormControl(false),
@@ -343,13 +343,13 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
         ErrorFields.push("Class");
       }
 
-      if (IsValidType(this.StudentForm.get("ClassDetailId").value)) {
-        let Uid = this.StudentForm.get("ClassDetailId").value;
+      if (IsValidType(this.StudentForm.get("ClassDetailUid").value)) {
+        let Uid = this.StudentForm.get("ClassDetailUid").value;
         let SelectedSection = this.ClassDetail.filter(
-          x => x.ClassDetailId === Uid
+          x => x.ClassDetailUid === Uid
         );
         if (SelectedSection.length > 0) {
-          this.StudentForm.controls["ClassDetailId"].setValue(Uid);
+          this.StudentForm.controls["ClassDetailUid"].setValue(Uid);
           this.StudentForm.controls["Section"].setValue(
             SelectedSection[0].Section
           );
@@ -571,7 +571,7 @@ class StudentModal {
   ExistingNumber: string = "";
   CreatedBy: string = "";
   ParentRecordExist: boolean = false;
-  ClassDetailId: string = "";
+  ClassDetailUid: string = "";
   MobileNumbers: string = "";
   EmailIds: string = "";
   IsQuickRegistration: boolean = false;

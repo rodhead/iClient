@@ -1,78 +1,360 @@
-<div class="right_col" role="main">
-  <div class="col-md-12 col-sm-12">
-    <div class="page-title">
-      <div class="title_left">
-        <h3>Projects <small>Listing design</small></h3>
-      </div>
+<div class="col-12">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>Progress Report Page By Class</h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="col-md-12 p-0" *ngIf="ViewReport">
+          <div class="col-12 p-0">
+            <div class="row mt-4">
+              <div class="col-md-8">
+                <div class="p-0 form-group col-12 mb-0 d-inline-block">
+                  <div class="form-row">
+                    <div class="form-group col ibox">
+                      <select class="form-control" (change)="EnableSection()" [(ngModel)]="SelecteClass" name="Class">
+                        <option value="">Choose Class</option>
+                        <option *ngFor="let item of Classes" value="{{item}}">{{item}}</option>
+                      </select>
+                    </div>
+                    <div class="form-group col ibox">
+                      <select class="form-control" name="ClassDetailUid" [(ngModel)]="ClassDetailUid">
+                        <option value="">Choose Section</option>
+                        <option *ngFor="let sec of Sections" [value]="sec.ClassDetailUid">
+                          {{sec.Section}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="form-group col">
+                      <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob" ngbDatepicker
+                          #d="ngbDatepicker" [(ngModel)]="dateModel">
+                        <div class="inbox">
+                          <button class="btn btn-outline-secondary calendar btn-s" (click)="d.toggle()" type="button">
+                            <i class="far fa-calendar-alt"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4 d-inline-block text-right no-padding">
+                <button type="submit" (click)="ResetFilter()" class="btn btn-outline-info mr-1"><i
+                    class="fas fa-sync"></i>&ensp;Reset</button>
+                <button type="button" (click)="GetAdvanceFilter()" class="btn btn-success"><i
+                    class="fa fa-filter"></i>&ensp;Advance Search</button>
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="attendanceData">
+            <div class="x_content" *ngIf="IsReady">
+              <div class="col-md-12 pl-0 pr-0" formArrayName="AttendaceDetail">
+                <table class="table table-striped projects">
+                  <thead>
+                    <tr>
+                      <th style="width: 8%">Roll No.#</th>
+                      <th style="width: 20%">Student Name</th>
+                      <th style="width: 10%">Class/Sec</th>
+                      <th>Registration No.#</th>
+                      <th>Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let a of AttendaceDetail.controls; let i = index;" [formGroupName]="i">
+                      <tr>
+                        <td>{{a.get("RollNo").value}}</td>
+                        <td>
+                          <a>{{a.get('StudentName').value}}</a>
+                        </td>
+                        <td>
+                          {{a.get('Class').value}}
+                          {{a.get('Section').value}}
+                        </td>
+                        <td class="project_progress position-relative">
+                          <p class="p-0 m-0">Will come soon.</p>
+                        </td>
+                        <td>
+                          <a class="btn-xs btn btn-blue"><i class="fa fa-folder"></i> View </a>
+                          <a class="btn-xs btn btn-sky"><i class="fa fa-pencil"></i> Edit </a>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-12 p-0">
+          <div class="border">
+            <div class="col-12 mb-4">
+              <div class="col-12 form-row border-bottom pt-2 pb-2">
+                <div class="col-8 col">
+                  <div>Progress report</div>
+                </div>
+                <div class="col col-4 text-right">
+                  <button class="d-inline text-dark btn btn-outline-light btn-s">
+                    <i class="fas fa-print"></i>
+                    Print
+                  </button>
+                </div>
+              </div>
+              <div class="form-row col-md-12 p-0 mt-2">
+                <div class="col col-md-4 text-center">
+                  <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image">
+                </div>
+                <div class="col col-md-4 text-center">
+                  <address class="para-s">
+                    <p>To</p>
+                    <p><b>Jone Steave</b></p>
+                    <p>789 Freedom Ave, Suite 600</p>
+                    <p>New York CA, 94107</p>
+                    <p><b>Phone: </b>+91-88787676567</p>
+                    <p><b>Email Id: </b>Jone1290@gmail.com</p>
+                  </address>
+                </div>
+                <div class="col col-md-4 text-center">
+                  <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image">
+                </div>
+              </div>
 
-      <div class="title_right">
-        <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-          <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search for...">
+              <div class="form-row border col-md-12 mt-2 p-0 pt-1 pb-1">
+                <div class="col form-row col-md-10">
+                  <div class="text-center w-100 pt-2">
+                    <h5><b>STUDENT'S PROFILE</b></h5>
+                  </div>
+                  <div class="col col-md-6 pl-3 pr-4">
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Name of Student:</span> Jone Steave
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Father's Name:</span> Smith Steave
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Mother's Name:</span> Rine Steave
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Contact Number:</span> +91-8878765434
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col col-md-6">
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Class and Section:</span> 9-C
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Roll No.#:</span> 29
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">Bill No.#:</span> 13-0460
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="col">
+                        <span class="u-title pr-4">DOB:</span> June, 10 2005
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col col-md-2 text-right">
+                  <img class="progress-img" src="assets/defaultuser.jpg" alt="Candidate Image">
+                </div>
+              </div>
+
+              <div class="form-row border col-12 mt-1">
+                <h5 class="text-center m-0 p-1 w-100">SCHOLASTIC AREAS</h5>
+              </div>
+
+              <div class="form-row border col-12 p-0">
+                <table class="subject-table" width="100%">
+                  <thead>
+                    <tr>
+                      <th rowspan="2" style="width: 15%;">
+                        <div>SUBJECTS</div>
+                      </th>
+                      <th colspan="4">
+                        <div>FINAL TERM</div>
+                      </th>
+                      <th rowspan="2">
+                        <div>MARKED OBTAINER</div>
+                      </th>
+                      <th rowspan="2">
+                        <div>GRADE</div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>
+                        <div>Periodic Test(10)</div>
+                      </th>
+                      <th>
+                        <div>Notebook(5)</div>
+                      </th>
+                      <th>
+                        <div>Subject Enrichment(5)</div>
+                      </th>
+                      <th>
+                        <div>Annual Exam(80)</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of SubjectReport">
+                      <td>
+                        <div>{{item.SubjectName}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.PeriodicTest}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.Notebook}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.SubjectEnrichment}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.AnnualExam}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.MarkedObtain}}</div>
+                      </td>
+                      <td>
+                        <div>{{item.Grade}}</div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td rowspan="2" class="p-2">
+                        <div><b>Scholastic area of grading scales</b></div>
+                      </td>
+                      <td colspan="6" rowspan="2">
+                        <div>
+                          <span>A1: 91-100, </span>
+                          <span>A2: 81-90, </span>
+                          <span>B1: 71-80, </span>
+                          <span>B2: 61-70, </span>
+                          <span>C1: 51-60, </span>
+                          <span>C2: 41-50, </span>
+                          <span>D: 33-40, </span>
+                          <span>E: 0-32 (Fail) </span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="form-row col-md-12 mt-1 p-0 border">
+                <div class="col-md-3 p-0">
+                  <div class="col-12 p-0">
+                    <table class="grade-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 75%;">
+                            <div>CO-SCHOLISTIC AREAS</div>
+                          </th>
+                          <th>
+                            <div>GRADE (A-E)</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let item of CoScholasticData">
+                          <td>
+                            <div>{{item.Name}}</div>
+                          </td>
+                          <td>
+                            <div>{{item.Grade}}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mt-1 col-12 p-0 border-top">
+                    <table class="grade-table">
+                      <thead>
+                        <tr>
+                          <th colspan="2" class="p-2">
+                            <div>ATTENDANCE</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td style="width: 75%;">
+                            <div>Total Attendance</div>
+                          </td>
+                          <td>
+                            <div>{{StudentAttendanceData.TotalAttendance}}</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width: 75%;">
+                            <div>Total Present</div>
+                          </td>
+                          <td>
+                            <div>{{StudentAttendanceData.TotalPresent}}</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="width: 75%;">
+                            <div>Attedance %</div>
+                          </td>
+                          <td>
+                            <div>{{StudentAttendanceData.AttendancePercent}}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="col-md-9 pl-1 p-0 position-relative">
+                  <div class="col-12 border-left fixed-chart">
+                    <div class="col">
+                      <div class="col-md-12">
+                        <div class="chart-container" style="position: relative;">
+                          <canvas id="sales-bar" width="100%" height="37%">{{ chartBar }}</canvas>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row col-md-12 mt-1 border">
+                <b class="text-center p-2 w-100">Remarks</b>
+              </div>
+
+              <div class="form-row col-md-12 mt-1 border">
+                <textarea name="remark" class="w-100 p-2 border-0 remark-sec" rows="4"></textarea>
+              </div>
+
+              <div class="form-row col-md-12 mt-1 p-0">
+                <div class="col col-md-4 border official">
+                  <p>Class Teacher Signature</p>
+                </div>
+                <div class="col col-md-4 border official">
+                  <p>School Stamp</p>
+                </div>
+                <div class="col col-md-4 border official">
+                  <p>Principle Signature</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Projects</h2>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-
-        <p>Simple table with project listing with progress and editing options</p>
-
-        <!-- start project list -->
-        <table class="table table-striped projects">
-          <thead>
-            <tr>
-              <th style="width: 1%">#</th>
-              <th style="width: 20%">Project Name</th>
-              <th>Team Members</th>
-              <th>Project Progress</th>
-              <th>Status</th>
-              <th style="width: 20%">#Edit</th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let item of ResultByClasses">
-              <tr>
-                <td>#</td>
-                <td>
-                  <a>Pesamakini Backend UI</a>
-                  <br />
-                  <small>Created 01.01.2015</small>
-                </td>
-                <td>
-                  <ul class="list-inline">
-
-                  </ul>
-                </td>
-                <td class="project_progress">
-                  <div class="progress progress_sm">
-                    <div class="progress-bar btn-green" role="progressbar" data-transitiongoal="57" style="width: 57%"
-                      aria-valuenow="57" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  <!-- 
-                      <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" 
-                        style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div> -->
-                  <small>57% Complete</small>
-                </td>
-                <td>
-                  <button type="button" class="btn-xs btn btn-green">Success</button>
-                </td>
-                <td>
-                  <a href="#" class="btn-xs btn btn-blue"><i class="fa fa-folder"></i> View </a>
-                  <a href="#" class="btn-xs btn btn-sky"><i class="fa fa-pencil"></i> Edit </a>
-                  <a href="#" class="btn-xs btn btn-red"><i class="fa fa-trash-o"></i> Delete </a>
-                </td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
       </div>
     </div>
   </div>

@@ -157,7 +157,7 @@ export class FacultyRegistrationComponent implements OnInit {
         DesignationId: new FormControl(FacultyData.DesignationId),
         Class: new FormControl(FacultyData.Class),
         Section: new FormControl(FacultyData.Section),
-        ClassDetailId: new FormControl(FacultyData.ClassDetailId),
+        ClassDetailUid: new FormControl(FacultyData.ClassDetailUid),
         DegreeName: new FormControl(FacultyData.DegreeName),
         Grade: new FormControl(FacultyData.Grade),
         Position: new FormControl(FacultyData.Position),
@@ -181,7 +181,7 @@ export class FacultyRegistrationComponent implements OnInit {
       let selectedDate: NgbDateStruct = {
         year: date.getFullYear(),
         month: date.getMonth() + 1,
-        day: date.getDay()
+        day: date.getDate()
       };
       this.dateModel = selectedDate;
     }
@@ -226,7 +226,7 @@ export class FacultyRegistrationComponent implements OnInit {
       FacultyUid: new FormControl("", Validators.required),
       StaffMemberUid: new FormControl("", Validators.required),
       SchooltenentId: new FormControl("", Validators.required),
-      ClassDetailId: new FormControl("", Validators.required),
+      ClassDetailUid: new FormControl("", Validators.required),
       Class: new FormControl("", Validators.required),
       Designation: new FormControl("", Validators.required),
       Section: new FormControl("", Validators.required),
@@ -275,16 +275,16 @@ export class FacultyRegistrationComponent implements OnInit {
     let ErrorFields = [];
     try {
       if (this.IsFaculty) {
-        if (IsValidType(this.FacultyForm.get("ClassDetailId").value)) {
-          let Uid = this.FacultyForm.get("ClassDetailId").value;
+        if (IsValidType(this.FacultyForm.get("ClassDetailUid").value)) {
+          let Uid = this.FacultyForm.get("ClassDetailUid").value;
           let CutClassDetail: Array<ClassDetail> = this.ClassDetail.filter(
-            x => x.ClassDetailId === Uid
+            x => x.ClassDetailUid === Uid
           );
           if (CutClassDetail.length > 0) {
             this.FacultyForm.controls["Section"].setValue(
               CutClassDetail[0].Section
             );
-            this.FacultyForm.controls["ClassDetailId"].setValue(Uid);
+            this.FacultyForm.controls["ClassDetailUid"].setValue(Uid);
           }
         }
 
@@ -547,7 +547,7 @@ export class FacultyModal {
   Designation: string = "";
   Class: string = "";
   Section: string = "";
-  ClassDetailId: string = "";
+  ClassDetailUid: string = "";
   DegreeName: string = "";
   Grade: string = "";
   Position: string = "";

@@ -515,6 +515,26 @@ export class CommonService {
     return Data;
   }
 
+  SufixNumber(SufixStr: any): string {
+    if (!isNaN(Number(SufixStr))) {
+      let SufixNumber = parseInt(SufixStr);
+      if (SufixNumber === 11 || SufixNumber === 12) {
+        return SufixNumber + "th";
+      } else {
+        switch (SufixNumber % 10) {
+          case 1:
+            return SufixNumber + "st";
+          case 2:
+            return SufixNumber + "nd";
+          case 3:
+            return SufixNumber + "rd";
+          default:
+            return SufixNumber + "th";
+        }
+      }
+    }
+  }
+
   //--------------------- Auto dropdown action ends ---------------------*/
   /*---------------------------------------------------------------------*/
 

@@ -10,7 +10,7 @@ export const StudentRegistration = "studentregistration";
 export const StaffRegistration = "staffregistration";
 export const ExamResult = "examresult";
 export const QuickRegistration = "quickregistration";
-export const Projects = "projects";
+export const Payments = "payments";
 export const StaffMemberRegistration = "staffmemberregistration";
 export const FacultyRegistration = "FacultyRegistration";
 export const Dashboard = "dashboard";
@@ -31,6 +31,8 @@ export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
 export const ServerError = "Server error occured. Please contact to admin.";
 export const InvalidData = "Invalid data received. Please contact to admin.";
+export const MonthlyAttendance = "monthlyattendance";
+export const ManageRoles = "manageroles";
 export const OperationFail =
   "Fail to perform operation. Please contact to admin.";
 
@@ -81,7 +83,7 @@ export const StaffMemberColumn: Array<IColumns> = [
 ];
 
 export const ClassDetailColumn: Array<IColumns> = [
-  { column: "ClassDetailId", type: "hidden" },
+  { column: "ClassDetailUid", type: "hidden" },
   { column: "Class", header: "Class" },
   { column: "TotalSeats", header: "Total Seats" },
   { column: "Section", header: "Section" },

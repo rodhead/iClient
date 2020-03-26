@@ -42,6 +42,10 @@ import { ManageuserComponent } from "./manageuser/manageuser.component";
 import { RolesComponent } from "./roles/roles.component";
 import { UpperAndLowerCaseDirective } from "src/providers/directives/Upper";
 import { AttendancereportComponent } from './attendancereport/attendancereport.component';
+import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
+import { PaymentsComponent } from './payments/payments.component';
+import { ContactsComponent } from './contacts/contacts.component';
+import { ManagerolesComponent } from './manageroles/manageroles.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +81,11 @@ import { AttendancereportComponent } from './attendancereport/attendancereport.c
     ManagetimetableComponent,
     ManageuserComponent,
     RolesComponent,
-    AttendancereportComponent
+    AttendancereportComponent,
+    MonthlyAttendanceComponent,
+    PaymentsComponent,
+    ContactsComponent,
+    ManagerolesComponent
   ],
   imports: [
     BrowserModule,

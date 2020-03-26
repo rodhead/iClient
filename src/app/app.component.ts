@@ -5,7 +5,7 @@ import {
   Calendar,
   Contacts,
   FacultyReports,
-  Projects,
+  Payments,
   QuickRegistration,
   ExamResult,
   StaffRegistration,
@@ -23,7 +23,9 @@ import {
   ManageTimetable,
   ManageUser,
   Roles,
-  AttendanceReport
+  AttendanceReport,
+  MonthlyAttendance,
+  ManageRoles
 } from "./../providers/constants";
 import { iNavigation } from "./../providers/iNavigation";
 import { CommonService } from "./../providers/common-service/common.service";
@@ -110,7 +112,7 @@ export class AppComponent {
                 break;
               case "/" + QuickRegistration:
                 break;
-              case "/" + Projects:
+              case "/" + Payments:
                 break;
               case "/" + StaffMemberRegistration:
                 break;
@@ -134,6 +136,10 @@ export class AppComponent {
               case "/" + Roles:
                 break;
               case "/" + AttendanceReport:
+                break;
+              case "/" + MonthlyAttendance:
+                break;
+              case "/" + ManageRoles:
                 break;
 
               default:
@@ -222,7 +228,7 @@ export class AppComponent {
 
 export interface ClassDetail {
   Index: number;
-  ClassDetailId: string;
+  ClassDetailUid: string;
   Class: string;
   Available: number;
   Section: string;

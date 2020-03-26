@@ -94,7 +94,7 @@ export class QuickRegistrationComponent implements OnInit {
 
     this.Classes = this.storage.GetClasses();
     this.FacultyForm = this.fb.group({
-      ClassDetailId: new FormControl("", Validators.required),
+      ClassDetailUid: new FormControl("", Validators.required),
       Class: new FormControl("", Validators.required),
       Section: new FormControl("", Validators.required),
       FirstName: new FormControl("", Validators.required),
@@ -171,13 +171,13 @@ export class QuickRegistrationComponent implements OnInit {
     let ErrorFields = [];
     try {
       if (this.IsStudent) {
-        if (!IsValidType(this.FacultyForm.get("ClassDetailId").value)) {
+        if (!IsValidType(this.FacultyForm.get("ClassDetailUid").value)) {
           this.commonService.ShowToast("Class or section is not selected.");
           return null;
         } else {
-          let ClassDetailUid = this.FacultyForm.get("ClassDetailId").value;
+          let ClassDetailUid = this.FacultyForm.get("ClassDetailUid").value;
           let CurrentSection = this.Sections.filter(
-            x => x.ClassDetailId === ClassDetailUid
+            x => x.ClassDetailUid === ClassDetailUid
           );
           if (CurrentSection.length > 0) {
             this.FacultyForm.controls["Section"].setValue(

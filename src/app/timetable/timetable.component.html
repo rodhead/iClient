@@ -8,29 +8,6 @@
       <hr />
       <form id="addsubject" class="pt-2" (keydown.enter)="$event.preventDefault()" [formGroup]="AssignFaculty">
         <div class="mt-2">
-          <!-- <div class="col-md-12 form-group row">
-            <div class="col-md-3">
-              <span>Class:</span>
-            </div>
-            <div class="col-md-9">
-              <select class="form-control" (change)="EnableSection()" name="Class">
-                <option value="">Choose Class</option>
-                <option *ngFor="let item of Classes" [value]="item">{{item}}</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-12 form-group row">
-            <div class="col-md-3">
-              <span>Section:</span>
-            </div>
-            <div class="col-md-9">
-              <select class="form-control" [disabled]="IsEnableSection" formControlName="ClassDetailUid"
-                name="ClassDetailUid">
-                <option value="">Section</option>
-                <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
-              </select>
-            </div>
-          </div> -->
           <div class="col-md-12 form-group row">
             <div class="col-md-3">
               <span>Subject:</span>
@@ -73,7 +50,7 @@
       <div class="col-md-12 filter-body pt-3 border mb-2">
         <div class="form-row">
           <div class="form-group col-md-4">
-            <select class="form-control" (change)="EnableSection()" name="Class">
+            <select class="form-control" (change)="EnableSection()" name="Class" [(ngModel)]="SelecteClass">
               <option value="">Choose Class</option>
               <option *ngFor="let item of Classes" [value]="item">{{item}}</option>
             </select>
@@ -82,7 +59,7 @@
             <select class="form-control" [disabled]="IsEnableSection" [(ngModel)]="CurrentClassDetailUid"
               name="ClassDetailUid">
               <option value="">Section</option>
-              <option *ngFor="let item of Sections" [value]="item.ClassDetailId">{{item.Section}}</option>
+              <option *ngFor="let item of Sections" [value]="item.ClassDetailUid">{{item.Section}}</option>
             </select>
           </div>
           <div class="col-md-4 form-row flex-row-reverse">

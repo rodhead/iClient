@@ -16,3 +16,19 @@
 .page-title .title_right .pull-right {
   margin: 10px 0;
 }
+
+.btn-s {
+  height: 35px !important;
+  border-color: #c2b7b7 !important;
+}
+
+.inbox button,
+a {
+  border-radius: 0px 4px 4px 0px;
+  border-left: none;
+}
+
+.project_progress small {
+  position: absolute;
+  top: 2rem;
+}

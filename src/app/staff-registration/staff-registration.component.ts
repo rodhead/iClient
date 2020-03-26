@@ -41,7 +41,7 @@ export class StaffRegistrationComponent implements OnInit {
       AdminId: new FormControl(),
       SchoolTenentId: new FormControl(),
       IsAdmin: new FormControl(),
-      ClassDetailId: new FormControl(),
+      ClassDetailUid: new FormControl(),
       ImageUrl: new FormControl(),
       DesignationId: new FormControl(),
       Subjects: new FormControl(),
@@ -77,7 +77,7 @@ export interface StaffRegModal {
   AdminId: string;
   SchoolTenentId: string;
   IsAdmin: boolean;
-  ClassDetailId: string;
+  ClassDetailUid: string;
   ImageUrl: string;
   DesignationId: number;
   Subjects: string;

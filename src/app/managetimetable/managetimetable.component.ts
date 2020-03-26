@@ -207,7 +207,7 @@ export class ManagetimetableComponent implements OnInit {
         if (index === LunchPeriod) {
           Items.push(
             this.GetTimingFormGroup({
-              SufixedNumber: this.SufixPeriod(index),
+              SufixedNumber: this.commonService.SufixNumber(index) + " period",
               DurationInMin: 0,
               RulebookUid: "",
               DurationInHrs: 0,
@@ -229,7 +229,7 @@ export class ManagetimetableComponent implements OnInit {
         } else {
           Items.push(
             this.GetTimingFormGroup({
-              SufixedNumber: this.SufixPeriod(index),
+              SufixedNumber: this.commonService.SufixNumber(index) + " period",
               DurationInMin: 0,
               RulebookUid: "",
               DurationInHrs: 0,
@@ -286,26 +286,6 @@ export class ManagetimetableComponent implements OnInit {
       RuleName: new FormControl("", Validators.required),
       Timing: this.fb.array([])
     });
-  }
-
-  SufixPeriod(SufixStr: any): string {
-    if (!isNaN(Number(SufixStr))) {
-      let SufixNumber = parseInt(SufixStr);
-      if (SufixNumber === 11 || SufixNumber === 12) {
-        return SufixNumber + "th period";
-      } else {
-        switch (SufixNumber % 10) {
-          case 1:
-            return SufixNumber + "st period";
-          case 2:
-            return SufixNumber + "nd period";
-          case 3:
-            return SufixNumber + "rd period";
-          default:
-            return SufixNumber + "th period";
-        }
-      }
-    }
   }
 
   SelectTimingType() {

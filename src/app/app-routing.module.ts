@@ -24,7 +24,11 @@ import {
   Roles,
   ManageUser,
   ManageTimetable,
-  AttendanceReport
+  AttendanceReport,
+  MonthlyAttendance,
+  Payments,
+  Contacts,
+  ManageRoles
 } from "./../providers/constants";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -46,6 +50,10 @@ import { FacultyReportComponent } from "./faculty-report/faculty-report.componen
 import { StaffReportComponent } from "./staff-report/staff-report.component";
 import { ManageuserComponent } from "./manageuser/manageuser.component";
 import { AttendancereportComponent } from "./attendancereport/attendancereport.component";
+import { MonthlyAttendanceComponent } from "./monthly-attendance/monthly-attendance.component";
+import { PaymentsComponent } from "./payments/payments.component";
+import { ContactsComponent } from "./contacts/contacts.component";
+import { ManagerolesComponent } from "./manageroles/manageroles.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
@@ -70,6 +78,10 @@ const routes: Routes = [
   { path: ManageUser, component: ManageuserComponent },
   { path: Roles, component: RolesComponent },
   { path: AttendanceReport, component: AttendancereportComponent },
+  { path: MonthlyAttendance, component: MonthlyAttendanceComponent },
+  { path: Payments, component: PaymentsComponent },
+  { path: Contacts, component: ContactsComponent },
+  { path: ManageRoles, component: ManagerolesComponent },
   { path: ExamResult, component: ViewResultsComponent }
 ];
 
