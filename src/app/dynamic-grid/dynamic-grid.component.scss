@@ -70,3 +70,31 @@
   font-size: 16px;
   font-style: italic;
 }
+
+.pagearrow {
+  border-radius: 50%;
+  width: 30px;
+  font-size: 30px;
+  display: inline-block;
+  color: #444;
+  transform: translate(0px, 2px);
+  text-align: center;
+}
+
+.pagearrow a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.pagearrow:hover {
+  cursor: pointer !important;
+  font-size: 34px;
+  color: #444;
+}
+
+a.pagearrow.disable-btn {
+  pointer-events: none;
+  cursor: none;
+  color: #d2c3c3;
+}

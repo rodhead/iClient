@@ -97,7 +97,7 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
     $("#studentRegistration")
       .find("input, textarea, select")
       .on("focus", () => {
-        $(event.currentTarget).removeClass("error-filed");
+        $(event.currentTarget).removeClass("error-field");
       });
   }
 
@@ -401,15 +401,15 @@ export class StudentRegistrationComponent implements OnInit, OnDestroy {
           if ($(Form).find('input[name="' + item + '"]').length > 0) {
             $(Form)
               .find('input[name="' + item + '"]')
-              .addClass("error-filed");
+              .addClass("error-field");
           } else {
             $(Form)
               .find('select[name="' + item + '"]')
-              .addClass("error-filed");
+              .addClass("error-field");
 
             $(Form)
               .find('textarea[name="' + item + '"]')
-              .addClass("error-filed");
+              .addClass("error-field");
           }
         });
         this.commonService.ShowToast("Please fill all red marked fields.");

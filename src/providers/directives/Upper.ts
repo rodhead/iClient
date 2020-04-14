@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, HostListener } from "@angular/core";
 
 @Directive({
-  selector: "input[upper]"
+  selector: "input[upper]",
 })
 export class UpperAndLowerCaseDirective {
   @Input() upper: boolean;
@@ -9,7 +9,7 @@ export class UpperAndLowerCaseDirective {
   AllowedKeys: Array<number> = [8, 46, 37, 39, 9];
   constructor(private ref: ElementRef) {}
 
-  @HostListener("keydown", ["$event"]) onKeyDown(event: KeyboardEvent) {
+  @HostListener("keypress", ["$event"]) onKeyDown(event: KeyboardEvent) {
     let e = <KeyboardEvent>event;
     if (this.AllowedKeys.indexOf(e.which) !== -1) {
       return;

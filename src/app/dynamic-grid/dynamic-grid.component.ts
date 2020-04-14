@@ -21,6 +21,8 @@ export class DynamicGridComponent implements OnInit {
   IsStriped: boolean = true;
   pageIndex: number = 0;
   TotalPageCount: number = 0;
+  DisableNext: boolean;
+  DisablePrev: boolean;
   @Output() Edit = new EventEmitter();
   @Output() Delete = new EventEmitter();
   @Output() Next = new EventEmitter();
@@ -60,6 +62,7 @@ export class DynamicGridComponent implements OnInit {
               );
             }
           }
+          this.MangePaging();
         }
         let TotalHeaders = this.Headers.filter(x => x.type !== "hidden").length;
       }
@@ -87,9 +90,46 @@ export class DynamicGridComponent implements OnInit {
 
   DeleteCurrent() {}
 
+  MangePaging() {
+    this.DisableNext = false;
+    this.DisablePrev = false;
+    if (this.pageIndex === 1) {
+      this.DisablePrev = true;
+      if (this.pageIndex === this.TotalPageCount) {
+        this.DisableNext = true;
+      }
+    } else if (this.pageIndex === 1) {
+      this.DisablePrev = true;
+    } else if (this.pageIndex === this.TotalPageCount) {
+      this.DisableNext = true;
+    }
+  }
+
   ngOnInit(): void {}
 
-  PreviousPage() {}
+  PreviousPage() {
+    if (this.pageIndex >= 1) {
+      this.pageIndex--;
+      this.Next.emit(
+        JSON.stringify({
+          PageIndex: this.pageIndex,
+          TotalPages: this.TotalPageCount
+        })
+      );
+    }
+  }
 
-  NextPage() {}
+  NextPage() {
+    if (this.pageIndex < this.TotalPageCount) {
+      this.pageIndex++;
+      if (this.pageIndex === this.TotalPageCount) {
+      }
+      this.Next.emit(
+        JSON.stringify({
+          PageIndex: this.pageIndex,
+          TotalPages: this.TotalPageCount
+        })
+      );
+    }
+  }
 }

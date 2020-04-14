@@ -24,7 +24,7 @@ export const FacultyReports = "facultiesreport";
 export const StaffReports = "staffreport";
 export const ManageTimetable = "managetimetable";
 export const ManageUser = "manageuser";
-export const Roles = "roles";
+export const Settings = "settings";
 export const AttendanceReport = "attendencereport";
 
 export const ZerothIndex = 0;
@@ -33,6 +33,11 @@ export const ServerError = "Server error occured. Please contact to admin.";
 export const InvalidData = "Invalid data received. Please contact to admin.";
 export const MonthlyAttendance = "monthlyattendance";
 export const ManageRoles = "manageroles";
+export const ProgressReport = "progressreport";
+export const UploadResults = "uploadresults";
+export const ManageResults = "manageresults";
+export const ManageExam = "manageexam";
+export const ManageExamDetail = "manageexamdetail";
 export const OperationFail =
   "Fail to perform operation. Please contact to admin.";
 
@@ -44,7 +49,7 @@ export const PurchaseColumn: Array<IColumns> = [
   { column: "Price", header: "SNo #" },
   { column: "TotalPrice", header: "Total" },
   { column: "AmountPaid", header: "Paid" },
-  { column: "AmountDue", header: "Due" }
+  { column: "AmountDue", header: "Due" },
 ];
 
 export const StudentsColumn: Array<IColumns> = [
@@ -54,14 +59,16 @@ export const StudentsColumn: Array<IColumns> = [
   { column: "mobilenumber", header: "Mob. No.#" },
   { column: "ClassSection", header: "Class/Sec" },
   { column: "emailId", header: "Email Id" },
-  { column: "registrationno", header: "Reg. No.#" }
+  { column: "registrationno", header: "Reg. No.#" },
 ];
 
 export const SubjectColumn: Array<IColumns> = [
   { column: "SubjectId", type: "hidden" },
   { column: "SubjectName", header: "Subject Name" },
   { column: "SubjectCode", header: "Subject Code" },
-  { column: "SubjectCredit", header: "Credit" }
+  { column: "SubjectCredit", header: "Credit" },
+  { column: "ForClass", header: "Class" },
+  { column: "IsActive", header: "IsActive" },
 ];
 
 export const FacultyColumn: Array<IColumns> = [
@@ -70,7 +77,7 @@ export const FacultyColumn: Array<IColumns> = [
   { column: "MobileNumber", header: "Mob. No.#" },
   { column: "Class", header: "Class" },
   { column: "Section", header: "Sec" },
-  { column: "Email", header: "Email Id" }
+  { column: "Email", header: "Email Id" },
 ];
 
 export const StaffMemberColumn: Array<IColumns> = [
@@ -79,7 +86,7 @@ export const StaffMemberColumn: Array<IColumns> = [
   { column: "FName", header: "Faculty Name" },
   { column: "MobileNumber", header: "Mob. No.#" },
   { column: "Description", header: "Desc" },
-  { column: "Email", header: "Email Id" }
+  { column: "Email", header: "Email Id" },
 ];
 
 export const ClassDetailColumn: Array<IColumns> = [
@@ -88,5 +95,5 @@ export const ClassDetailColumn: Array<IColumns> = [
   { column: "TotalSeats", header: "Total Seats" },
   { column: "Section", header: "Section" },
   { column: "GirlSeats", header: "Girl Seats" },
-  { column: "BoySeats", header: "Boy Seats" }
+  { column: "BoySeats", header: "Boy Seats" },
 ];

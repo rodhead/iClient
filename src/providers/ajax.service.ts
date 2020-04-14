@@ -3,13 +3,13 @@ import {
   HttpClient,
   HttpHeaders,
   HttpResponse,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from "@angular/common/http";
 import {
   CommonService,
   IsValidResponse,
   IResponse,
-  IsValidType
+  IsValidType,
 } from "./common-service/common.service";
 import { iNavigation } from "./iNavigation";
 import { Observable } from "rxjs";
@@ -43,7 +43,7 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=utf-8",
       Accept: "application/json",
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
@@ -52,14 +52,14 @@ export class AjaxService {
     const headers = new HttpHeaders({
       "Content-Type": "application/json; charset=ISO-8859-1",
       Accept: "application/json",
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
 
   UploadRequestHeader(): any {
     const headers = new HttpHeaders({
-      "x-request-token": this.getToken()
+      "x-request-token": this.getToken(),
     });
     return headers;
   }
@@ -80,7 +80,7 @@ export class AjaxService {
           );
         }
       },
-      error => {
+      (error) => {
         let Error = JSON.parse("Get request with header fire exception.");
         this.commonService.HideLoaderByAjax();
         return Error;
@@ -104,7 +104,7 @@ export class AjaxService {
       this.http
         .get(this.baseUrl + Url, {
           headers: _header,
-          observe: "response"
+          observe: "response",
         })
         .subscribe(
           (res: any) => {
@@ -129,17 +129,13 @@ export class AjaxService {
               );
               this.nav.navigate("/", "");
             } else if (error.status === 404) {
-              this.commonService.ShowToast(
-                "Unable to get data. Your session is expired."
-              );
+              this.commonService.ShowToast("Requested page not found.");
               reject(error);
-              this.nav.navigate("/", null);
             } else {
               this.commonService.ShowToast(
-                "Unable to get data. Your session is expired."
+                "Server error. Please contact to admin."
               );
               reject(error);
-              this.nav.navigate("/", null);
             }
           }
         );
@@ -154,7 +150,7 @@ export class AjaxService {
         this.http
           .post(this.baseUrl + Url, Param, {
             headers: _header,
-            observe: "response"
+            observe: "response",
           })
           .subscribe(
             (res: HttpResponse<any>) => {
@@ -205,16 +201,25 @@ export class AjaxService {
               }
               this.commonService.HideLoaderByAjax();
             },
-            error => {
+            (error) => {
               this.commonService.HideLoaderByAjax();
-              if (error.status === 401) {
-                reject(false);
-                this.commonService.ShowToast(
-                  "Your session expired. Please login again."
-                );
-                this.nav.navigate("/", "");
-              } else {
-                reject(error);
+              switch (error.status) {
+                case 401:
+                  reject(false);
+                  this.commonService.ShowToast(
+                    "Your session expired. Please login again."
+                  );
+                  this.nav.navigate("/", "");
+                  break;
+
+                case 500:
+                  reject(false);
+
+                default:
+                  this.commonService.ShowToast(
+                    "Invalid or Token not found. Please login or contact to admin."
+                  );
+                  this.nav.navigate("/", "");
               }
             }
           );
@@ -229,7 +234,7 @@ export class AjaxService {
       this.http
         .post(this.baseUrl + Url, Param, {
           headers: _header,
-          observe: "response"
+          observe: "response",
         })
         .subscribe(
           (res: HttpResponse<any>) => {
@@ -261,7 +266,7 @@ export class AjaxService {
             }
             this.commonService.HideLoaderByAjax();
           },
-          error => {
+          (error) => {
             this.commonService.HideLoaderByAjax();
             if (error.status === 401) {
               reject(false);

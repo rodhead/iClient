@@ -1,4 +1,3 @@
-import { RolesComponent } from "./roles/roles.component";
 import { ManagetimetableComponent } from "./managetimetable/managetimetable.component";
 import { AppComponent } from "./app.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -21,14 +20,19 @@ import {
   FacultyRegistration,
   FacultyReports,
   StaffReports,
-  Roles,
   ManageUser,
   ManageTimetable,
   AttendanceReport,
   MonthlyAttendance,
   Payments,
   Contacts,
-  ManageRoles
+  ManageRoles,
+  ProgressReport,
+  UploadResults,
+  ManageResults,
+  ManageExam,
+  ManageExamDetail,
+  Settings,
 } from "./../providers/constants";
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
@@ -54,6 +58,12 @@ import { MonthlyAttendanceComponent } from "./monthly-attendance/monthly-attenda
 import { PaymentsComponent } from "./payments/payments.component";
 import { ContactsComponent } from "./contacts/contacts.component";
 import { ManagerolesComponent } from "./manageroles/manageroles.component";
+import { ProgressreportComponent } from "./progressreport/progressreport.component";
+import { UploadresultComponent } from "./uploadresult/uploadresult.component";
+import { ManageresultComponent } from "./manageresult/manageresult.component";
+import { ManageexamComponent } from "./manageexam/manageexam.component";
+import { ManageexamdetailComponent } from "./manageexamdetail/manageexamdetail.component";
+import { SettingsComponent } from "./settings/settings.component";
 
 const routes: Routes = [
   { path: "", component: AppComponent },
@@ -76,17 +86,22 @@ const routes: Routes = [
   { path: StaffReports, component: StaffReportComponent },
   { path: ManageTimetable, component: ManagetimetableComponent },
   { path: ManageUser, component: ManageuserComponent },
-  { path: Roles, component: RolesComponent },
+  { path: Settings, component: SettingsComponent },
   { path: AttendanceReport, component: AttendancereportComponent },
   { path: MonthlyAttendance, component: MonthlyAttendanceComponent },
   { path: Payments, component: PaymentsComponent },
   { path: Contacts, component: ContactsComponent },
   { path: ManageRoles, component: ManagerolesComponent },
-  { path: ExamResult, component: ViewResultsComponent }
+  { path: ProgressReport, component: ProgressreportComponent },
+  { path: UploadResults, component: UploadresultComponent },
+  { path: ManageResults, component: ManageresultComponent },
+  { path: ManageExam, component: ManageexamComponent },
+  { path: ManageExamDetail, component: ManageexamdetailComponent },
+  { path: ExamResult, component: ViewResultsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

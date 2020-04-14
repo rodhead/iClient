@@ -22,10 +22,15 @@ import {
   FacultyRegistration,
   ManageTimetable,
   ManageUser,
-  Roles,
+  Settings,
   AttendanceReport,
   MonthlyAttendance,
-  ManageRoles
+  ManageRoles,
+  ProgressReport,
+  UploadResults,
+  ManageResults,
+  ManageExam,
+  ManageExamDetail,
 } from "./../providers/constants";
 import { iNavigation } from "./../providers/iNavigation";
 import { CommonService } from "./../providers/common-service/common.service";
@@ -38,14 +43,14 @@ import {
   NavigationError,
   Router,
   Event,
-  NavigationStart
+  NavigationStart,
 } from "@angular/router";
 import * as $ from "jquery";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
   title = "iSchool";
@@ -70,7 +75,7 @@ export class AppComponent {
       UserId: this.fb.control(""),
       IsFaculty: this.fb.control(false),
       AdminId: this.fb.control(""),
-      SessionToken: this.fb.control("")
+      SessionToken: this.fb.control(""),
     });
     this.HandleAutoClose();
     this.router.events.subscribe((event: Event) => {
@@ -128,18 +133,29 @@ export class AppComponent {
                 break;
               case "/" + Attendence:
                 break;
-
               case "/" + ManageTimetable:
                 break;
               case "/" + ManageUser:
                 break;
-              case "/" + Roles:
+              case "/" + Settings:
                 break;
               case "/" + AttendanceReport:
                 break;
               case "/" + MonthlyAttendance:
                 break;
               case "/" + ManageRoles:
+                break;
+              case "/" + ProgressReport:
+                this.common.HighlightNavMenu(ExamResult);
+                break;
+              case "/" + UploadResults:
+                break;
+              case "/" + ManageResults:
+                break;
+              case "/" + ManageExam:
+                break;
+              case "/" + ManageExamDetail:
+                this.common.HighlightNavMenu(ManageExam);
                 break;
 
               default:
@@ -203,7 +219,7 @@ export class AppComponent {
       if (ErrorFields === "") {
         this.http
           .post("UserLogin/AuthenticateUser", FormData.value)
-          .then(result => {
+          .then((result) => {
             if (this.common.IsValidResponse(result)) {
               this.common.SetLoginStatus(true);
               this.LoginFlag = true;
@@ -215,7 +231,7 @@ export class AppComponent {
               this.common.ShowToast(result);
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.common.ShowToast("Login error.");
             alert(JSON.stringify(err));
           });

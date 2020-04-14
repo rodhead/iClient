@@ -12,12 +12,13 @@ import * as $ from "jquery";
 import {
   InvalidData,
   SuccessMessage,
-  ZerothIndex
+  ZerothIndex,
+  ProgressReport
 } from "src/providers/constants";
 import { ClassDetail } from "../app.component";
 import { ApplicationStorage } from "src/providers/ApplicationStorage";
 import { AttendanceSheetModal } from "../attendance/attendance.component";
-import { Chart } from "chart.js";
+import { iNavigation } from "src/providers/iNavigation";
 
 @Component({
   selector: "app-view-results",
@@ -27,86 +28,30 @@ import { Chart } from "chart.js";
 export class ViewResultsComponent implements OnInit {
   attendanceData: FormGroup;
   IsReady: boolean = false;
-  chartBar = [];
   ClassDetailUid: string;
-  StudentAttendanceData: any;
-  SubjectReport: Array<ProgressResultModal>;
   ClassDetail: Array<ClassDetail>;
-  CoScholasticData: Array<CoScholasticAreaModal>;
   Sections: Array<ClassDetail>;
   Classes: Array<string>;
   dateModel: NgbDateStruct;
   SelecteClass: string;
-  ViewReport: boolean;
   AttendanceSheet: Array<AttendanceSheetModal>;
   TodayDayNum: string;
   get AttendaceDetail(): FormArray {
     return this.attendanceData.get("AttendaceDetail") as FormArray;
   }
-  data = {
-    labels: [
-      "English",
-      "Hindi",
-      "Mathamatics",
-      "Science",
-      "Social Stydy",
-      "Foundation of IT"
-    ],
-    datasets: [
-      {
-        label: "Obtainer Marks",
-        data: [50, 100, 60, 120, 80, 100, 60],
-        backgroundColor: "rgba(255, 99, 132, 0.4)",
-        borderColor: "rgba(255,99,132,.6)",
-        borderWidth: 1
-      }
-    ]
-  };
-  options = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            fontColor: "rgba(0,0,0,.6)",
-            fontStyle: "bold",
-            beginAtZero: true,
-            maxTicksLimit: 8,
-            padding: 10
-          },
-          gridLines: {
-            drawTicks: true,
-            drawBorder: true,
-            display: true,
-            color: "rgba(0,0,0,.1)"
-            // zeroLineColor: 'transparent'
-          }
-        }
-      ],
-      xAxes: [
-        {
-          gridLines: {
-            // zeroLineColor: 'transparent',
-            display: true
-          },
-          ticks: {
-            padding: 0,
-            fontColor: "rgba(0,0,0,0.6)",
-            fontStyle: "bold"
-          }
-        }
-      ]
-    },
-    responsive: true
-  };
 
   constructor(
     private fb: FormBuilder,
     private http: AjaxService,
     private commonService: CommonService,
-    private storage: ApplicationStorage
+    private storage: ApplicationStorage,
+    private nav: iNavigation
   ) {
-    this.ViewReport = false;
     this.TodayDayNum = new Date().getDate().toString();
+  }
+
+  ViewCurrentStudentResult(StudentUid: string) {
+    this.nav.navigate(ProgressReport, { StudentUid: StudentUid });
   }
 
   ngOnInit() {
@@ -116,11 +61,7 @@ export class ViewResultsComponent implements OnInit {
     this.Classes = this.storage.GetClasses();
     this.ClassDetailUid = "";
     this.selectDate(new Date());
-    if (this.ViewReport) {
-      this.SelectDefault();
-    } else {
-      this.InitTemporaryData();
-    }
+    this.SelectDefault();
   }
 
   SelectDefault() {
@@ -354,109 +295,4 @@ export class ViewResultsComponent implements OnInit {
       }
     ];
   }
-
-  InitTemporaryData() {
-    this.chartBar = new Chart("sales-bar", {
-      type: "bar",
-      data: this.data,
-      options: this.options
-    });
-
-    this.StudentAttendanceData = {
-      TotalAttendance: 219,
-      TotalPresent: 194,
-      AttendancePercent: 80
-    };
-
-    this.CoScholasticData = [
-      {
-        Name: "WORK EDUCATION",
-        Grade: "A"
-      },
-      {
-        Name: "ART EDUCATION",
-        Grade: "A"
-      },
-      {
-        Name: "HEALTH AND PHYSICAL EDUCATION",
-        Grade: "B"
-      },
-      {
-        Name: "DESCIPLINE",
-        Grade: "A"
-      }
-    ];
-
-    this.SubjectReport = [
-      {
-        SubjectName: "English",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      },
-      {
-        SubjectName: "Hindi",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      },
-      {
-        SubjectName: "Mathamatics",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      },
-      {
-        SubjectName: "Science",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      },
-      {
-        SubjectName: "Social Study",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      },
-      {
-        SubjectName: "Foundation of IT",
-        PeriodicTest: 9,
-        Notebook: 4,
-        SubjectEnrichment: 4,
-        AnnualExam: 79,
-        MarkedObtain: 89,
-        Grade: "A"
-      }
-    ];
-  }
-}
-
-interface ProgressResultModal {
-  SubjectName: string;
-  PeriodicTest: number;
-  Notebook: number;
-  SubjectEnrichment: number;
-  AnnualExam: number;
-  MarkedObtain: number;
-  Grade: string;
-}
-
-interface CoScholasticAreaModal {
-  Name: string;
-  Grade: string;
 }

@@ -9,6 +9,19 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
   --light-sky: #5bc0de;
   --light-red: #d9534f;
   --light-yellow: #f0ad4e;
+  --border: #d9d9d9;
+  --clock-width: 180px;
+  --bg-color: #f7f7f7;
+  --wing-height: 60px;
+}
+
+.color-blue {
+  color: var(--light-blue) !important;
+}
+
+.anc:hover {
+  font-size: 14px;
+  cursor: pointer !important;
 }
 
 .btn-green {
@@ -85,10 +98,6 @@ form:after {
   max-width: calc(100% - 15rem);
 }
 
-:root {
-  --bg-color: #f7f7f7;
-}
-
 input,
 select,
 textarea,
@@ -101,6 +110,21 @@ button {
 
 .btn-s {
   height: 34px !important;
+  line-height: 1 !important;
+}
+
+.btn-coin {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  border-radius: 50% !important;
+  width: 60px;
+  height: 60px !important;
+  line-height: 1 !important;
+
+  i {
+    font-size: 1.6rem;
+  }
 }
 
 .btn {
@@ -130,7 +154,7 @@ body {
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
   font-size: .8rem !important;
   font-weight: 400 !important;
-  line-height: 1.471 !important;
+  line-height: 1.5 !important;
   background-color: var(--bg-color) !important;
 }
 
@@ -219,7 +243,25 @@ h2 {
   }
 }
 
-.show {
+.col.ibox-right>input {
+  padding-left: 8px;
+}
+
+.col.ibox-right {
+  position: relative;
+
+  i {
+    position: absolute;
+    text-align: center;
+    border-left: 1px solid #eae7e7;
+    color: var(--input-color);
+    padding: 6px 10px;
+    margin-top: -30px;
+    right: 0px;
+  }
+}
+
+.show-tag {
   right: 0px !important;
   transition: all 500ms;
 }
@@ -252,7 +294,7 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.error-filed {
+.error-field {
   border: 1px solid red !important;
   border-right: 5px solid red !important;
 }
@@ -273,6 +315,7 @@ h2 {
   display: inline-block;
   color: #444;
   transform: translate(0px, 2px);
+  text-align: center;
 }
 
 .pagearrow a {
@@ -283,7 +326,10 @@ h2 {
 
 .pagearrow:hover {
   cursor: pointer !important;
+  font-size: 34px;
+  color: #444;
 }
+
 
 .a-icon {
   text-decoration: none !important;
@@ -299,6 +345,12 @@ h2 {
 
 .bg {
   background: #f7f7f7;
+}
+
+.border-tr {
+  tr {
+    border: 1px solid var(--border) !important;
+  }
 }
 
 /*-------------------------------  popup -----------------------------*/

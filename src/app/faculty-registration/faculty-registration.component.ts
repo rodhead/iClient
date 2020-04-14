@@ -370,7 +370,7 @@ export class FacultyRegistrationComponent implements OnInit {
 
       if (ErrorFields.length > 0) {
         ErrorFields.forEach((val, index) => {
-          $("#" + val).addClass("error-filed");
+          $("#" + val).addClass("error-field");
         });
       } else {
         let formData = new FormData();

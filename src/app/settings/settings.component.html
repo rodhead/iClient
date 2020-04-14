@@ -1,0 +1,252 @@
+<div class="col-md-12 col-sm-12 icard">
+  <div class="x_panel">
+    <div class="x_title">
+      <h2>Manage Timetable <small>Add or modify user roles and responsibility.</small></h2>
+      <div class="clearfix"></div>
+    </div>
+    <div class="x_content">
+      <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
+        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+          <li role="presentation" class="">
+            <a href="#tab_content3" role="tab" id="profile-tab2" class="active" data-toggle="tab"
+              (click)="SelectSection('Zone')" aria-expanded="false">Zone</a>
+          </li>
+          <li role="presentation">
+            <a href="#tab_equipment" id="equipment-tab" role="tab" data-toggle="tab" aria-expanded="true" class=""
+              (click)="SelectSection('Store')">Store</a>
+          </li>
+          <li role="presentation"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
+              aria-expanded="true" (click)="SelectSection('ClassRoom')">Class Room</a>
+          </li>
+          <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab"
+              aria-expanded="false" (click)="SelectSection('Sports')">Sports</a>
+          </li>
+        </ul>
+        <div class="tab-equipment">
+          <div role="tabpanel" class="tab-pane fade show" id="tab_content3" aria-labelledby="profile-tab">
+            <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
+
+              <div formArrayName="Zones" id="zone">
+                <div class="col-12 text-right">
+                  <button class="btn btn-blue btn-coin" (click)="AddZone()">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+                <div class="header-content">
+                  <p class="title-label m-0">If you have multiple zone's for goods and equpments in your organization
+                    like
+                    sports, library, hostel
+                    etc.
+                    Then use this page to create different zone's, and you can store zone specific goods in STORE tab.
+                  </p>
+                </div>
+                <ng-container *ngFor="let item of GetZoneNames().controls;let i = index;" [formGroupName]="i">
+                  <div class="col-12 p-0 mt-4 border-bottom position-relative">
+                    <a class="anc-close">
+                      <i class="fas fa-times"></i>
+                    </a>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label text-right">{{(i + 1) | sufix }} Zone Name</label>
+                      <div class="col-md-6" [attr.name]="'zone-' + i">
+                        <input class="form-control" upper placeholder="First zone name" formControlName="ZoneName">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-sm-3 col-form-label text-right">Zone Description</label>
+                      <div class="col-md-6">
+                        <textarea class="form-control" name="ZoneDescription" rows="2" formControlName="ZoneDescription"
+                          placeholder="Enter zone or area description"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+                <div class="div-12 mt-3 p-0">
+                  <button class="btn btn-blue btn-s" (click)="SaveZones()">
+                    <i class="fa fa-save pr-1"></i>
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!IsZoneReady">
+              <app-noitempage [Data]="'NO ZONE DETAIL FOUND'"></app-noitempage>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane fade active in" id="tab_equipment" aria-labelledby="equipment-tab">
+            <div class="col-12 row p-0 mt-5" id="store">
+              <div class="col-md-3 col-sm-12 position-relative text-center">
+                <div class="store-dv">
+                  <img class="item-img" [src]="FacultyImage" alt="user">
+                  <div class="mt-3">
+                    <button class="btn btn-outline-danger btn-block">Browse File</button>
+                    <input type="file" id="browsfile" class="d-none" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-9 col-sm-12">
+                <div class="section-card mb-2">
+                  <div class="form-group row">
+                    <label class="col-form-label" for="first-name">
+                      Item Name <span class="required">*</span>
+                    </label>
+                    <div class="col-sm-8">
+                      <input name="ItemName" class="form-control" placeholder="Item Name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-form-label">
+                      Last Name
+                    </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="LastName" name="LastName" class="form-control" placeholder="Last Name">
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-form-label">Gender</label>
+                    <div class="col-md-8 chk-dv p-0">
+                      <label>
+                        Male:
+                        <input type="checkbox" id="male" class="chkbox mr-2 ml-2" value="male" checked="checked" />
+                      </label>
+
+                      <label>
+                        Female:
+                        <input type="checkbox" id="female" value="female" class="chkbox ml-2" />
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-form-label">
+                      Date Of Birth <span class="required">*</span>
+                    </label>
+                    <div class="col-sm-8">
+                      <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-md-12 col-sm-12 row">
+                      <label class="col-form-label">
+                        Class
+                      </label>
+                      <div class="col-md-8 d-flex p-0">
+                        <div class="col-md-5 pr-0">
+                          <select class="form-control" id="Class" name="Class">
+                            <option value="">Choose Class</option>
+                          </select>
+                        </div>
+                        <label class="col-form-label">Section</label>
+                        <div class="col-md-5">
+                          <select class="form-control" name="ClassDetailUid">
+                            <option value="">Section</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="home-tab">
+            <div id="classroom">
+              <div class="col-12 p-0 mt-4">
+                <h4><small>Add or modify user roles and responsibility.</small></h4>
+                <div class="form-group row mt-4">
+                  <label for="totalcount" class="text-right col-sm-2 col-form-label">
+                    <b>Total rooms #</b></label>
+                  <div class="col-sm-5">
+                    <input class="form-control" number="4" name="RoomCounts" [(ngModel)]="RoomCounts"
+                      placeholder="Total no# of rooms">
+                  </div>
+                  <div class="col-sm-3">
+                    <button class="btn btn-blue btn-s" (click)="AddRows()">
+                      <i class="fa fa-plus pr-1"></i>
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="IsClassRoomReady">
+                <div [formGroup]="EquipmentSetting">
+                  <div formArrayName="EquipmentDetail">
+                    <ng-container *ngFor="let item of GetSettingCollection().controls; let i = index;"
+                      [formGroupName]="i">
+                      <div class="card position-relative mt-5">
+                        <div class="card-header">
+                          <h5>Room no.# {{i + 1}}</h5>
+                        </div>
+                        <div class="col-md-12 row mt-4">
+                          <div class="col-md-3 p-0">
+                            <div class="form-group">
+                              <label for="roomno" class="col-12 col-form-label">Room no.#</label>
+                              <div class="col-12">
+                                <input class="form-control" number="5" placeholder="Room no.#"
+                                  formControlName="RoomNumber">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3 p-0">
+                            <div class="form-group">
+                              <label for="Equipmentname" class="col-12 col-form-label">Equipment Name</label>
+                              <div class="col-12">
+                                <input class="form-control" formControlName="ItemName" placeholder="Equipment Name">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3 p-0">
+                            <div class="form-group">
+                              <label for="AvailableQuantity" class="col-12 col-form-label">Available Quantity #</label>
+                              <div class="col-12">
+                                <input class="form-control" number="5" name="AvailableQuantity"
+                                  placeholder="Available Quantity #">
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-3 p-0">
+                            <div class="form-group">
+                              <label for="Quantity" class="col-12 col-form-label">Quantity</label>
+                              <div class="col-12">
+                                <input class="form-control" number="5" placeholder="Quantity #" name="Quantity"
+                                  formControlName="Quantity">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-12 row mt-4">
+                          <label for="Equipmentname" class="col-12 col-form-label">Equipment Description</label>
+                          <div class="col-12">
+                            <textarea name="ItemDescription" class="form-control" formControlName="ItemDescription"
+                              rows="4"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 p-0" *ngIf="!IsClassRoomReady">
+                <app-noitempage [Data]="EmptyMessage"></app-noitempage>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+            <div id="sports">
+              <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation
+                +1
+                labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft
+                beer twee. Qui photo
+                booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

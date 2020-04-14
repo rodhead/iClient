@@ -13,7 +13,7 @@
       </thead>
       <tbody *ngIf="!IsEmptyRow">
         <tr *ngFor="let item of GridData;let odd = odd; let even = even; let index = index;"
-          [ngClass]="{odd: odd%2 !== 0 && IsStriped, even: even }">
+          [ngClass]="{odd: odd && IsStriped, even: even }">
           <ng-container *ngFor="let col of Headers">
             <td *ngIf="col.type !== 'hidden'">
               <div [attr.name]="col.column">
@@ -49,14 +49,14 @@
       <tfoot>
         <tr>
           <td colspan="50">
-            <div class="text-right mr-4">
+            <div class="text-right mr-2">
               <div class="d-inline">
                 <span class="plain mr-2">Showing page:</span>
                 <span class="plain"><b>{{ this.pageIndex }} of {{ TotalPageCount }}</b></span>
               </div>
               <div class="d-inline ml-2 font-weight-bold">
-                <a class="pagearrow" (click)="PreviousPage()">&#8249;</a>
-                <a class="pagearrow" (click)="NextPage()">&#8250;</a>
+                <a class="pagearrow" [ngClass]="{'disable-btn': DisablePrev}" (click)="PreviousPage()">&#8249;</a>
+                <a class="pagearrow" [ngClass]="{'disable-btn': DisableNext}" (click)="NextPage()">&#8250;</a>
               </div>
             </div>
           </td>

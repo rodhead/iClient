@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -39,13 +39,22 @@ import { DynamicGridComponent } from "./dynamic-grid/dynamic-grid.component";
 import { PageBreadCrumComponent } from "./page-bread-crum/page-bread-crum.component";
 import { ManagetimetableComponent } from "./managetimetable/managetimetable.component";
 import { ManageuserComponent } from "./manageuser/manageuser.component";
-import { RolesComponent } from "./roles/roles.component";
 import { UpperAndLowerCaseDirective } from "src/providers/directives/Upper";
-import { AttendancereportComponent } from './attendancereport/attendancereport.component';
-import { MonthlyAttendanceComponent } from './monthly-attendance/monthly-attendance.component';
-import { PaymentsComponent } from './payments/payments.component';
-import { ContactsComponent } from './contacts/contacts.component';
-import { ManagerolesComponent } from './manageroles/manageroles.component';
+import { AttendancereportComponent } from "./attendancereport/attendancereport.component";
+import { MonthlyAttendanceComponent } from "./monthly-attendance/monthly-attendance.component";
+import { PaymentsComponent } from "./payments/payments.component";
+import { ContactsComponent } from "./contacts/contacts.component";
+import { ManagerolesComponent } from "./manageroles/manageroles.component";
+import { ProgressreportComponent } from "./progressreport/progressreport.component";
+import { ManageresultComponent } from "./manageresult/manageresult.component";
+import { UploadresultComponent } from "./uploadresult/uploadresult.component";
+import { ManageexamComponent } from "./manageexam/manageexam.component";
+import { CalanderFormatter } from "src/providers/CalanderFormatter";
+import { ManageexamdetailComponent } from "./manageexamdetail/manageexamdetail.component";
+import { NoitempageComponent } from "./noitempage/noitempage.component";
+import { BhTimepickerComponent } from "./bh-timepicker/bh-timepicker.component";
+import { SettingsComponent } from "./settings/settings.component";
+import { NumberSufix } from "src/providers/filters/NumberSufix";
 
 @NgModule({
   declarations: [
@@ -72,6 +81,7 @@ import { ManagerolesComponent } from './manageroles/manageroles.component';
     ViewResultsComponent,
     FloatOnlyDirective,
     NumberOnlyDirective,
+    NumberSufix,
     MobileNumber,
     NumberDirective,
     UpperAndLowerCaseDirective,
@@ -80,12 +90,20 @@ import { ManagerolesComponent } from './manageroles/manageroles.component';
     PageBreadCrumComponent,
     ManagetimetableComponent,
     ManageuserComponent,
-    RolesComponent,
+    SettingsComponent,
     AttendancereportComponent,
     MonthlyAttendanceComponent,
     PaymentsComponent,
     ContactsComponent,
-    ManagerolesComponent
+    ManagerolesComponent,
+    ProgressreportComponent,
+    ManageresultComponent,
+    UploadresultComponent,
+    ManageexamComponent,
+    ManageexamdetailComponent,
+    NoitempageComponent,
+    BhTimepickerComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,9 +111,16 @@ import { ManagerolesComponent } from './manageroles/manageroles.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [AjaxService, ApplicationStorage, iNavigation, PageCache],
-  bootstrap: [AppComponent]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    AjaxService,
+    ApplicationStorage,
+    iNavigation,
+    PageCache,
+    CalanderFormatter,
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
