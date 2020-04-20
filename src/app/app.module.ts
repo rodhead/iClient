@@ -55,6 +55,7 @@ import { NoitempageComponent } from "./noitempage/noitempage.component";
 import { BhTimepickerComponent } from "./bh-timepicker/bh-timepicker.component";
 import { SettingsComponent } from "./settings/settings.component";
 import { NumberSufix } from "src/providers/filters/NumberSufix";
+import { DefaultValue } from "src/providers/filters/default";
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { NumberSufix } from "src/providers/filters/NumberSufix";
     FloatOnlyDirective,
     NumberOnlyDirective,
     NumberSufix,
+    DefaultValue,
     MobileNumber,
     NumberDirective,
     UpperAndLowerCaseDirective,

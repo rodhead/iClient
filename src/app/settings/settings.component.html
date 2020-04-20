@@ -1,31 +1,83 @@
 <div class="col-md-12 col-sm-12 icard">
+  <div *ngIf="StorePopup" class="ipopup">
+    <div class="ipopup__content pb-0">
+      <div class="ipopup__header">
+        <header>Add store item.</header>
+      </div>
+      <hr />
+      <div class="pt-2">
+        <div class="col-12 row mt-2">
+          <div class="col-12">
+            <div class="col-md-12 form-group row">
+              <div class="col-md-3 text-right">
+                <span>Used For:</span>
+              </div>
+              <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="Used for what ?. e.g lab, class room etc."
+                  [(ngModel)]="ModalObject.RoomType" name="RoomType" />
+              </div>
+            </div>
+            <div class="col-md-12 form-group row position-relative">
+              <div class="col-md-3 text-right">
+                <span>Room No.#:</span>
+              </div>
+              <div class="col-md-9">
+                <input rows="3" class="form-control" number="4" (keyup)="CheckUniqueRoomNo()"
+                  placeholder="Enter room no.#" [(ngModel)]="ModalObject.RoomNo" name="ClassRoomNo" />
+                <span *ngIf="ShowErrorMsg" class="checked-error">*Room no.# already in used.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="border-top">
+              <div class="form-group mt-3 col-md-12 text-right">
+                <button class="btn btn-outline-dark btn-s mr-2" (click)="Close()">
+                  <i class="fas fa-times pr-1"></i>Close
+                </button>
+                <button class="btn btn-blue btn-s" (click)="SaveChanges()">
+                  <i class="fa fa-save pr-1"></i>
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="x_panel">
     <div class="x_title">
-      <h2>Manage Timetable <small>Add or modify user roles and responsibility.</small></h2>
+      <h2>
+        Manage Timetable
+        <small>Add or modify user roles and responsibility.</small>
+      </h2>
       <div class="clearfix"></div>
     </div>
     <div class="x_content">
       <div class="" role="tabpanel" data-example-id="togglable-tabs" class="mt-5">
         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
           <li role="presentation" class="">
-            <a href="#tab_content3" role="tab" id="profile-tab2" class="active" data-toggle="tab"
-              (click)="SelectSection('Zone')" aria-expanded="false">Zone</a>
+            <a href="#tab_content1" role="tab" id="content1-tab" class="active" data-toggle="tab"
+              (click)="SelectSection('Zone')" aria-selected="true">Zone</a>
           </li>
           <li role="presentation">
-            <a href="#tab_equipment" id="equipment-tab" role="tab" data-toggle="tab" aria-expanded="true" class=""
-              (click)="SelectSection('Store')">Store</a>
+            <a href="#tab_content2" id="content2-tab" role="tab" data-toggle="tab" aria-expanded="false" class=""
+              (click)="SelectSection('Store')" aria-selected="false">Store</a>
           </li>
-          <li role="presentation"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab"
-              aria-expanded="true" (click)="SelectSection('ClassRoom')">Class Room</a>
+          <li role="presentation">
+            <a href="#tab_content3" id="content3-tab" role="tab" data-toggle="tab" aria-selected="false"
+              (click)="SelectSection('ClassRoom')">Organization Rooms</a>
           </li>
-          <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab"
-              aria-expanded="false" (click)="SelectSection('Sports')">Sports</a>
+          <li role="presentation" class="">
+            <a href="#tab_content4" role="tab" id="content4-tab" data-toggle="tab" aria-selected="false"
+              (click)="SelectSection('Sports')">Sports</a>
           </li>
         </ul>
         <div class="tab-equipment">
-          <div role="tabpanel" class="tab-pane fade show" id="tab_content3" aria-labelledby="profile-tab">
+          <div role="tabpanel" class="tab-pane fade in active show" id="tab_content1" aria-labelledby="content1-tab">
             <div *ngIf="IsZoneReady" [formGroup]="ZoneForm">
-
               <div formArrayName="Zones" id="zone">
                 <div class="col-12 text-right">
                   <button class="btn btn-blue btn-coin" (click)="AddZone()">
@@ -33,22 +85,22 @@
                   </button>
                 </div>
                 <div class="header-content">
-                  <p class="title-label m-0">If you have multiple zone's for goods and equpments in your organization
-                    like
-                    sports, library, hostel
-                    etc.
-                    Then use this page to create different zone's, and you can store zone specific goods in STORE tab.
+                  <p class="title-label m-0">
+                    If you have multiple zone's for goods and equpments in your
+                    organization like sports, library, hostel etc. Then use this
+                    page to create different zone's, and you can store zone
+                    specific goods in STORE tab.
                   </p>
                 </div>
-                <ng-container *ngFor="let item of GetZoneNames().controls;let i = index;" [formGroupName]="i">
+                <ng-container *ngFor="let item of GetZoneNames().controls; let i = index" [formGroupName]="i">
                   <div class="col-12 p-0 mt-4 border-bottom position-relative">
                     <a class="anc-close">
                       <i class="fas fa-times"></i>
                     </a>
                     <div class="form-group row">
-                      <label class="col-sm-3 col-form-label text-right">{{(i + 1) | sufix }} Zone Name</label>
+                      <label class="col-sm-3 col-form-label text-right">{{ i + 1 | sufix }} Zone Name</label>
                       <div class="col-md-6" [attr.name]="'zone-' + i">
-                        <input class="form-control" upper placeholder="First zone name" formControlName="ZoneName">
+                        <input class="form-control" upper placeholder="First zone name" formControlName="ZoneName" />
                       </div>
                     </div>
                     <div class="form-group row">
@@ -73,94 +125,33 @@
             </div>
           </div>
 
-          <div role="tabpanel" class="tab-pane fade active in" id="tab_equipment" aria-labelledby="equipment-tab">
+          <div role="tabpanel" class="tab-pane fade active in" id="tab_content2" aria-labelledby="content2-tab">
             <div class="col-12 row p-0 mt-5" id="store">
-              <div class="col-md-3 col-sm-12 position-relative text-center">
-                <div class="store-dv">
-                  <img class="item-img" [src]="FacultyImage" alt="user">
-                  <div class="mt-3">
-                    <button class="btn btn-outline-danger btn-block">Browse File</button>
-                    <input type="file" id="browsfile" class="d-none" />
-                  </div>
-                </div>
-              </div>
+              <div class="col-md-3 col-sm-12 position-relative text-center"></div>
               <div class="col-md-9 col-sm-12">
                 <div class="section-card mb-2">
-                  <div class="form-group row">
-                    <label class="col-form-label" for="first-name">
-                      Item Name <span class="required">*</span>
-                    </label>
-                    <div class="col-sm-8">
-                      <input name="ItemName" class="form-control" placeholder="Item Name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-form-label">
-                      Last Name
-                    </label>
-                    <div class="col-sm-8">
-                      <input type="text" id="LastName" name="LastName" class="form-control" placeholder="Last Name">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-form-label">Gender</label>
-                    <div class="col-md-8 chk-dv p-0">
-                      <label>
-                        Male:
-                        <input type="checkbox" id="male" class="chkbox mr-2 ml-2" value="male" checked="checked" />
-                      </label>
-
-                      <label>
-                        Female:
-                        <input type="checkbox" id="female" value="female" class="chkbox ml-2" />
-                      </label>
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-form-label">
-                      Date Of Birth <span class="required">*</span>
-                    </label>
-                    <div class="col-sm-8">
-                      <div class="input-group">
-                        <input class="form-control" placeholder="yyyy-mm-dd" id="Dob" name="Dob">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-md-12 col-sm-12 row">
-                      <label class="col-form-label">
-                        Class
-                      </label>
-                      <div class="col-md-8 d-flex p-0">
-                        <div class="col-md-5 pr-0">
-                          <select class="form-control" id="Class" name="Class">
-                            <option value="">Choose Class</option>
-                          </select>
-                        </div>
-                        <label class="col-form-label">Section</label>
-                        <div class="col-md-5">
-                          <select class="form-control" name="ClassDetailUid">
-                            <option value="">Section</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
+                  <div class="col-sm-3">
+                    <button class="btn btn-blue btn-coin" (click)="EnableStorePopup()">
+                      <i class="fa fa-plus"></i>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div role="tabpanel" class="tab-pane fade" id="tab_content1" aria-labelledby="home-tab">
+          <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="content3-tab">
             <div id="classroom">
-              <div class="col-12 p-0 mt-4">
-                <h4><small>Add or modify user roles and responsibility.</small></h4>
+              <div class="col-12 p-0 mt-4" *ngIf="!IsClassRoomReady">
+                <h4>
+                  <small>Add or modify user roles and responsibility.</small>
+                </h4>
                 <div class="form-group row mt-4">
                   <label for="totalcount" class="text-right col-sm-2 col-form-label">
                     <b>Total rooms #</b></label>
                   <div class="col-sm-5">
                     <input class="form-control" number="4" name="RoomCounts" [(ngModel)]="RoomCounts"
-                      placeholder="Total no# of rooms">
+                      placeholder="Total no# of rooms" />
                   </div>
                   <div class="col-sm-3">
                     <button class="btn btn-blue btn-s" (click)="AddRows()">
@@ -172,60 +163,33 @@
               </div>
 
               <div *ngIf="IsClassRoomReady">
-                <div [formGroup]="EquipmentSetting">
-                  <div formArrayName="EquipmentDetail">
-                    <ng-container *ngFor="let item of GetSettingCollection().controls; let i = index;"
-                      [formGroupName]="i">
-                      <div class="card position-relative mt-5">
-                        <div class="card-header">
-                          <h5>Room no.# {{i + 1}}</h5>
-                        </div>
-                        <div class="col-md-12 row mt-4">
-                          <div class="col-md-3 p-0">
-                            <div class="form-group">
-                              <label for="roomno" class="col-12 col-form-label">Room no.#</label>
-                              <div class="col-12">
-                                <input class="form-control" number="5" placeholder="Room no.#"
-                                  formControlName="RoomNumber">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3 p-0">
-                            <div class="form-group">
-                              <label for="Equipmentname" class="col-12 col-form-label">Equipment Name</label>
-                              <div class="col-12">
-                                <input class="form-control" formControlName="ItemName" placeholder="Equipment Name">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3 p-0">
-                            <div class="form-group">
-                              <label for="AvailableQuantity" class="col-12 col-form-label">Available Quantity #</label>
-                              <div class="col-12">
-                                <input class="form-control" number="5" name="AvailableQuantity"
-                                  placeholder="Available Quantity #">
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-md-3 p-0">
-                            <div class="form-group">
-                              <label for="Quantity" class="col-12 col-form-label">Quantity</label>
-                              <div class="col-12">
-                                <input class="form-control" number="5" placeholder="Quantity #" name="Quantity"
-                                  formControlName="Quantity">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="form-group col-md-12 row mt-4">
-                          <label for="Equipmentname" class="col-12 col-form-label">Equipment Description</label>
-                          <div class="col-12">
-                            <textarea name="ItemDescription" class="form-control" formControlName="ItemDescription"
-                              rows="4"></textarea>
-                          </div>
-                        </div>
+                <div class="col-12 p-0">
+                  <div class="row mt-4">
+                    <div class="col-md-6">
+                      <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
+                        <input id="ShopFilter" placeholder="Global search" class="form-control"
+                          (keyup)="FilterLocaldata()" required="required" type="text" />
                       </div>
-                    </ng-container>
+                    </div>
+                    <div class="col-md-6 d-inline-block text-right no-padding">
+                      <button type="submit" (click)="ResetRoomSettingFilter()" class="btn btn-outline-info mr-1">
+                        <i class="fas fa-sync"></i>&ensp;Reset
+                      </button>
+                      <button type="button" (click)="GetFilteredData()" class="btn btn-success">
+                        <i class="fa fa-filter"></i>&ensp;Fiter Rooms
+                      </button>
+                      <button type="button" (click)="GetFilteredData()" class="btn btn-blue"
+                        (click)="EnableStorePopup()">
+                        <i class="fa fa-plus pr-1"></i>Add New
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div>
+                    <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" (Delete)="OnDelete($event)"
+                      (Next)="NextPage($event)" (Previous)="PreviousPage($event)">
+                    </app-dynamic-grid>
                   </div>
                 </div>
               </div>
@@ -236,13 +200,15 @@
             </div>
           </div>
 
-          <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+          <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="content4-tab">
             <div id="sports">
-              <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation
-                +1
-                labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft
-                beer twee. Qui photo
-                booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+              <p>
+                Food truck fixie locavore, accusamus mcsweeney's marfa nulla
+                single-origin coffee squid. Exercitation +1 labore velit, blog
+                sartorial PBR leggings next level wes anderson artisan four loko
+                farm-to-table craft beer twee. Qui photo booth letterpress,
+                commodo enim craft beer mlkshk aliquip
+              </p>
             </div>
           </div>
         </div>

@@ -102,7 +102,8 @@
 
                       </thead>
                       <tbody formArrayName="ExamDetailCollection">
-                        <tr *ngFor="let el of ExamDetailCollection().controls; let i = index" [formGroupName]="i">
+                        <tr *ngFor="let el of ExamDetailCollection().controls; let i = index" [formGroupName]="i"
+                          [attr.name]="el.get('ExamDetailId').value">
                           <td>
                             <label class="pl-0 p-2">{{el.get("SubjectName").value}}</label>
                           </td>
@@ -118,14 +119,14 @@
                             <label class="pl-0 p-2">English</label>
                           </td>
                           <td>
-                            <select name="classroom" class="form-control">
-                              <option value="">Assign class room</option>
-                            </select>
+                            <app-iautocomplete [Data]="RoomNos" [Placeholder]="'Assign class room'"
+                              [Defaultvalue]="el.get('RoomUid').value" (OnSelect)="OnRoomNoSelection($event)">
+                            </app-iautocomplete>
                           </td>
                           <td>
-                            <select name="classroom" class="form-control">
-                              <option value="">Assign class faculty</option>
-                            </select>
+                            <app-iautocomplete [Data]="Faculties" [Placeholder]="'Assign class faculty'"
+                              [Defaultvalue]="el.get('FacultyUid').value" (OnSelect)="OnFacultySelection($event)">
+                            </app-iautocomplete>
                           </td>
                           <td>
                             <div name="editdelete" class="save-action">

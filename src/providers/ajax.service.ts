@@ -131,6 +131,11 @@ export class AjaxService {
             } else if (error.status === 404) {
               this.commonService.ShowToast("Requested page not found.");
               reject(error);
+            } else if (error.status === 400) {
+              this.commonService.ShowToast(
+                "Bad request. Please check URL and Request type matching."
+              );
+              reject(false);
             } else {
               this.commonService.ShowToast(
                 "Server error. Please contact to admin."
@@ -213,6 +218,12 @@ export class AjaxService {
                   break;
 
                 case 500:
+                  reject(false);
+
+                case 400:
+                  this.commonService.ShowToast(
+                    "Bad request. Please check URL and Request type matching."
+                  );
                   reject(false);
 
                 default:

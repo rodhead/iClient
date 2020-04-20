@@ -6,20 +6,35 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content col-12 p-0 row m-0 mt-4">
-        <form [formGroup]="Classdetail" (keydown.enter)="$event.preventDefault()" class="col-md-4 col-sm-12 p-0">
+        <form [formGroup]="Classdetail" (keydown.enter)="$event.preventDefault()" id="class-form"
+          class="col-md-4 col-sm-12 p-0">
           <div class="border creator">
             <div class="x_title action-box-header">
               <h2>School class <small>Add/edit class and section</small></h2>
               <div class="clearfix"></div>
             </div>
             <div name="tab_examdesc" class="action-box" role="definition">
-              <div class="form-group">
-                <label for="subjectname">Class &nbsp;<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" formControlName="Class" placeholder="Class">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-6 pr-m col-sm-12">
+                    <div class="form-group">
+                      <label for="subjectname">Class &nbsp;<span style="color: red;">*</span></label>
+                      <input type="text" class="form-control" formControlName="Class" placeholder="Class">
+                    </div>
+                  </div>
+                  <div class="col-md-6 pl-m col-sm-12">
+                    <div class="form-group">
+                      <label for="subjectcode">Section &nbsp;<span style="color: red;">*</span></label>
+                      <input type="text" class="form-control" upper="1" formControlName="Section" placeholder="Section">
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="form-group">
-                <label for="subjectcode">Section &nbsp;<span style="color: red;">*</span></label>
-                <input type="text" class="form-control" upper="1" formControlName="Section" placeholder="Section">
+                <label for="subjectcredit">Room no.# &nbsp;<span style="color: red;">*</span></label>
+                <app-iautocomplete [Data]="RoomNos" [Placeholder]="'Assign class room'"
+                  [Defaultvalue]="Classdetail.get('RoomUid').value" (OnSelect)="OnRoomNoSelection($event)">
+                </app-iautocomplete>
               </div>
               <div class="form-group">
                 <label for="subjectcredit">No. of seats &nbsp;<span style="color: red;">*</span></label>

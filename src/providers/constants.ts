@@ -92,8 +92,22 @@ export const StaffMemberColumn: Array<IColumns> = [
 export const ClassDetailColumn: Array<IColumns> = [
   { column: "ClassDetailUid", type: "hidden" },
   { column: "Class", header: "Class" },
-  { column: "TotalSeats", header: "Total Seats" },
   { column: "Section", header: "Section" },
+  { column: "TotalSeats", header: "Total Seats" },
   { column: "GirlSeats", header: "Girl Seats" },
   { column: "BoySeats", header: "Boy Seats" },
+  { column: "RoomNo", header: "Room No.#" },
 ];
+
+export const Rooms: Array<IColumns> = [
+  { column: "Class", header: "Class" },
+  { column: "Section", header: "Section" },
+  { column: "RoomType", header: "Used By" },
+  { column: "RoomNo", header: "Room No.#" },
+  { column: "RoomUid", type: "hidden" },
+];
+
+export interface IAutoCompleteModal {
+  text: string;
+  value: any;
+}

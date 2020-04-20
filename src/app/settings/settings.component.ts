@@ -1,3 +1,4 @@
+import { SearchModal } from "./../student-report/student-report.component";
 import {
   IsValidString,
   IsValidTime,
@@ -14,8 +15,10 @@ import {
   DefaultUserImage,
   ServerError,
   SuccessMessage,
+  Rooms,
 } from "src/providers/constants";
 import * as $ from "jquery";
+import { ITable } from "src/providers/Generic/Interface/ITable";
 
 @Component({
   selector: "app-settings",
@@ -25,14 +28,22 @@ import * as $ from "jquery";
 export class SettingsComponent implements OnInit {
   IsClassRoomReady: boolean;
   EmptyMessage: string;
-  EquipmentSetting: FormGroup;
+  ShowErrorMsg: boolean;
   ZoneForm: FormGroup;
   RoomCounts: number;
   FacultyImage: any;
+  IsUpdateRequest: boolean;
   CurrentSection: any;
   ZoneDetail: Array<Zone>;
   IsZoneReady: boolean;
-  ManageSettingForm: Array<ManageEquipmentModal>;
+  StorePopup: boolean;
+  GridData: ITable;
+  ModalObject: ManageRoomsModal;
+  ItemDescription: string;
+  SeachData: SearchModal;
+  SearchQuery: SearchModal;
+  AssignedRoomNo: Array<any>;
+  ManageRoomSettingForm: Array<ManageRoomsModal>;
   constructor(
     private commonService: CommonService,
     private http: AjaxService,
@@ -42,15 +53,21 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.AssignedRoomNo = [];
+    this.ShowErrorMsg = false;
+    this.SeachData = new SearchModal();
+    this.SearchQuery = new SearchModal();
+    this.ItemDescription = null;
+    this.ModalObject = null;
+    this.StorePopup = false;
     this.IsZoneReady = false;
     this.ZoneDetail = [];
     this.CurrentSection = $("#zone");
-    this.ManageSettingForm = [];
+    this.ManageRoomSettingForm = [];
     this.IsClassRoomReady = false;
     this.EmptyMessage =
       "Enter no.# of total rooms available, including toilet bathroom office etc.";
     this.LoadZone();
-    this.BuildSettingForm();
   }
 
   LoadZone() {
@@ -81,14 +98,11 @@ export class SettingsComponent implements OnInit {
       this.CurrentSection = $("#store");
     } else if (Type === "ClassRoom") {
       this.CurrentSection = $("#classroom");
+      this.SeachData = new SearchModal();
+      this.LoadRoomDetail();
     } else if (Type === "Sports") {
       this.CurrentSection = $("#sports");
     }
-  }
-
-  GetSettingCollection(): FormArray {
-    let Data = this.EquipmentSetting.get("EquipmentDetail") as FormArray;
-    return Data;
   }
 
   GetZoneNames(): FormArray {
@@ -130,55 +144,100 @@ export class SettingsComponent implements OnInit {
       );
       index++;
     }
-
     return Data;
   }
 
-  BuildSettingForm() {
-    this.EquipmentSetting = this.fb.group({
-      EquipmentDetail: this.fb.array(this.BindDataArray()),
+  LoadRoomDetail() {
+    this.http.post("Setting/GetRoomDetail", this.SeachData).then((result) => {
+      if (IsValidString(result.ResponseBody)) {
+        let Data = JSON.parse(result.ResponseBody);
+        if (
+          IsValidType(Data) &&
+          Data["Table"] !== "undefined" &&
+          Data["Table1"] !== "undefined" &&
+          Data["Table2"] !== "undefined"
+        ) {
+          this.AssignedRoomNo = Data.Table2;
+          this.BindRoomsData(Data.Table, Data.Table1[0].Total);
+          this.commonService.ShowToast(SuccessMessage);
+        } else {
+          this.commonService.ShowToast(
+            "Invalid response. Please contact to admin."
+          );
+        }
+      } else {
+        this.commonService.ShowToast(ServerError);
+      }
     });
   }
+
+  BindRoomsData(RoomData: Array<ManageRoomsModal>, TotalCount: number) {
+    if (IsValidType(RoomData)) {
+      this.GridData = {
+        headers: Rooms,
+        rows: RoomData,
+        totalCount: TotalCount,
+        pageIndex: this.SeachData.PageIndex,
+        pageSize: this.SeachData.PageSize,
+        url: "",
+      };
+      this.IsClassRoomReady = true;
+    }
+  }
+
+  OnEdit($e: any) {
+    if (IsValidString($e)) {
+      this.ModalObject = JSON.parse($e);
+      this.StorePopup = true;
+      this.IsUpdateRequest = true;
+    }
+  }
+
+  OnDelete($e: any) {}
+
+  NextPage($e: any) {
+    if (IsValidString($e)) {
+      let Data = JSON.parse($e);
+      this.SeachData.PageIndex = Data.PageIndex;
+      this.LoadRoomDetail();
+    }
+  }
+
+  PreviousPage($e: any) {}
 
   AddRows() {
     if (this.RoomCounts > 0) {
-      let index = 0;
-      this.ManageSettingForm = [];
-      while (index < this.RoomCounts) {
-        this.ManageSettingForm.push(new ManageEquipmentModal());
-        index++;
-      }
-      this.BuildSettingForm();
+      this.http
+        .get(`Setting/CreateRooms?RoomsCount=${this.RoomCounts}`)
+        .then((result) => {
+          if (IsValidString(result.ResponseBody)) {
+            let Data = JSON.parse(result.ResponseBody).Table;
+            if (IsValidType(Data)) {
+              this.BindRoomsData(Data, 50);
+              this.commonService.ShowToast(SuccessMessage);
+            } else {
+              this.commonService.ShowToast(
+                "Invalid response. Please contact to admin."
+              );
+            }
+          } else {
+            this.commonService.ShowToast(
+              "Not able to create. Please contact to admin."
+            );
+          }
+        });
     }
   }
 
-  BindDataArray(): Array<FormGroup> {
-    let SettingData: Array<FormGroup> = [];
-    let index = 0;
-    if (this.ManageSettingForm.length > 0) {
-      while (index < this.ManageSettingForm.length) {
-        SettingData.push(
-          this.BindSettingCollectionData(this.ManageSettingForm[index])
-        );
-        index++;
-      }
-      this.IsClassRoomReady = true;
-    }
-    return SettingData;
-  }
+  EditRecord(CurrentRoomUid: string) {}
 
-  BindSettingCollectionData(Data: ManageEquipmentModal) {
-    return this.fb.group({
-      EquipmentUid: new FormControl(Data.EquipmentUid),
-      EquipmentDetailUid: new FormControl(Data.EquipmentDetailUid),
-      RoomNumber: new FormControl(Data.RoomNumber),
-      ItemName: new FormControl(Data.ItemName),
-      ItemDescription: new FormControl(Data.ItemDescription),
-      Quantity: new FormControl(Data.Quantity),
-      PricePerItem: new FormControl(Data.PricePerItem),
-      PurchaseUid: new FormControl(Data.PurchaseUid),
-      ZoneUid: new FormControl(Data.ZoneUid),
-    });
+  DeleteRecord(CurrentRoomUid: string) {
+    if (IsValidString(CurrentRoomUid)) {
+    } else {
+      this.commonService.ShowToast(
+        "Unable to process your request. Please refresh or re-login."
+      );
+    }
   }
 
   SaveZones() {
@@ -201,18 +260,113 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  SaveChanges() {
+    this.StorePopup = false;
+    if (
+      this.ModalObject.RoomNo !== null &&
+      this.ModalObject.RoomNo.toString().trim() !== ""
+    ) {
+      this.ModalObject.RoomNo = Number(this.ModalObject.RoomNo.toString());
+      if (!isNaN(this.ModalObject.RoomNo)) {
+        this.http
+          .post("Setting/UpdateCreateRoomData", this.ModalObject)
+          .then((result) => {
+            if (IsValidString(result.ResponseBody)) {
+              let Data = JSON.parse(result.ResponseBody);
+              if (
+                IsValidType(Data) &&
+                Data["Table"] !== "undefined" &&
+                Data["Table1"] !== "undefined" &&
+                Data["Table2"] !== "undefined"
+              ) {
+                this.AssignedRoomNo = Data["Table2"];
+                if (this.IsUpdateRequest) this.SeachData = new SearchModal();
+                this.BindRoomsData(Data.Table, Data.Table1);
+                this.commonService.ShowToast(SuccessMessage);
+              } else {
+                this.commonService.ShowToast(
+                  "Invalid response. Please contact to admin."
+                );
+              }
+              this.commonService.ShowToast(SuccessMessage);
+            } else {
+              this.commonService.ShowToast(ServerError);
+            }
+          });
+      } else {
+        this.commonService.ShowToast("Invalid Room no.# supplied.");
+      }
+    } else {
+      this.commonService.ShowToast("Invalid Room no.# supplied.");
+    }
+  }
+
+  CheckUniqueRoomNo() {
+    let value = $(event.currentTarget).val();
+    if (this.AssignedRoomNo.length > 0 && value !== "") {
+      if (
+        this.AssignedRoomNo.filter((x) => x.RoomNo === parseInt(value)).length >
+        0
+      ) {
+        this.ShowErrorMsg = true;
+        $(event.currentTarget).addClass("error-field");
+        this.commonService.ShowToast(
+          "Selected Room no.# already in used. Please selecte unique one."
+        );
+      } else {
+        this.ShowErrorMsg = false;
+        $(event.currentTarget).removeClass("error-field");
+      }
+    }
+  }
+
+  Close() {
+    this.StorePopup = false;
+  }
+
+  EnableStorePopup() {
+    this.ModalObject = new ManageRoomsModal();
+    this.ModalObject.RoomNo = null;
+    this.ModalObject.RoomType = "Not allocated.";
+    this.StorePopup = true;
+    this.IsUpdateRequest = false;
+  }
+
+  GetFilteredData() {}
+
+  FilterLocaldata() {}
+
+  ResetRoomSettingFilter() {}
+
+  ChangeRoomsDetail() {
+    let Data = [];
+    if (IsValidType(Data)) {
+      let ServerData: Array<ManageRoomsModal> = [];
+      let ModifiedData = Data.filter((x) => x.touched === true);
+      if (ModifiedData.length > 0) {
+        let index = 0;
+        while (index < ModifiedData.length) {
+          ServerData.push(ModifiedData[index].value);
+          index++;
+        }
+      } else {
+        this.commonService.ShowToast(
+          "No changes found. Please do changes and then submit."
+        );
+      }
+    }
+  }
 }
 
-class ManageEquipmentModal {
-  EquipmentUid: number = null;
-  EquipmentDetailUid: number = null;
-  RoomNumber: number;
-  ItemName: string = "";
-  ItemDescription: string = "";
-  Quantity: number = null;
-  PricePerItem: number = null;
-  PurchaseUid: number = null;
-  ZoneUid: number = null;
+class ManageRoomsModal {
+  Index: number = 0;
+  RoomUid: number = -1;
+  Class: string = null;
+  Section: string = null;
+  RoomNo: number = 0;
+  ClassDetailUid: string = null;
+  RoomType: string = null;
 }
 
 class Zone {

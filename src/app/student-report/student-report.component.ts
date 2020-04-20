@@ -8,13 +8,13 @@ import { StudentsColumn } from "src/providers/constants";
 import { IColumns } from "src/providers/Generic/Interface/IColumns";
 import {
   CommonService,
-  IsValidType
+  IsValidType,
 } from "src/providers/common-service/common.service";
 
 @Component({
   selector: "app-student-report",
   templateUrl: "./student-report.component.html",
-  styleUrls: ["./student-report.component.scss"]
+  styleUrls: ["./student-report.component.scss"],
 })
 export class StudentReportComponent implements OnInit {
   DynamicTableDetail: ITable;
@@ -54,7 +54,7 @@ export class StudentReportComponent implements OnInit {
       SearchString: " 1=1 ",
       SortBy: "",
       PageIndex: 1,
-      PageSize: 15
+      PageSize: 15,
     };
   }
 
@@ -66,7 +66,7 @@ export class StudentReportComponent implements OnInit {
 
     this.http
       .post("Reports/StudentReports", this.SearchQuery)
-      .then(response => {
+      .then((response) => {
         if (
           this.commonService.IsValidResponse(response) &&
           IsValidType(response.ResponseBody)
@@ -82,7 +82,7 @@ export class StudentReportComponent implements OnInit {
               totalCount: TotalCount,
               pageIndex: this.SearchQuery.PageIndex,
               pageSize: this.SearchQuery.PageSize,
-              url: ""
+              url: "",
             };
           } else {
             this.commonService.ShowToast(
@@ -104,9 +104,9 @@ export class StudentReportComponent implements OnInit {
   GetAdvanceFilter() {}
 }
 
-export interface SearchModal {
-  SearchString: string;
-  SortBy: string;
-  PageIndex: number;
-  PageSize: number;
+export class SearchModal {
+  SearchString: string = " 1=1 ";
+  SortBy: string = "";
+  PageIndex: number = 1;
+  PageSize: number = 20;
 }

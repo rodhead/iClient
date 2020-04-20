@@ -27,6 +27,7 @@ import * as $ from "jquery";
 })
 export class ManageexamdetailComponent implements OnInit {
   PageData: ExamDescriptionModal;
+  Faculties: Array<any>;
   ExamDetailForm: FormGroup;
   ClassDetail: Array<ClassDetail>;
   SelectedClass: string;
@@ -38,6 +39,7 @@ export class ManageexamdetailComponent implements OnInit {
   EmptyMessage: any;
   ExamDetail: Array<ExamDetailModal>;
   ExamDetailItem: ExamDetailModal;
+  RoomNos: Array<any>;
   DefaultStartTime: string = "10:25";
 
   ExamDetailCollection(): FormArray {
@@ -69,6 +71,7 @@ export class ManageexamdetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.Faculties = [];
     this.ExamDescriptionUid = "";
     this.IsReady = false;
     this.SelectedClass = "";
@@ -177,6 +180,7 @@ export class ManageexamdetailComponent implements OnInit {
       Description: new FormControl(Item.Description),
       ExpectedDate: new FormControl(Item.ExpectedDate),
       ActualDate: new FormControl(Item.ActualDate),
+      RoomUid: new FormControl(Item.RoomUid),
       Class: new FormControl(this.SelectedClass),
     });
   }
@@ -196,12 +200,30 @@ export class ManageexamdetailComponent implements OnInit {
       .then((result) => {
         if (IsValidString(result.ResponseBody)) {
           let Data = JSON.parse(result.ResponseBody);
-          if (IsValidType(Data["Table"]) && IsValidType(Data["Table1"])) {
+          if (
+            IsValidType(Data["Table"]) &&
+            IsValidType(Data["Table1"]) &&
+            IsValidType(Data["Table2"]) &&
+            IsValidType(Data["Table3"])
+          ) {
             this.PageData = Data["Table"];
             if (IsValidType(this.PageData)) {
               this.PageData = this.PageData[ZerothIndex];
             }
             this.ExamDetail = Data["Table1"];
+            let Rooms = Data["Table2"];
+            this.Faculties = Data["Table3"];
+            this.RoomNos = [];
+            if (Rooms !== null && Rooms.length > 0) {
+              let index = 0;
+              while (index < Rooms.length) {
+                this.RoomNos.push({
+                  text: Rooms[index].RoomNo,
+                  value: Rooms[index].RoomUid,
+                });
+                index++;
+              }
+            }
             this.BuildExamDetailFrom();
             this.commonService.ShowToast(SuccessMessage);
             this.IsReady = true;
@@ -215,6 +237,36 @@ export class ManageexamdetailComponent implements OnInit {
   }
 
   ResetFilter() {}
+
+  OnRoomNoSelection(data: any) {
+    let ExamData = this.ExamDetailCollection().controls;
+    if (ExamData !== null) {
+      let ActualValue = JSON.parse(data);
+      let Uid = $(event.currentTarget).closest("tr").attr("name");
+      let Value = ExamData.filter((x) => x.value.ExamDetailId === Uid);
+      if (Value.length > 0) {
+        let FormValue: FormGroup = Value[0] as FormGroup;
+        if (!isNaN(Number(ActualValue.value))) {
+          FormValue.controls.RoomUid.setValue(parseInt(ActualValue.value));
+        }
+      }
+    }
+  }
+
+  OnFacultySelection(data: any) {
+    let ExamData = this.ExamDetailCollection().controls;
+    if (ExamData !== null) {
+      let ActualValue = JSON.parse(data);
+      let Uid = $(event.currentTarget).closest("tr").attr("name");
+      let Value = ExamData.filter((x) => x.value.ExamDetailId === Uid);
+      if (Value.length > 0) {
+        let FormValue: FormGroup = Value[0] as FormGroup;
+        if (!isNaN(Number(ActualValue.value))) {
+          FormValue.controls.FacultyUid.setValue(ActualValue.value);
+        }
+      }
+    }
+  }
 }
 
 interface ExamDetailModal {
@@ -237,6 +289,7 @@ interface ExamDetailModal {
   ExpectedDate: string;
   ActualDate: string;
   ExamDescriptionId1: string;
+  RoomUid: number;
   Class: string;
 }
 

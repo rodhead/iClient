@@ -17,7 +17,7 @@
           <ng-container *ngFor="let col of Headers">
             <td *ngIf="col.type !== 'hidden'">
               <div [attr.name]="col.column">
-                <span role="view">{{item[col.column]}}</span>
+                <span role="view">{{item[col.column] | default:'NA'}}</span>
                 <input role="edit" name="ItemName" type="text" class="d-none" [attr.value]="item[col.column]" />
               </div>
             </td>
