@@ -405,6 +405,14 @@ h2 {
   }
 }
 
+.auto-height {
+  height: calc(100vh - 5rem);
+}
+
+.table-lined {
+  border: 1px solid var(--border) !important;
+}
+
 @keyframes bubbleup-popup {
   0% {
     opacity: 0;

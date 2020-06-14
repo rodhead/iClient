@@ -36,7 +36,7 @@ import { iNavigation } from "./../providers/iNavigation";
 import { CommonService } from "./../providers/common-service/common.service";
 import { FormGroup } from "@angular/forms";
 import { AjaxService } from "src/providers/ajax.service";
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import {
   NavigationEnd,
