@@ -1,9 +1,11 @@
-import { FacultyRegistration } from "./../../providers/constants";
+import { FacultyRegistration, Paging } from "./../../providers/constants";
 import { Component, OnInit } from "@angular/core";
 import { FacultyColumn } from "src/providers/constants";
 import {
   IsValidType,
-  CommonService
+  CommonService,
+  GroupBy,
+  UniqueItem
 } from "src/providers/common-service/common.service";
 import { AjaxService } from "src/providers/ajax.service";
 import { SearchModal } from "../student-report/student-report.component";
@@ -22,6 +24,8 @@ export class FacultyReportComponent implements OnInit {
   Headers: Array<string>;
   GridData: ITable;
   SearchQuery: SearchModal;
+  FilterData: string;
+  GridRowData: Array<any>;
   constructor(
     private http: AjaxService,
     private commonService: CommonService,
@@ -34,6 +38,8 @@ export class FacultyReportComponent implements OnInit {
   }
 
   InitQuery() {
+    this.FilterData = "";
+    this.GridRowData = [];
     this.SearchQuery = {
       SearchString: " 1=1 ",
       SortBy: "",
@@ -43,11 +49,6 @@ export class FacultyReportComponent implements OnInit {
   }
 
   LoadData() {
-    this.SearchQuery.SearchString = " 1=1 ";
-    this.SearchQuery.SortBy = "";
-    this.SearchQuery.PageIndex = 1;
-    this.SearchQuery.PageSize = 15;
-
     this.http
       .post("Reports/FacultyReports", this.SearchQuery)
       .then(response => {
@@ -58,11 +59,11 @@ export class FacultyReportComponent implements OnInit {
           let Data = JSON.parse(response.ResponseBody);
           let Keys = Object.keys(Data);
           if (Keys.indexOf("Table") !== -1 && Keys.indexOf("Table1") !== -1) {
-            let GridRowData = Data["Table"];
+            this.GridRowData = Data["Table"];
             let TotalCount = Data["Table1"][0].Total;
             this.GridData = {
               headers: FacultyColumn,
-              rows: GridRowData,
+              rows: this.GridRowData,
               totalCount: TotalCount,
               pageIndex: this.SearchQuery.PageIndex,
               pageSize: this.SearchQuery.PageSize,
@@ -81,11 +82,34 @@ export class FacultyReportComponent implements OnInit {
       });
   }
 
-  ResetFilter() {}
+  ResetFilter() {
+    this.InitQuery();
+    this.LoadData();
+  }
 
-  FilterLocaldata() {}
+  FilterLocaldata() {
+    this.SearchQuery.SearchString = ` 
+    FirstName like '%${this.FilterData}%' Or  
+    LastName like '%${this.FilterData}%' Or  
+    MobileNumber like '%${this.FilterData}%' Or  
+    Email like  '%${this.FilterData}%'`;
+    this.LoadData();
+  }
 
   GetAdvanceFilter() {}
+
+  GetNextPage(param: any){
+    let PageData: Paging = JSON.parse(param);
+    if(PageData !== undefined && PageData !== null) {
+      this.SearchQuery.PageIndex = PageData.PageIndex;
+      this.LoadData();
+    }
+  }
+
+  GetPreviousPage(param: any) {
+    let PageData: Paging = JSON.parse(param);
+    alert(JSON.stringify(PageData));
+  }
 
   OnEdit(Data: string) {
     let EditData = JSON.parse(Data);

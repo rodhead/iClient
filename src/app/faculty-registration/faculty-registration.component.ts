@@ -5,7 +5,13 @@ import {
   DefaultUserImage,
   FacultyRegistration,
   StaffMemberRegistration,
-  ZerothIndex
+  ZerothIndex,
+  Zip,
+  Doc,
+  Pdf,
+  Txt,
+  File,
+  Excel
 } from "src/providers/constants";
 import * as $ from "jquery";
 import {
@@ -44,9 +50,11 @@ export class FacultyRegistrationComponent implements OnInit {
   dateModel: NgbDateStruct;
   date: { year: number; month: number };
   ExprienceInYear: Array<any> = [];
+  DocFiles: Array<any> = [];
   SubjectDetail: any;
   IsReady: boolean = false;
   IsEnableSection: boolean = true;
+  ProfileImageName: string = 'profile.';
   ImagePath: string = "";
   constructor(
     private fb: FormBuilder,
@@ -67,6 +75,83 @@ export class FacultyRegistrationComponent implements OnInit {
     this.DefaultSubject = "";
     let Data = this.nav.getValue();
     let EditData = JSON.parse(Data);
+    this.LoadInitData(EditData)
+  }
+
+  GetOtherFilePath(FileExtension: string) {
+    let OtherFilePath = '';
+    if(FileExtension === 'pdf')
+      OtherFilePath = Pdf;
+    else if(FileExtension === 'doc')
+      OtherFilePath = Doc;
+    else if(FileExtension === 'txt')
+      OtherFilePath = Txt;
+    else if(FileExtension === 'zip')
+      OtherFilePath = Zip;
+    else if(FileExtension === 'xls')
+      OtherFilePath = Excel;
+    else if(FileExtension == '')
+      OtherFilePath = File;
+    return OtherFilePath;
+  }
+
+  RemoveItem(FileUid: string) {
+    if(FileUid !== null && FileUid !== "") {
+      this.http.delete("Registration/DeleteImage", FileUid).then(response=> {
+        if (this.commonService.IsValidResponse(response)) {
+          alert(response);
+          this.commonService.ShowToast("Deleted successfully.")
+        } else {
+          this.commonService.ShowToast("Fail to delete.")
+        }
+      })
+    }
+  }
+
+  EnlargeItem(Url: string) {
+    alert(Url);
+  }
+
+  BuildImagesArray(DocImages: any) {
+    if (IsValidType(DocImages)) {
+      this.DocFiles = DocImages;
+      let ProfileImageDetail = DocImages.filter(x=>x.FileName.indexOf(this.ProfileImageName) !== -1);
+      if(ProfileImageDetail.length) {
+        ProfileImageDetail = ProfileImageDetail[ZerothIndex];
+        this.FacultyImage = `${this.http.GetImageBasePath()}${
+          ProfileImageDetail.FilePath
+        }/${ProfileImageDetail.FileName}`;
+      }
+      let DocumentDetail = DocImages.filter(x=>x.FileName.indexOf(this.ProfileImageName) === -1);
+      if(DocumentDetail.length > 0){
+        let index = 0;
+        let ActualPath = "";
+        let LocalFilePath = '';
+        while (index < DocumentDetail.length) {
+          LocalFilePath = this.GetOtherFilePath(DocumentDetail[index].FileExtension);
+          if(LocalFilePath === ''){
+            LocalFilePath =`${this.http.GetImageBasePath()}${
+              DocumentDetail[index].FilePath
+            }/${DocumentDetail[index].FileName}`;
+          }
+
+          ActualPath =`${this.http.GetImageBasePath()}${
+            DocumentDetail[index].FilePath
+          }/${DocumentDetail[index].FileName}`;
+
+          this.DocumentImageObjects.push({
+            FileUid: DocumentDetail[index].FileUid,
+            FileOn: "local",
+            FilePath: LocalFilePath,
+            ActualPath: ActualPath
+          });
+          index++;
+        }
+      }
+    }
+  }
+
+  LoadInitData(EditData: any) {
     if (IsValidType(EditData) && IsValidType(EditData["StaffMemberUid"])) {
       this.http
         .get(`Registration/GetStaffMemberByUid?Uid=${EditData.StaffMemberUid}`)
@@ -103,22 +188,6 @@ export class FacultyRegistrationComponent implements OnInit {
     } else {
       this.InitPage();
       this.IsReady = true;
-    }
-  }
-
-  BuildImagesArray(DocImages: any) {
-    if (IsValidType(DocImages)) {
-      let index = 0;
-      while (index < DocImages.length) {
-        this.DocumentImageObjects.push({
-          FileUid: DocImages[index].FileUid,
-          FileOn: "local",
-          FilePath: `${this.http.GetImageBasePath()}${
-            DocImages[index].FilePath
-          }/${DocImages[index].FileName}`
-        });
-        index++;
-      }
     }
   }
 
@@ -374,12 +443,13 @@ export class FacultyRegistrationComponent implements OnInit {
         });
       } else {
         let formData = new FormData();
-        formData.append("profile", this.FacultyImageType);
+        if(this.FacultyImageType !== undefined && this.FacultyImageType !== null)
+          formData.append("profile", this.FacultyImageType);
         if (this.FacultyDocumentImages.length > 0) {
           let index = 0;
           while (index < this.FacultyDocumentImages.length) {
             formData.append(
-              "image_" + index,
+              "file_" + index,
               this.FacultyDocumentImages[index]
             );
             index++;
@@ -423,7 +493,27 @@ export class FacultyRegistrationComponent implements OnInit {
     this.commonService.Scrollto($("body"));
   }
 
-  GetFile(fileInput: any) {
+  EnableSection() {
+    this.Sections = [];
+    let Class = $(event.currentTarget).val();
+    if (IsValidType(Class)) {
+      this.BindSections(Class);
+    } else {
+      document.getElementById("section").setAttribute("disabled", "disabled");
+    }
+  }
+
+  BindSections(Class) {
+    this.IsEnableSection = false;
+    if (IsValidType(Class)) {
+      this.Sections = this.ClassDetail.filter(x => x.Class === Class);
+      if (this.Sections.length === 0) {
+        this.commonService.ShowToast("Unable to load class detail.");
+      }
+    }
+  }
+
+    GetFile(fileInput: any) {
     let Files = fileInput.target.files;
     if (Files.length > 0) {
       this.FacultyImageType = <File>Files[0];
@@ -452,26 +542,6 @@ export class FacultyRegistrationComponent implements OnInit {
     event.preventDefault();
   }
 
-  EnableSection() {
-    this.Sections = [];
-    let Class = $(event.currentTarget).val();
-    if (IsValidType(Class)) {
-      this.BindSections(Class);
-    } else {
-      document.getElementById("section").setAttribute("disabled", "disabled");
-    }
-  }
-
-  BindSections(Class) {
-    this.IsEnableSection = false;
-    if (IsValidType(Class)) {
-      this.Sections = this.ClassDetail.filter(x => x.Class === Class);
-      if (this.Sections.length === 0) {
-        this.commonService.ShowToast("Unable to load class detail.");
-      }
-    }
-  }
-
   GetDocumentFile(fileInput: any) {
     this.DocumentImages = [];
     this.FacultyDocumentImages = [];
@@ -479,27 +549,47 @@ export class FacultyRegistrationComponent implements OnInit {
     if (Files.length > 0) {
       let index = 0;
       let file = null;
+      let extension = '';
+      let IsImageFile = false;
+      let OtherFilePath = '';
       while (index < Files.length) {
+        IsImageFile = true;
+        OtherFilePath = '';
         file = <File>Files[index];
         this.FacultyDocumentImages.push(file);
         let mimeType = file.type;
         if (mimeType.match(/image\/*/) == null) {
-          this.commonService.ShowToast(
-            "One or more file is not an image file."
-          );
-          index++;
-          continue;
+          extension = file.name.slice(file.name.lastIndexOf('.') + 1);
+          if(extension === 'pdf')
+            OtherFilePath = Pdf;
+          else if(extension === 'doc')
+            OtherFilePath = Doc;
+          else if(extension === 'txt')
+            OtherFilePath = Txt;
+          else if(extension === 'zip')
+            OtherFilePath = Zip;
+          else
+            OtherFilePath = File;
+
+          IsImageFile = false;
+          this.DocumentImageObjects.push({
+            FileUid: index,
+            FileOn: "server",
+            FilePath: OtherFilePath
+          });
         }
 
         let reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = fileEvent => {
           this.DocumentImages.push(reader.result);
-          this.DocumentImageObjects.push({
-            FileUid: index,
-            FileOn: "server",
-            FilePath: reader.result
-          });
+          if(IsImageFile){
+            this.DocumentImageObjects.push({
+              FileUid: index,
+              FileOn: "server",
+              FilePath: reader.result
+            });
+          }
         };
         index++;
       }

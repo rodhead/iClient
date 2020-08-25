@@ -13,8 +13,11 @@
           <div class="row mt-4">
             <div class="col-md-6">
               <div class="pl-0 pr-0 form-group col-md-12 col-sm-12 d-inline-block">
-                <input id="ShopFilter" placeholder="Global search" class="form-control" (keyup)="FilterLocaldata()"
-                  required="required" type="text">
+                <form (keydown.enter)="FilterLocaldata()">
+                  <input name="FilterData" [(ngModel)]="FilterData" class="form-control"
+                  placeholder="Global search (By Faculty Name, Mobile, Email) Press enter."  
+                    required="required" type="text">
+                </form>
               </div>
             </div>
             <div class="col-md-6 d-inline-block text-right no-padding">
@@ -24,7 +27,8 @@
                   class="fa fa-filter"></i>&ensp;Advance Search</button>
             </div>
           </div>
-          <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)"></app-dynamic-grid>
+          <app-dynamic-grid [Data]="GridData" (Edit)="OnEdit($event)" 
+          (Next)="GetNextPage($event)" (Previous)="GetPreviousPage($event)"></app-dynamic-grid>
         </div>
       </div>
     </div>

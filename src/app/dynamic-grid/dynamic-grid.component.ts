@@ -61,6 +61,9 @@ export class DynamicGridComponent implements OnInit {
                 "Invalid record count and pagesize passed."
               );
             }
+          } else {
+            this.TotalPageCount = 0;
+            this.pageIndex = 0;
           }
           this.MangePaging();
         }

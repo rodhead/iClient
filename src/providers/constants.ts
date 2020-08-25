@@ -18,6 +18,12 @@ export const Contacts = "contacts";
 export const Calendar = "calendar";
 export const Attendence = "attendence";
 export const DefaultUserImage = "assets/defaultuser.jpg";
+export const Doc = "assets/doc.png";
+export const Pdf = "assets/pdf.png";
+export const Txt = "assets/txt.png";
+export const File = "assets/file.png";
+export const Zip = "assets/zip.png";
+export const Excel = "assets/excel.png";
 
 export const StudentReports = "studentsreport";
 export const FacultyReports = "facultiesreport";
@@ -110,4 +116,9 @@ export const Rooms: Array<IColumns> = [
 export interface IAutoCompleteModal {
   text: string;
   value: any;
+}
+
+export class Paging {
+  PageIndex: number = 0;
+  TotalPages: number= 0;
 }

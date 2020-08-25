@@ -378,14 +378,14 @@
           <div class="clearfix"></div>
         </div>
         <div class="section-card">
-          <div class="form-group row">
+          <div class="form-group row ml-1">
             <ng-container *ngFor="let img of DocumentImageObjects">
               <div class="img-dv">
                 <div class="">
-                  <img [src]="img.FilePath" alt="Document Image" class="doc-img">
+                  <img [src]="img.FilePath" (click)="EnlargeItem(img.ActualPath)" alt="Document Image" class="doc-img">
                 </div>
                 <div class="col-12 mt-2 text-dark">
-                  <a class="del-anc" [attr.fileOn]="img.FileOn" [attr.uid]="img.FileUid">
+                  <a class="del-anc" [attr.fileOn]="img.FileOn" (click)="RemoveItem(img.FileUid)" [attr.uid]="img.FileUid">
                     <i class="fas fa-trash-alt pr-1"></i>
                     Delete
                   </a>
@@ -398,8 +398,8 @@
     </div>
 
     <div class="btn-toolbar flex-row-reverse">
-      <button class="btn btn-outline-info mr-1">Clear</button>
-      <input type="submit" class="btn btn-success mr-1" value="Submit" />
+      <button class="btn btn-outline-info btn-s mr-1">Clear</button>
+      <input type="submit" class="btn btn-s btn-success mr-1" value="Submit" />
     </div>
   </form>
 </div>

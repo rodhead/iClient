@@ -25,7 +25,7 @@ export class AjaxService {
     private nav: iNavigation
   ) {
     this.baseUrl = "http://localhost:5000/api/";
-    //this.baseUrl = "http://www.bottomhalfinfo.com/EdServerCore/api/";
+    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -86,6 +86,67 @@ export class AjaxService {
         return Error;
       }
     );
+  }
+
+  delete(Url: string, Param: string, IsLoaderRequired: boolean = true): Promise<any> {
+    return new Promise((resolve, reject) => {
+      let _header = null;
+      if (typeof IsLoaderRequired !== undefined) {
+        if (IsLoaderRequired) {
+          this.commonService.ShowLoaderByAjax();
+        } else {
+          _header = this.RequestPlainHeader();
+        }
+      } else {
+        this.commonService.ShowLoaderByAjax();
+      }
+      _header = this.RequestHeader();
+      this.http.delete(this.baseUrl + Url, {
+          headers: _header,
+          observe: "response",
+          params: {
+            data: Param
+          }
+        })
+        .subscribe(
+          (res: any) => {
+            let Token = res.headers.get(TokenName);
+            if (IsValidType(Token)) {
+              if (IsValidResponse(res)) {
+                let response: IResponse = res.body;
+                this.commonService.HideLoaderByAjax();
+                resolve(response);
+              }
+            } else {
+              this.commonService.HideLoaderByAjax();
+              resolve([]);
+            }
+          },
+          (error: HttpErrorResponse) => {
+            this.commonService.HideLoaderByAjax();
+            if (error.status === 401) {
+              reject(false);
+              this.commonService.ShowToast(
+                "Your session expired. Please login again."
+              );
+              this.nav.navigate("/", "");
+            } else if (error.status === 404) {
+              this.commonService.ShowToast("Requested page not found.");
+              reject(error);
+            } else if (error.status === 400) {
+              this.commonService.ShowToast(
+                "Bad request. Please check URL and Request type matching."
+              );
+              reject(false);
+            } else {
+              this.commonService.ShowToast(
+                "Server error. Please contact to admin."
+              );
+              reject(error);
+            }
+          }
+        );
+    });
   }
 
   get(Url: string, IsLoaderRequired: boolean = true): Promise<any> {

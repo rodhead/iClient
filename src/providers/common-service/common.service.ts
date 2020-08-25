@@ -624,6 +624,29 @@ export function FormateDate(PassedDate: string, Formate: string) {
   return FormatedDate;
 }
 
+export function GroupBy(ItemList: Array<any>, Key: any) {
+  return ItemList.reduce(function (rv, x) {
+    (rv[x[Key]] = rv[x[Key]] || []).push(x);
+    return rv;
+  }, {});
+}
+
+export function UniqueItem(Items: Array<any>, Key: any): Array<any> {
+  let index = 0;
+  let i = 0;
+  let UniqueItems = [];
+  if (IsValidType(Items)) {
+    while (index < Items.length) {
+      i = UniqueItems.findIndex((x) => x[Key] === Items[index][Key]);
+      if (i === -1) {
+        UniqueItems.push(Items[index]);
+      }
+      index++;
+    }
+  }
+  return UniqueItems;
+}
+
 export function ActualOrDefault(data: any, modal: any): any {
   if (
     data !== undefined &&
