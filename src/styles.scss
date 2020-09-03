@@ -4,7 +4,7 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
 
 :root {
   --input-color: #bbb;
-  --light-green: #26B99A;
+  --light-green: #26b99a;
   --light-blue: #337ab7;
   --light-sky: #5bc0de;
   --light-red: #d9534f;
@@ -26,7 +26,7 @@ $fa-font-path: "~@fontawesome/fontawesome-free/webfonts";
 
 .btn-green {
   background: var(--light-green) !important;
-  border: 1px solid #169F85 !important;
+  border: 1px solid #169f85 !important;
   color: #fff !important;
 }
 
@@ -105,12 +105,16 @@ button {
   outline: none !important;
   -webkit-box-shadow: none;
   box-shadow: none !important;
-  border-width: .5px !important;
+  border-width: 0.5px !important;
 }
 
 .btn-s {
   height: 34px !important;
   line-height: 1 !important;
+}
+
+.input-sm {
+  height: calc(1.2em + 0.75rem + 2px) !important;
 }
 
 .btn-coin {
@@ -135,7 +139,7 @@ button {
 
 .btn,
 .buttons,
-.modal-footer .btn+.btn,
+.modal-footer .btn + .btn,
 button {
   margin-bottom: 5px;
   margin-right: 5px;
@@ -153,7 +157,7 @@ button {
 body {
   color: #6d7680 !important;
   font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
-  font-size: .8rem !important;
+  font-size: 0.8rem !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
   background-color: var(--bg-color) !important;
@@ -210,24 +214,24 @@ h2 {
   margin-left: 10px;
 }
 
-.panel_toolbox>li {
+.panel_toolbox > li {
   float: left;
   cursor: pointer;
 }
 
-.panel_toolbox>li>a {
+.panel_toolbox > li > a {
   padding: 5px;
   color: #c5c7cb;
   font-size: 14px;
 }
 
-.nav>li>a {
+.nav > li > a {
   position: relative;
   display: block;
   padding: 13px 15px 12px;
 }
 
-.col.ibox>input {
+.col.ibox > input {
   padding-left: 40px;
 }
 
@@ -244,7 +248,7 @@ h2 {
   }
 }
 
-.col.ibox-right>input {
+.col.ibox-right > input {
   padding-left: 8px;
 }
 
@@ -268,7 +272,7 @@ h2 {
 }
 
 .show-linear {
-  animation: cssAnimation 0s ease-in .15s forwards;
+  animation: cssAnimation 0s ease-in 0.15s forwards;
   // -webkit-animation-fill-mode: forwards;
   // animation-fill-mode: forwards;
 }
@@ -301,8 +305,8 @@ h2 {
 }
 
 .warning-filed {
-  border: 1px solid #CDDC39 !important;
-  border-right: 5px solid #CDDC39 !important;
+  border: 1px solid #cddc39 !important;
+  border-right: 5px solid #cddc39 !important;
 }
 
 .p-text {
@@ -330,7 +334,6 @@ h2 {
   font-size: 34px;
   color: #444;
 }
-
 
 .a-icon {
   text-decoration: none !important;
@@ -376,7 +379,7 @@ h2 {
     background-color: white;
     border-radius: 4px;
     transform: translate(-50%, -50%);
-    animation: bubbleup-popup .2s ease-in-out;
+    animation: bubbleup-popup 0.2s ease-in-out;
   }
 
   &__header {
@@ -425,7 +428,6 @@ h2 {
   }
 }
 
-
 .flip-box {
   display: inline-block;
   text-align: center;
@@ -444,7 +446,7 @@ h2 {
     left: 0px;
     top: 0px;
     bottom: 0px;
-    transition: left .5s ease;
+    transition: left 0.5s ease;
   }
 
   .off {

@@ -24,8 +24,8 @@ export class AjaxService {
     private commonService: CommonService,
     private nav: iNavigation
   ) {
-    this.baseUrl = "http://localhost:5000/api/";
-    //this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
+    //this.baseUrl = "http://localhost:5000/api/";
+    this.baseUrl = "http://www.schoolinmind.com/CoreSimServer/api/";
   }
 
   public GetImageBasePath() {
@@ -88,7 +88,11 @@ export class AjaxService {
     );
   }
 
-  delete(Url: string, Param: string, IsLoaderRequired: boolean = true): Promise<any> {
+  delete(
+    Url: string,
+    Param: string,
+    IsLoaderRequired: boolean = true
+  ): Promise<any> {
     return new Promise((resolve, reject) => {
       let _header = null;
       if (typeof IsLoaderRequired !== undefined) {
@@ -101,12 +105,13 @@ export class AjaxService {
         this.commonService.ShowLoaderByAjax();
       }
       _header = this.RequestHeader();
-      this.http.delete(this.baseUrl + Url, {
+      this.http
+        .delete(this.baseUrl + Url, {
           headers: _header,
           observe: "response",
           params: {
-            data: Param
-          }
+            data: Param,
+          },
         })
         .subscribe(
           (res: any) => {

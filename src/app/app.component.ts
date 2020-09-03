@@ -65,116 +65,113 @@ export class AppComponent {
     private router: Router,
     private local: ApplicationStorage
   ) {
-    this.common.HideLoader();
-    this.LoginFlag = this.common.GetLoginStatus();
-    this.LoginForm = this.fb.group({
-      MobileNo: this.fb.control(""),
-      Email: this.fb.control(""),
-      Password: this.fb.control(""),
-      SchoolTenentId: this.fb.control(""),
-      UserId: this.fb.control(""),
-      IsFaculty: this.fb.control(false),
-      AdminId: this.fb.control(""),
-      SessionToken: this.fb.control(""),
-    });
-    this.HandleAutoClose();
-    this.router.events.subscribe((event: Event) => {
-      if (event instanceof NavigationStart) {
-        this.LoginFlag = true;
-        this.common.ShowLoader();
-        this.common.SetCurrentPageName(event.url.replace("/", ""));
-        if (event.url === "/" || event.url === "/#/") {
-          this.LoginFlag = false;
-        } else {
-          if (
-            this.local.$master !== null &&
-            Object.keys(this.local.$master).length > 0
-          ) {
-            switch (event.url) {
-              case "/" + Dashboard:
-                break;
-              case "/" + ViewClasses:
-                break;
-              case "/" + VehicleLocation:
-                break;
-              case "/" + UploadData:
-                break;
-              case "/" + TrackOnMap:
-                break;
-              case "/" + TimeTable:
-                break;
-              case "/" + Subjects:
-                break;
-              case "/" + StudentReports:
-                break;
-              case "/" + StudentRegistration:
-                break;
-              case "/" + StaffReports:
-                break;
-              case "/" + StaffRegistration:
-                break;
-              case "/" + ExamResult:
-                break;
-              case "/" + QuickRegistration:
-                break;
-              case "/" + Payments:
-                break;
-              case "/" + StaffMemberRegistration:
-                break;
-              case "/" + FacultyRegistration:
-                break;
-              case "/" + FacultyReports:
-                break;
-              case "/" + Dashboard:
-                break;
-              case "/" + Contacts:
-                break;
-              case "/" + Calendar:
-                break;
-              case "/" + Attendence:
-                break;
-              case "/" + ManageTimetable:
-                break;
-              case "/" + ManageUser:
-                break;
-              case "/" + Settings:
-                break;
-              case "/" + AttendanceReport:
-                break;
-              case "/" + MonthlyAttendance:
-                break;
-              case "/" + ManageRoles:
-                break;
-              case "/" + ProgressReport:
-                this.common.HighlightNavMenu(ExamResult);
-                break;
-              case "/" + UploadResults:
-                break;
-              case "/" + ManageResults:
-                break;
-              case "/" + ManageExam:
-                break;
-              case "/" + ManageExamDetail:
-                this.common.HighlightNavMenu(ManageExam);
-                break;
-
-              default:
-                this.LoginFlag = false;
-            }
-          } else {
-            if (!this.local.reinitMaster()) {
-              if (event.url !== "/") this.router.navigate(["/"]);
-            }
-          }
-        }
-      }
-      if (event instanceof NavigationEnd) {
-        this.common.HideLoader();
-      }
-      if (event instanceof NavigationError) {
-        this.common.HideLoader();
-      }
-    });
+    // this.common.HideLoader();
+    // this.LoginFlag = this.common.GetLoginStatus();
+    // this.LoginForm = this.fb.group({
+    //   MobileNo: this.fb.control(""),
+    //   Email: this.fb.control(""),
+    //   Password: this.fb.control(""),
+    //   SchoolTenentId: this.fb.control(""),
+    //   UserId: this.fb.control(""),
+    //   IsFaculty: this.fb.control(false),
+    //   AdminId: this.fb.control(""),
+    //   SessionToken: this.fb.control(""),
+    // });
+    // this.HandleAutoClose();
+    // this.router.events.subscribe((event: Event) => {
+    //   if (event instanceof NavigationStart) {
+    //     //this.LoginFlag = true;
+    //     this.common.ShowLoader();
+    //     this.common.SetCurrentPageName(event.url.replace("/", ""));
+    //     if (event.url === "/" || event.url === "/#/") {
+    //       this.LoginFlag = false;
+    //     } else {
+    //       if (this.local.$master !== null) {
+    //         switch (event.url) {
+    //           case "/" + "admin/" + Dashboard:
+    //             break;
+    //           case "/" + ViewClasses:
+    //             break;
+    //           case "/" + VehicleLocation:
+    //             break;
+    //           case "/" + UploadData:
+    //             break;
+    //           case "/" + TrackOnMap:
+    //             break;
+    //           case "/" + TimeTable:
+    //             break;
+    //           case "/" + Subjects:
+    //             break;
+    //           case "/" + StudentReports:
+    //             break;
+    //           case "/" + StudentRegistration:
+    //             break;
+    //           case "/" + StaffReports:
+    //             break;
+    //           case "/" + StaffRegistration:
+    //             break;
+    //           case "/" + ExamResult:
+    //             break;
+    //           case "/" + QuickRegistration:
+    //             break;
+    //           case "/" + Payments:
+    //             break;
+    //           case "/" + StaffMemberRegistration:
+    //             break;
+    //           case "/" + FacultyRegistration:
+    //             break;
+    //           case "/" + FacultyReports:
+    //             break;
+    //           case "/" + Dashboard:
+    //             break;
+    //           case "/" + Contacts:
+    //             break;
+    //           case "/" + Calendar:
+    //             break;
+    //           case "/" + Attendence:
+    //             break;
+    //           case "/" + ManageTimetable:
+    //             break;
+    //           case "/" + ManageUser:
+    //             break;
+    //           case "/" + Settings:
+    //             break;
+    //           case "/" + AttendanceReport:
+    //             break;
+    //           case "/" + MonthlyAttendance:
+    //             break;
+    //           case "/" + ManageRoles:
+    //             break;
+    //           case "/" + ProgressReport:
+    //             this.common.HighlightNavMenu(ExamResult);
+    //             break;
+    //           case "/" + UploadResults:
+    //             break;
+    //           case "/" + ManageResults:
+    //             break;
+    //           case "/" + ManageExam:
+    //             break;
+    //           case "/" + ManageExamDetail:
+    //             this.common.HighlightNavMenu(ManageExam);
+    //             break;
+    //           default:
+    //             console.log("case not matched");
+    //             break;
+    //         }
+    //       } else {
+    //         if (!this.local.reinitMaster()) {
+    //           if (event.url !== "/") this.router.navigate(["/"]);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   if (event instanceof NavigationEnd) {
+    //     this.common.HideLoader();
+    //   }
+    //   if (event instanceof NavigationError) {
+    //     this.common.HideLoader();
+    //   }
+    // });
   }
 
   HandleAutoClose() {
@@ -224,7 +221,7 @@ export class AppComponent {
               this.common.SetLoginStatus(true);
               this.LoginFlag = true;
               this.local.set(JSON.parse(result.ResponseBody));
-              this.nav.navigate(Dashboard, null);
+              this.nav.navigate("admin/" + Dashboard, null);
             } else {
               this.LoginFlag = false;
               this.common.SetLoginStatus(false);

@@ -32,6 +32,7 @@ export const ManageTimetable = "managetimetable";
 export const ManageUser = "manageuser";
 export const Settings = "settings";
 export const AttendanceReport = "attendencereport";
+export const Login = "login";
 
 export const ZerothIndex = 0;
 export const SuccessMessage = "Done successfully.";
@@ -120,5 +121,5 @@ export interface IAutoCompleteModal {
 
 export class Paging {
   PageIndex: number = 0;
-  TotalPages: number= 0;
+  TotalPages: number = 0;
 }
